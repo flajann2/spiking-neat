@@ -1,0 +1,4 @@
+* Spiking Neural Evolution of Augmenting Topologies -- Spiking NEAT
+** The usual stuff
+*** Author: Fred Mitchell
+*** License: MIT

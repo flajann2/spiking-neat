@@ -1,0 +1,8 @@
+* Notes
+  These notes are for me only, and I do not promise to
+  keep them up-to-date or even accurate.
+  
+  The official docs are in the README.org.
+
+** Basic design
+  
