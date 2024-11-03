@@ -1,4 +1,4 @@
-module Generics.Critters where
+module Genetics.Critters where
 
 data Critter = Critter deriving Show
 

@@ -5,4 +5,24 @@
   The official docs are in the README.org.
 
 ** Basic design
-  
+   + We shall have, instead of negative weights,
+     negative or inhibitory neurons, which will send
+     the weights as negative to the neuros its conneted
+     to.
+   + Instead of averaging, we will use spikes. There
+     are the time instants, and for each time instant
+     the inputs (and their weights) for each neuron
+     will be tallied, and if it reaches firing
+     threshold, said neuron will fire its own pulse.
+   + Some neurons will continually fire pulses at
+     regular intervals. This will serve as a bias.
+
+     I actually think there should be a number of bias neurons
+     firing at regular intervals. The firing rates should not
+     necessairily be random, either. Maybe Fibonancii? Maybe
+     these rates themselves should be evolved?
+   + In the Stanley algorithm, the neurons and genes are indexed
+     by integers. To promote efficient execution of these neurons,
+     should we maintain that? Perhaps we should simply create the 
+     IR from the indicies directly.
+
