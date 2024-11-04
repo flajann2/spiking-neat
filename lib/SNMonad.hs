@@ -36,11 +36,3 @@ nextSequenceNumber = do
   let uconf = config {sequence_number = next_seq + 1 }
   updateConfig uconf
   return next_seq
-
-
-
-
-
-
-
-
