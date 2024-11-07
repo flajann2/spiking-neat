@@ -7,11 +7,11 @@ main = do
   let iconfig = initialConfig
   let (s1, s2, s3, ar) = evalState (
         do 
-          s1 <- nextSequenceNumber 
-          s2 <- nextSequenceNumber 
-          s3 <- nextSequenceNumber
-          ar <- seqtest
-          return ( s1, s2, s3, ar)
+          ss1 <- nextSequenceNumber 
+          ss2 <- nextSequenceNumber 
+          ss3 <- nextSequenceNumber
+          sar <- seqtest
+          return ( ss1, ss2, ss3, sar)
         ) iconfig
  
   putStrLn $ "Hello, Haskell! " ++ show s1
@@ -26,5 +26,3 @@ main = do
         ss6 <- nextSequenceNumber
         return [ss4, ss5, ss6]
         
-
-

@@ -17,12 +17,23 @@
    + Some neurons will continually fire pulses at
      regular intervals. This will serve as a bias.
 
-     I actually think there should be a number of bias neurons
-     firing at regular intervals. The firing rates should not
-     necessairily be random, either. Maybe Fibonancii? Maybe
-     these rates themselves should be evolved?
-   + In the Stanley algorithm, the neurons and genes are indexed
-     by integers. To promote efficient execution of these neurons,
-     should we maintain that? Perhaps we should simply create the 
-     IR from the indicies directly.
+     I actually think there should be a number of bias
+     neurons firing at regular intervals. The firing
+     rates should not necessairily be random,
+     either. Maybe Fibonancii? Maybe these rates
+     themselves should be evolved?
+   + In the Stanley algorithm, the neurons and genes
+     are indexed by integers. To promote efficient
+     execution of these neurons, should we maintain
+     that? Perhaps we should simply create the IR from
+     the indicies directly.
+** Sequence Numbers and Innovation Numbers
+   Innovation numbers are used to trace this history of
+   evolution.  They are not intended to be IDs.
 
+   Sequence Numbers may be used as IDs. More thought 
+   is needed on this matter.
+** Weights
+   All weights are between 0 and 1. If the node is inhibitory
+   then during the espression of the critter, the signs of
+   weights are flipped.

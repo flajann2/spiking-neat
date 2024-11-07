@@ -1,3 +1,5 @@
+{-# LANGUAGE DuplicateRecordFields #-}
+
 module NEAT ( module SNMonad
             , module Genetics.Genes
             , module Genetics.Neurons
