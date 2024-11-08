@@ -25,4 +25,5 @@ main = do
         ss5 <- nextSequenceNumber
         ss6 <- nextSequenceNumber
         return [ss4, ss5, ss6]
-        
+
+
