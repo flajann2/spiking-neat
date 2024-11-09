@@ -14,16 +14,16 @@ main = do
           return ( ss1, ss2, ss3, sar)
         ) iconfig
  
-  putStrLn $ "Hello, Haskell! " ++ show s1
+  putStrLn $ "Seq " ++ show s1
     ++ " and " ++ show s2
     ++ " and " ++ show s3
-    ++ " and the array " ++ show ar
+    ++ " and Innov " ++ show ar
     where
       seqtest :: SN [Int64]
       seqtest = do
-        ss4 <- nextSequenceNumber
-        ss5 <- nextSequenceNumber
-        ss6 <- nextSequenceNumber
+        ss4 <- nextInnovationNumber
+        ss5 <- nextInnovationNumber
+        ss6 <- nextInnovationNumber
         return [ss4, ss5, ss6]
 
 

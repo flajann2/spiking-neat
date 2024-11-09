@@ -1,4 +1,6 @@
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE GHC2021, OverloadedRecordDot #-}
+{-# LANGUAGE GADTs #-}
 
 module Genetics.Genes where
 
@@ -6,11 +8,11 @@ import qualified Data.HashMap.Strict as HM
 import Data.Hashable (Hashable)
 import SNMonad
 
-data NodeType = Pyramidal
-              | Purkinje
-              | Regular
-              | Inhibitory
-              deriving (Show, Eq)
+data NodeType py pu r i = Pyramidal py
+                        | Purkinje pu
+                        | Regular r
+                        | Inhibitory i
+                        deriving (Show, Eq)
 
 data NodeRole = Input
               | Output
