@@ -37,3 +37,6 @@
    All weights are between 0 and 1. If the node is inhibitory
    then during the espression of the critter, the signs of
    weights are flipped.
+** IORef
+   We should shift everything back to using IO, since
+   we can stuff configuration data in IORef.
