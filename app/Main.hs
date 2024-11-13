@@ -5,12 +5,13 @@ import NEAT
 main :: IO ()
 main = do
   let iconfig = initialConfig
-  let (s1, s2, s3, ar) = evalState (
+  (s1, s2, s3, ar) <- evalStateT (
         do 
           ss1 <- nextSequenceNumber 
           ss2 <- nextSequenceNumber 
           ss3 <- nextSequenceNumber
           sar <- seqtest
+          liftIO $ putStrLn "LIFTED!"
           return ( ss1, ss2, ss3, sar)
         ) iconfig
  
@@ -19,7 +20,7 @@ main = do
     ++ " and " ++ show s3
     ++ " and the array " ++ show ar
     where
-      seqtest :: SN [Int64]
+      seqtest :: SN [Int]
       seqtest = do
         ss4 <- nextInnovationNumber
         ss5 <- nextInnovationNumber

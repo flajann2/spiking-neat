@@ -41,11 +41,18 @@ library
     build-depends:
         base >=4.7 && <5
       , mtl
+      , unordered-containers
+      , hashable
+      , lens
+      , data-default
+      , transformers
       -- , llvm-hs-pure
     default-language: Haskell2010
 
 executable sneat
     import:           warnings
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
     main-is:          Main.hs
     build-depends:
         base >=4.7 && <5
@@ -54,5 +61,3 @@ executable sneat
       
     hs-source-dirs:   app
     default-language: Haskell2010
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N

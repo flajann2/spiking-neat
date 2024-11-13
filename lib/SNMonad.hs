@@ -1,21 +1,21 @@
 module SNMonad ( module SNMonad
-               , module Control.Monad.State
-               , Int64
+               , module Control.Monad.Trans.State
+               , liftIO
                ) where
 
-import Data.Int (Int64)
-import Control.Monad.State
+import Control.Monad.Trans.State
+import Control.Monad.IO.Class (liftIO)
 import Genetics.Neurons
 import Evolution.Goals
 
-data Config = Config { population_size :: Int64
+data Config = Config { population_size :: Int
                      , neuron_types :: [Neuron]
                      , goal :: Goal
-                     , sequence_number :: Int64
-                     , innovation_number :: Int64
+                     , sequence_number :: Int
+                     , innovation_number :: Int
                      } deriving Show
 
-type SN = State Config
+type SN = StateT Config IO
 
 initialConfig :: Config
 initialConfig = Config { population_size = 100
@@ -33,7 +33,7 @@ updateConfig newconf = put newconf
 
 -- TODO: The following two monads share similar functionality and should
 -- TODO: be DRYed up.
-nextSequenceNumber :: SN Int64
+nextSequenceNumber :: SN Int
 nextSequenceNumber = do
   config <- getConfig
   let next_seq = sequence_number config
@@ -41,7 +41,7 @@ nextSequenceNumber = do
   updateConfig uconf
   return next_seq
 
-nextInnovationNumber :: SN Int64
+nextInnovationNumber :: SN Int
 nextInnovationNumber = do
   config <- getConfig
   let next_innov = innovation_number config
