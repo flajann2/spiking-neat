@@ -61,3 +61,14 @@ executable sneat
       
     hs-source-dirs:   app
     default-language: Haskell2010
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs: test
+  build-depends:
+      base >=4.7 && <5
+    , hspec
+    , hspec-discover
+    , QuickCheck
+    , spiking-neat
