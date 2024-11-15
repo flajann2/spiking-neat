@@ -4,7 +4,11 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DataKinds #-}
 
-module Genetics.Genes where
+module Genetics.Genes ( NType(..)
+                      , Role(..)
+                      , Node(..)
+                      , Connection(..)
+                      ) where
 
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)
@@ -37,15 +41,14 @@ data Role = Input
           | Hidden
           deriving (Show, Eq)
 
-data Gene = Node { sequence :: Int
-                 , ntype    :: NType
+data Node = Node { ntype    :: NType
                  , role     :: Role
-                 }
-          | Connection { sequence   :: Int
-                       , innovation :: Int
-                       , node_in    :: Int
-                       , node_out   :: Int
-                       , weight     :: Float
-                       , enabled    :: Bool
-                       } deriving (Show, Eq)
+                 } deriving (Show, Eq)
+
+data Connection = Connection { innovation :: Int
+                             , node_in    :: Int
+                             , node_out   :: Int
+                             , weight     :: Float
+                             , enabled    :: Bool
+                             } deriving (Show, Eq)
 

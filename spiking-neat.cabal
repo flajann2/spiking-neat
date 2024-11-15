@@ -19,13 +19,16 @@ category:           Machine Learning
 build-type:         Simple
 extra-doc-files:    CHANGELOG.org
 
-common warnings
+common commons
     ghc-options: -O3
                  -Wall
                  -threaded
+    build-depends:
+        base >=4.7 && <5
+    default-language: Haskell2010
 
 library
-    import:           warnings
+    import:           commons
     exposed-modules:
         NEAT
       , SNMonad
@@ -39,28 +42,22 @@ library
     hs-source-dirs:
         lib
     build-depends:
-        base >=4.7 && <5
-      , mtl
+        mtl
       , unordered-containers
       , hashable
       , lens
       , data-default
       , transformers
-      -- , llvm-hs-pure
-    default-language: Haskell2010
 
 executable sneat
-    import:           warnings
+    import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:          Main.hs
+    main-is:     Main.hs
     build-depends:
-        base >=4.7 && <5
-      , mtl
+        mtl
       , spiking-neat
-      
     hs-source-dirs:   app
-    default-language: Haskell2010
 
 test-suite spec
   type: exitcode-stdio-1.0

@@ -2,6 +2,7 @@
 
 module Spec where
 
+import NEAT
 
 import Test.Hspec.Discover ( Monad(return), IO, hspec, Spec )
 import Test.Hspec

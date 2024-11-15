@@ -26,3 +26,8 @@
      should we maintain that? Perhaps we should simply create the 
      IR from the indicies directly.
 
+** Miscellaneous
+   + I had to remove Node and Connection from Gene
+     and make them separate. Haskell doesnät like to
+     array the type constructor otherwise.
+

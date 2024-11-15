@@ -1,10 +1,12 @@
 module SNMonad ( module SNMonad
                , module Control.Monad.Trans.State
+               , module Data.Semigroup
                , liftIO
                ) where
 
 import Control.Monad.Trans.State
 import Control.Monad.IO.Class (liftIO)
+import Data.Semigroup
 import Genetics.Neurons
 import Evolution.Goals
 
