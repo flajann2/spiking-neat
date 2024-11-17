@@ -1,7 +1,9 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE GHC2021, OverloadedRecordDot #-}
 
 module Genetics.Critters where
 
+import SNMonad 
 import Genetics.Genes
 
 data Critter = Critter { nodes          :: [Node]
@@ -25,16 +27,23 @@ conn in' out' = Connection { innovation = 0
                            , enabled = True                             
                            }
 
-mkCritter :: [Node] -> [Connection] -> Int -> Int -> Critter
-mkCritter n c num_in num_out = Critter { nodes = n
-                                       , connections = c
-                                       , number_inputs = num_in
-                                       , number_outputs = num_out
-                                       , inputs = findInputs
-                                       , outputs = findOutputs
-                                       , hidden = findHidden
-                                       }
-                               where
-                                 findInputs = undefined
-                                 findOutputs = undefined
-                                 findHidden = undefined
+mkCritter :: [Node] -> [Connection] -> SN Critter
+mkCritter ns cs = do
+  cfg <- getConfig
+  crit' <- evalStateT ( do
+                         let crit = Critter { nodes          = ns
+                                            , connections    = cs
+                                            , number_inputs  = cfg.num_inputs
+                                            , number_outputs = cfg.num_outputs
+                                            , inputs         = findInputs
+                                            , outputs        = findOutputs
+                                            , hidden         = findHidden
+                                            }
+                         return crit
+                     ) cfg
+  return crit'
+    where
+      findInputs = undefined
+      findOutputs = undefined
+      findHidden = undefined
+

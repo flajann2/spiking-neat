@@ -2,6 +2,7 @@ module SNMonad ( module SNMonad
                , module Control.Monad.Trans.State
                , module Data.Semigroup
                , liftIO
+               , Config(..)
                ) where
 
 import Control.Monad.Trans.State
@@ -15,6 +16,10 @@ data Config = Config { population_size :: Int
                      , goal :: Goal
                      , sequence_number :: Int
                      , innovation_number :: Int
+                     -- TODO: the following two should be
+                     -- TODO: dealt with differently
+                     , num_inputs :: Int
+                     , num_outputs :: Int
                      } deriving Show
 
 type SN = StateT Config IO
@@ -25,6 +30,8 @@ initialConfig = Config { population_size = 100
                        , goal = Goal
                        , sequence_number   = 0
                        , innovation_number = 0
+                       , num_inputs = 20
+                       , num_outputs = 5
                        }
 
 getConfig :: SN Config
