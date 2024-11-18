@@ -5,20 +5,20 @@ import NEAT
 main :: IO ()
 main = do
   let iconfig = initialConfig
-  (s1, s2, s3, ar) <- evalStateT (
-        do 
-          ss1 <- nextSequenceNumber 
-          ss2 <- nextSequenceNumber 
-          ss3 <- nextSequenceNumber
-          sar <- seqtest
-          liftIO $ putStrLn "LIFTED!"
-          return ( ss1, ss2, ss3, sar)
-        ) iconfig
- 
-  putStrLn $ "Hello, Spiking NEAT! " ++ show s1
+  evalStateT mainSN iconfig
+
+mainSN :: SN ()
+mainSN = do 
+  s1 <- nextSequenceNumber 
+  s2 <- nextSequenceNumber 
+  s3 <- nextSequenceNumber
+  ar <- seqtest
+  cfg <- getConfig
+  liftIO $ putStrLn $ "from mainSN, " ++ show s1
     ++ " and " ++ show s2
     ++ " and " ++ show s3
     ++ " and the array " ++ show ar
+    ++ "\n and the config: " ++ show cfg
     where
       seqtest :: SN [Int]
       seqtest = do
@@ -26,3 +26,6 @@ main = do
         ss5 <- nextInnovationNumber
         ss6 <- nextInnovationNumber
         return [ss4, ss5, ss6]
+ 
+
+
