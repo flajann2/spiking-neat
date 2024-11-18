@@ -19,13 +19,13 @@ node :: NType -> Role -> Node
 node nt r = Node { ntype = nt
                  , role = r }
 
-conn :: Int -> Int -> Connection
-conn in' out' = Connection { innovation = 0
-                           , node_in = in'
-                           , node_out = out'
-                           , weight = 0
-                           , enabled = True                             
-                           }
+conn :: Int -> Int -> SN Int -> Connection
+conn in' out' innov = Connection { innovation = innov
+                                 , node_in = in'
+                                 , node_out = out'
+                                 , weight = 0
+                                 , enabled = True                             
+                                 }
 
 mkCritter :: [Node] -> [Connection] -> SN Critter
 mkCritter ns cs = do
@@ -48,13 +48,4 @@ mkCritter ns cs = do
 
       findHidden :: [Int]
       findHidden = [i | (n, i) <- zip ns [0..], n.role == Hidden]
-
-
-
-
-
-
-
-
-
 

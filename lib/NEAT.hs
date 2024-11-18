@@ -4,6 +4,7 @@ module NEAT ( module SNMonad
             , module Genetics.Critters
             , module Population.Population
             , module Evolution.Goals
+            , pPrint
             ) where
 
 import SNMonad
@@ -12,3 +13,5 @@ import Genetics.Neurons
 import Genetics.Critters
 import Population.Population
 import Evolution.Goals
+import Text.Pretty.Simple (pPrint)
+

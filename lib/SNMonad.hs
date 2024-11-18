@@ -57,3 +57,9 @@ nextInnovationNumber = do
   let uconf = config {innovation_number = next_innov + 1 }
   updateConfig uconf
   return next_innov
+
+nsi :: SN Int
+nsi = nextSequenceNumber
+
+nxi :: SN Int
+nxi = nextInnovationNumber

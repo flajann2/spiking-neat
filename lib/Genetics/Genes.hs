@@ -16,7 +16,7 @@ module Genetics.Genes ( NType(..)
 
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)
--- import SNMonad
+import SNMonad
 
 data NType = Pyramidal  { activation     :: Float -> Float
                         , depolarization :: Float } 
@@ -76,10 +76,23 @@ data Node = Node { ntype    :: NType
                  , role     :: Role
                  } deriving (Show, Eq)
 
-data Connection = Connection { innovation :: Int
+data Connection = Connection { innovation :: SN Int
                              , node_in    :: Int
                              , node_out   :: Int
                              , weight     :: Float
                              , enabled    :: Bool
-                             } deriving (Show, Eq)
+                             }
 
+instance Show Connection where
+  show (Connection _innov nin nout w en) = "conn <innov> node_in: " ++ show nin
+    ++ " node_out: " ++ show nout
+    ++ " weight: " ++ show w
+    ++ " enabled: " ++ show en
+  
+
+instance Eq Connection where
+  (Connection _innov1 nin1 nout1 w1 en1)
+    == (Connection _innov2 nin2 nout2 w2 en2) = nin1 == nin2
+    && nout1 == nout2
+    && w1 == w2
+    && en1 == en2
