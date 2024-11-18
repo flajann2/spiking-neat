@@ -59,15 +59,15 @@ executable sneat
       , spiking-neat
     hs-source-dirs:   app
 
-executable playground-dsl
-    import:           commons
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
-    main-is:     CritterDSL.hs
-    build-depends:
-        mtl
-      , spiking-neat
-    hs-source-dirs:   playground
+--- executable playground-dsl
+---     import:           commons
+---     ghc-options: -rtsopts
+---                  -with-rtsopts=-N
+---     main-is:     CritterDSL.hs
+---     build-depends:
+---         mtl
+---       , spiking-neat
+---     hs-source-dirs:   playground
 
 test-suite sn-spec
   type: exitcode-stdio-1.0
