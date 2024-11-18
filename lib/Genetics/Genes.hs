@@ -8,11 +8,16 @@ module Genetics.Genes ( NType(..)
                       , Role(..)
                       , Node(..)
                       , Connection(..)
+                      , mkPyramidal
+                      , mkPurkinje
+                      , mkRegular
+                      , mkInhiborty
                       ) where
 
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)
 import SNMonad
+import Foreign (FunPtr)
 
 data NType = Pyramidal  { activation     :: Float -> Float
                         , depolarization :: Float } 
@@ -27,6 +32,33 @@ instance Show NType where
     show (Purkinje _ dep rate) = "Purkinje with depolarization: " ++ show dep ++ ", rate: " ++ show rate
     show (Regular _) = "Regular Neuron"
     show (Inhibitory _) = "Inhibitory Neuron"
+
+-- neuron constructor functions
+mkPyramidal'      :: (Float -> Float) -> Float -> NType
+mkPyramidal' f d  = Pyramidal f d
+
+mkPurkinje'       :: (Float -> Float) -> Float -> Float -> NType
+mkPurkinje' f d r = Purkinje f d r
+
+mkRegular'        :: (Float -> Float) -> NType
+mkRegular' f      = Regular f
+
+mkInhiborty'      :: (Float -> Float) -> NType
+mkInhiborty' f    = Inhibitory f
+
+-- neuron constructor functions with sigmoid and other activations
+-- TODO: modify the activation functions to what they should be.
+mkPyramidal    :: Float -> NType
+mkPyramidal d  = mkPyramidal' (\x -> 1 / (1 + exp (-x))) d
+
+mkPurkinje     :: Float -> Float -> NType
+mkPurkinje d r = mkPurkinje' (\x -> 1 / (1 + exp (-x))) d r
+
+mkRegular      :: NType
+mkRegular      = mkRegular' (\x -> 1 / (1 + exp (-x)))
+
+mkInhiborty    :: NType
+mkInhiborty    = mkInhiborty' (\x -> 1 / (1 + exp (-x))) 
 
 -- TODO: remove this if we dont need the Eq
 instance Eq NType where
