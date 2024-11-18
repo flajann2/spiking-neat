@@ -30,20 +30,31 @@ conn in' out' = Connection { innovation = 0
 mkCritter :: [Node] -> [Connection] -> SN Critter
 mkCritter ns cs = do
   cfg <- getConfig
-  crit' <- evalStateT ( do
-                         let crit = Critter { nodes          = ns
-                                            , connections    = cs
-                                            , number_inputs  = cfg.num_inputs
-                                            , number_outputs = cfg.num_outputs
-                                            , inputs         = findInputs
-                                            , outputs        = findOutputs
-                                            , hidden         = findHidden
-                                            }
-                         return crit
-                     ) cfg
-  return crit'
+  let crit = Critter { nodes          = ns
+                     , connections    = cs
+                     , number_inputs  = cfg.num_inputs
+                     , number_outputs = cfg.num_outputs
+                     , inputs         = findInputs
+                     , outputs        = findOutputs
+                     , hidden         = findHidden
+                     }
+  return crit
     where
-      findInputs = undefined
-      findOutputs = undefined
-      findHidden = undefined
+      findInputs :: [Int]
+      findInputs = [i | (n, i) <- zip ns [0..], n.role == Input] 
+      
+      findOutputs :: [Int]
+      findOutputs = [i | (n, i) <- zip ns [0..], n.role == Output]
+
+      findHidden :: [Int]
+      findHidden = [i | (n, i) <- zip ns [0..], n.role == Hidden]
+
+
+
+
+
+
+
+
+
 

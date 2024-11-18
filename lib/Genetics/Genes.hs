@@ -16,8 +16,7 @@ module Genetics.Genes ( NType(..)
 
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)
-import SNMonad
-import Foreign (FunPtr)
+-- import SNMonad
 
 data NType = Pyramidal  { activation     :: Float -> Float
                         , depolarization :: Float } 
