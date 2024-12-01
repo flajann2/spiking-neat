@@ -1,5 +1,5 @@
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE GHC2021, OverloadedRecordDot #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DataKinds #-}
@@ -84,13 +84,17 @@ data Connection = Connection { innovation :: SN Int
                              }
 
 instance Show Connection where
-  show (Connection _innov nin nout w en) = "conn <innov> node_in: " ++ show nin
+  show (Connection _innov nin nout w en) = "conn innov: " ++ innovShow
+    ++ " node_in: "  ++ show nin
     ++ " node_out: " ++ show nout
-    ++ " weight: " ++ show w
-    ++ " enabled: " ++ show en
+    ++ " weight: "   ++ show w
+    ++ " enabled: "  ++ show en
+    where
+      innovShow = "<innov>" -- TODO: Get innovation show working
   
 
 instance Eq Connection where
+  (==) :: Connection -> Connection -> Bool
   (Connection _innov1 nin1 nout1 w1 en1)
     == (Connection _innov2 nin2 nout2 w2 en2) = nin1 == nin2
     && nout1 == nout2

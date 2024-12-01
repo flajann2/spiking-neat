@@ -1,4 +1,8 @@
 module Population.Population where
 
-data Population = Population deriving Show
+import Genetics.Critters
+
+data Population = Population { critters :: [Critter]
+                             , epsilon :: [Maybe Float]
+                             } deriving Show
 

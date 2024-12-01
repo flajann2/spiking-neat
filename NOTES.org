@@ -30,4 +30,35 @@
    + I had to remove Node and Connection from Gene
      and make them separate. Haskell doesnät like to
      array the type constructor otherwise.
+** Hebbian Learning
+   I need to explore the inclusion of Hebbian leaarning for S-NEAT.
+   + w ij ←w ij +η⋅r i ⋅r j -- just look up the actual formula.
+   + How will this work in the spiking context? Do I allow the
+     weights to change as the critter is working, as opposed to only
+     doing that during evolution?
+   + Do I Lamackian those changes back to the genes?
+** Spiking
+   I have not understood how I shall exactly implement
+   spiking. Do I evaluate the entire critter per spike?
+   Or do I evaluate each neuron per spike?
+   + Whole critter eval
+     This would entail pushing out all the evaluations
+     to the output neurons per spike, and during that
+     spike allowing for settlement due to loops in neurons.
+   + Per Spike Evaluation
+     This would be slower, but a bit closer to the
+     actual biological context. But a lot more compute
+     intensive, meaning more parallel computation perhaps.
+   + I am leaning toward the latter. Neuron per spike. We will
+     have to optimize for speed later.
+*** Neuron per spike
+    A vector of neurons -- or nodes -- will have to be
+    maintained somewhere, and I was thinking floats. But what
+    if we used Complex numbers or even quaternions instead?
+
+    I will need to make it all generic, which Haskell
+    will allow me to do easily enough.
+
+
+​
 

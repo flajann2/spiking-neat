@@ -1,5 +1,5 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE GHC2021, OverloadedRecordDot #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 
 module Genetics.Critters where
 
@@ -14,6 +14,11 @@ data Critter = Critter { nodes          :: [Node]
                        , number_inputs  :: Int
                        , number_outputs :: Int
                        } deriving Show
+
+class Eval where
+  ecritter :: [Float] -> SN [Float]
+  epopulation :: [Float] -> SN [[Float]]
+
 
 node :: NType -> Role -> Node
 node nt r = Node { ntype = nt
