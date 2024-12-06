@@ -10,6 +10,15 @@ import Control.Monad.IO.Class (liftIO)
 import Data.Semigroup
 import Genetics.Neurons
 import Evolution.Goals
+import Language.Haskell.TH.Lens (HasTypes(types))
+
+-- To allow for a generalization of numeric types
+-- for example, complex numbers!
+type SSNum a = (Num a
+               , Show a
+               , Fractional a
+               , Floating a
+               , Eq a)
 
 data Config = Config { population_size :: Int
                      , neuron_types :: [Neuron]

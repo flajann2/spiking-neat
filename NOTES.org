@@ -58,7 +58,14 @@
 
     I will need to make it all generic, which Haskell
     will allow me to do easily enough.
-
+** Generic Floats
+   I am calling them that for now,
+   but really I want to be able to
+   use complex numbers or even quaturnions
+   instead. I do not know where this
+   will lead. It may make it able to
+   latch on to deeper nuances of learning.
+   
 
 ​
 
