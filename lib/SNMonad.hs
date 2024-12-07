@@ -25,31 +25,40 @@ type SSNum a = ( Num a
                , Floating a
                , Eq a)
 
-data Config = Config { population_size :: Int
-                     , neuron_types :: [Neuron]
-                     , goal :: Goal
-                     , sequence_number :: Int
+data Config = Config { population_size   :: Int
+                     , neuron_types      :: [Neuron]
+                     , goal              :: Goal
+                     , sequence_number   :: Int
                      , innovation_number :: Int
-                     -- TODO: the following two should be
-                     -- TODO: dealt with differently
-                     , num_inputs :: Int
-                     , num_outputs :: Int
-                     , irng :: StdGen
-                     , drng :: StdGen
-                     } deriving Show
+                     , num_inputs        :: Int
+                     , num_outputs       :: Int
+                     , rng               :: IO StdGen
+                     } 
+
+instance Show Config where
+  show (Config popize nt goal snum inum ninp nout rng) =
+       " population_size: "   ++ show popize  
+    ++ " neuron_types: "      ++ show nt
+    ++ " goal: "              ++ show goal
+    ++ " sequence_number: "   ++ show snum
+    ++ " innovation_number: " ++ show inum
+    ++ " num_inputs: "        ++ show ninp
+    ++ " num_outputs: "       ++ show nout
+    ++ " rng: "               ++ show rngShow
+    where
+      rngShow = "<IO StdGen>"
 
 type SN = StateT Config IO
 
 initialConfig :: Config
-initialConfig = Config { population_size = 100
-                       , neuron_types = [Neuron]
-                       , goal = Goal
+initialConfig = Config { population_size   = 100
+                       , neuron_types      = [Neuron]
+                       , goal              = Goal
                        , sequence_number   = 0
                        , innovation_number = 0
-                       , num_inputs = 20
-                       , num_outputs = 5
-                       , irng = mkStdGen 42 -- TODO seed  with a entropy source
-                       , drng = mkStdGen 23
+                       , num_inputs        = 20
+                       , num_outputs       = 5
+                       , rng               = newStdGen
                        }
 
 getConfig :: SN Config
@@ -59,22 +68,8 @@ updateConfig :: Config -> SN ()
 updateConfig newconf = put newconf
 
 -- TODO: The following two monads share similar functionality and should
--- TODO: be DRYed up.
+-- TODO: be DRYed up. Or not bother?
 nextSequenceNumber :: SN Int
-
---- -- TODO: Rework the following to dedup and make simpler.
---- nextNumber :: Integral a => (Config -> a) -> (a -> Config -> Config) -> SN a
---- nextNumber fieldAcc fieldUpd = do
----   config <- getConfig
----   let next = fieldAcc config
----   let uconf = fieldUpd (next + 1) config
----   updateConfig uconf
----   return next
-
---- nextSequenceNumber :: SN Int64
---- nextSequenceNumber = do
----   return $ nextNumber sequence_number $ updateNumber sequence_number
-
 nextSequenceNumber = do
   config <- getConfig
   let next = config.sequence_number

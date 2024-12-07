@@ -34,6 +34,7 @@ mainSN = do
                         , conn 3 7 nxi
                         , conn 4 7 nxi
                         ]
+  _ <- liftIO $ pPrint cfg
   _ <- liftIO $ pPrint critter
   _ <- liftIO $ hspec $ do
     describe "Critter" $ do
