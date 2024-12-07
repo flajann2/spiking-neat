@@ -6,4 +6,5 @@ pkg/
 *.tar.zst
 swiss-army-knife-hs/
 dist-newstyle/
+*.orig
 
