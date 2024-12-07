@@ -26,6 +26,7 @@ common commons
     build-depends:
         base >=4.7 && <5
       , pretty-simple
+      , random
     default-language: GHC2021
 
 library
@@ -65,6 +66,17 @@ executable playground-dsl
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     CritterDSL.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground
+
+executable playground-random
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     RandomGen.hs
     build-depends:
         mtl
       , spiking-neat

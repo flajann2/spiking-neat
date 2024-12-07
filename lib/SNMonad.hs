@@ -15,10 +15,11 @@ import Data.Semigroup
 import Genetics.Neurons
 import Evolution.Goals
 import Data.Complex
+import System.Random
 
 -- To allow for a generalization of numeric types
 -- for example, complex numbers!
-type SSNum a = (Num a
+type SSNum a = ( Num a
                , Show a
                , Fractional a
                , Floating a
@@ -33,6 +34,8 @@ data Config = Config { population_size :: Int
                      -- TODO: dealt with differently
                      , num_inputs :: Int
                      , num_outputs :: Int
+                     , irng :: StdGen
+                     , drng :: StdGen
                      } deriving Show
 
 type SN = StateT Config IO
@@ -45,6 +48,8 @@ initialConfig = Config { population_size = 100
                        , innovation_number = 0
                        , num_inputs = 20
                        , num_outputs = 5
+                       , irng = mkStdGen 42 -- TODO seed  with a entropy source
+                       , drng = mkStdGen 23
                        }
 
 getConfig :: SN Config
