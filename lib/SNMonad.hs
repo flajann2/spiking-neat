@@ -4,6 +4,7 @@
 module SNMonad ( module SNMonad
                , module Control.Monad.Trans.State
                , module Data.Semigroup
+               , module Data.Complex
                , liftIO
                , Config(..)
                ) where
@@ -13,7 +14,7 @@ import Control.Monad.IO.Class (liftIO)
 import Data.Semigroup
 import Genetics.Neurons
 import Evolution.Goals
-import Language.Haskell.TH.Lens (HasTypes(types))
+import Data.Complex
 
 -- To allow for a generalization of numeric types
 -- for example, complex numbers!

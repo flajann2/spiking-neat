@@ -7,8 +7,6 @@ module Genetics.Critters where
 
 import SNMonad 
 import Genetics.Genes
-import Data.Kind ( Type )
-import Data.Complex
 
 data SSNum a => Critter a = Critter { nodes          :: [Node a]
                                    , inputs         :: [Int] -- indices of the input nodes
