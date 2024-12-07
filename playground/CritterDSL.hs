@@ -9,7 +9,7 @@ main = do
 
 mainSN :: SN ()
 mainSN = do 
-  critter <- mkCritter [  node mkRegular Input  -- 0
+  critter <- mkCritter [ node mkRegular Input  -- 0
                       , node mkRegular Input  -- 1
                       , node mkRegular Input  -- 2
                       , node mkRegular Input  -- 3
