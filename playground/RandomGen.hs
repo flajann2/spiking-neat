@@ -1,6 +1,7 @@
 module Main where
 
 import System.Random
+import SNMonad
 
 main :: IO ()
 main = do
@@ -26,6 +27,22 @@ main = do
     -- Generate true multiple random numbers in the range [0.0, 1.0]
     let rinf = (randomRs (0.0, 1.0) newGen2 :: [Double])
     print $ inf rinf 100
+
+    let iconfig = initialConfig
+    (   r1
+      , r2
+      , r3
+      , r4) <- evalStateT ( do
+                              rnum1 <- nextRandom (0.0, 1.0) :: SN Double
+                              rnum2 <- nextRandom (0.0, 1.0) :: SN Double
+                              rnum3 <- nextRandom (0.0, 1.0) :: SN Double
+                              rnum4 <- nextRandom (0.0, 1.0) :: SN Double
+                              return (rnum1, rnum2, rnum3, rnum4)
+                          ) iconfig
+    putStrLn $    "r1: " ++ show r1
+             ++ "\nr2: " ++ show r2
+             ++ "\nr3: " ++ show r3
+             ++ "\nr4: " ++ show r4
     where
       inf :: [Double] -> Int -> [Double]
       inf _ 0 = []

@@ -1,5 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE GHC2021, OverloadedRecordDot #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 
 module SNMonad ( module SNMonad
                , module Control.Monad.Trans.State
@@ -90,3 +90,13 @@ nsi = nextSequenceNumber
 
 nxi :: SN Int
 nxi = nextInnovationNumber
+
+nextRandom :: forall a. (SSNum a, Random a) => (a, a) -> SN a
+nextRandom (from, to) = do
+  cfg <- getConfig
+  rn <- liftIO $ do
+    gen <- cfg.rng
+    let (randNum, _) = randomR (from, to) gen
+    return randNum
+  return rn
+
