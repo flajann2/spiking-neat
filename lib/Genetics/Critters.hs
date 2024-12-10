@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DatatypeContexts #-}
+{-# LANGUAGE MonoLocalBinds #-}
 
 module Genetics.Critters where
 
@@ -17,7 +18,7 @@ data SSNum a => Critter a = Critter { nodes          :: [Node a]
                                    , number_outputs :: Int
                                    } deriving Show
 
-class Num a => Eval a where
+class SSNum a => Eval a where
   ecritter :: [a] -> SN [a]
   epopulation :: [a] -> SN [[a]]
 
@@ -54,3 +55,6 @@ mkCritter ns cs = do
 
       findHidden :: [Int]
       findHidden = [i | (n, i) <- zip ns [0..], n.role == Hidden]
+
+genCritter :: SSNum a => SN (Critter a)
+genCritter = undefined

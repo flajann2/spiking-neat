@@ -30,4 +30,4 @@ mainSN = do
                         ]
   liftIO $ pPrint critter
 
--- >>> let cc = 2 {-# SCC "" #-} 
+-- >>> let cc = 2 

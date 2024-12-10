@@ -1,5 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE OverloadedRecordDot #-}
+{-# LANGUAGE DatatypeContexts #-}
+{-# LANGUAGE MonoLocalBinds #-}
 
 module SNMonad ( module SNMonad
                , module Control.Monad.Trans.State
@@ -17,6 +19,8 @@ import Evolution.Goals
 import Data.Complex
 import System.Random
 
+default (Double)
+
 -- To allow for a generalization of numeric types
 -- for example, complex numbers!
 type SSNum a = ( Num a
@@ -25,18 +29,19 @@ type SSNum a = ( Num a
                , Floating a
                , Eq a)
 
-data Config = Config { population_size   :: Int
-                     , neuron_types      :: [Neuron]
-                     , goal              :: Goal
-                     , sequence_number   :: Int
-                     , innovation_number :: Int
-                     , num_inputs        :: Int
-                     , num_outputs       :: Int
-                     , rng               :: IO StdGen
+data SSNum a => Config a = Config { population_size   :: Int
+                                 , neuron_types      :: [Neuron]
+                                 , goal              :: Goal
+                                 , sequence_number   :: Int
+                                 , innovation_number :: Int
+                                 , num_inputs        :: Int
+                                 , num_outputs       :: Int
+                                 , rng               :: IO StdGen
+                                 , max_weight        :: a
                      } 
 
-instance Show Config where
-  show (Config popize nt goal snum inum ninp nout rng) =
+instance SSNum a => Show (Config a) where
+  show (Config popize nt goal snum inum ninp nout rng maxw) =
        " population_size: "   ++ show popize  
     ++ " neuron_types: "      ++ show nt
     ++ " goal: "              ++ show goal
@@ -45,12 +50,13 @@ instance Show Config where
     ++ " num_inputs: "        ++ show ninp
     ++ " num_outputs: "       ++ show nout
     ++ " rng: "               ++ show rngShow
+    ++ " max_weight: "        ++ show maxw
     where
       rngShow = "<IO StdGen>"
 
-type SN = StateT Config IO
+type SN a = SSNum a => StateT (Config a) IO a
 
-initialConfig :: Config
+initialConfig :: SSNum a => Config a
 initialConfig = Config { population_size   = 100
                        , neuron_types      = [Neuron]
                        , goal              = Goal
@@ -59,12 +65,15 @@ initialConfig = Config { population_size   = 100
                        , num_inputs        = 20
                        , num_outputs       = 5
                        , rng               = newStdGen
+                       , max_weight        = 5.0
                        }
 
-getConfig :: SN Config
+getConfig :: SSNum a => StateT (Config a) IO (Config a)
 getConfig = get
 
-updateConfig :: Config -> SN ()
+-- updateConfig :: SSNum a => StateT (Config a) IO (Config a) -> SN ()
+-- updateConfig :: SSNum a => Config a -> SN ()
+updateConfig :: Monad m => s -> StateT s m ()
 updateConfig newconf = put newconf
 
 -- TODO: The following two monads share similar functionality and should
@@ -72,10 +81,10 @@ updateConfig newconf = put newconf
 nextSequenceNumber :: SN Int
 nextSequenceNumber = do
   config <- getConfig
-  let next = config.sequence_number
-  let uconf = config { sequence_number = next + 1 }
+  let next' = config.sequence_number
+  let uconf = config { sequence_number = next' + 1 }
   updateConfig uconf
-  return next
+  pure next'
 
 nextInnovationNumber :: SN Int
 nextInnovationNumber = do

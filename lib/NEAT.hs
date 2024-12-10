@@ -17,3 +17,4 @@ import Population.Population
 import Evolution.Goals
 import Text.Pretty.Simple (pPrint)
 
+default (Double)

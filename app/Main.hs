@@ -2,12 +2,15 @@ module Main where
 
 import NEAT
 
+default (Double)
+
 main :: IO ()
 main = do
   let iconfig = initialConfig
-  evalStateT mainSN iconfig
+  _ <- evalStateT mainSN iconfig
+  return ()
 
-mainSN :: SN ()
+mainSN :: SN Int 
 mainSN = do 
   s1 <- nextSequenceNumber 
   s2 <- nextSequenceNumber 
@@ -19,12 +22,12 @@ mainSN = do
     ++ " and " ++ show s3
     ++ " and Innov " ++ show ar
     ++ "\n and the config: " ++ show cfg
+  return 0
     where
-      seqtest :: SN [Int]
+   --   seqtest :: SN [Int]
       seqtest = do
         ss4 <- nextInnovationNumber
         ss5 <- nextInnovationNumber
         ss6 <- nextInnovationNumber
         return [ss4, ss5, ss6]
--- >>> putStrLn "Hello"
-
+-- >>> putStrLn "Hello\nWorld"
