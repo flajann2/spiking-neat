@@ -2,6 +2,7 @@ module Main where
 
 import NEAT
 
+default (Double)
 main :: IO ()
 main = do
   let iconfig = initialConfig

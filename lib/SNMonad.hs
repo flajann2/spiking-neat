@@ -38,7 +38,7 @@ data SSNum a => Config a = Config { population_size   :: Int
                                  , num_outputs       :: Int
                                  , rng               :: IO StdGen
                                  , max_weight        :: a
-                     } 
+                                 } 
 
 instance SSNum a => Show (Config a) where
   show (Config popize nt goal snum inum ninp nout rng maxw) =
@@ -56,7 +56,8 @@ instance SSNum a => Show (Config a) where
 
 type SN a = SSNum a => StateT (Config a) IO a
 
-initialConfig :: SSNum a => Config a
+-- initialConfig :: SSNum a => Config a
+initialConfig :: Config Double
 initialConfig = Config { population_size   = 100
                        , neuron_types      = [Neuron]
                        , goal              = Goal
