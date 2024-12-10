@@ -1,18 +1,17 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE MonoLocalBinds #-}
 
 module Main where
 
 import NEAT
 
-default (Double)
-
 main :: IO ()
 main = do
-  let iconfig :: (Config Double) = initialConfig
+  let iconfig = initialConfig
   _ <- evalStateT mainSN iconfig
   return ()
 
-mainSN ::SSNum a => SN Int
+mainSN :: SN ()
 mainSN = do 
   s1 <- nextSequenceNumber 
   s2 <- nextSequenceNumber 
@@ -24,9 +23,8 @@ mainSN = do
     ++ " and " ++ show s3
     ++ " and Innov " ++ show ar
     ++ "\n and the config: " ++ show cfg
-  return 0.0
     where
-   --   seqtest :: SN [Int]
+      seqtest :: SN [Int]
       seqtest = do
         ss4 <- nextInnovationNumber
         ss5 <- nextInnovationNumber

@@ -16,31 +16,37 @@ import Control.Monad.IO.Class (liftIO)
 import Data.Semigroup
 import Genetics.Neurons
 import Evolution.Goals
-import Data.Complex
+import Data.Complex (Complex)
 import System.Random
 
 default (Double)
 
 -- To allow for a generalization of numeric types
 -- for example, complex numbers!
+--- TODO Delete this block
 type SSNum a = ( Num a
                , Show a
                , Fractional a
                , Floating a
                , Eq a)
 
-data SSNum a => Config a = Config { population_size   :: Int
-                                 , neuron_types      :: [Neuron]
-                                 , goal              :: Goal
-                                 , sequence_number   :: Int
-                                 , innovation_number :: Int
-                                 , num_inputs        :: Int
-                                 , num_outputs       :: Int
-                                 , rng               :: IO StdGen
-                                 , max_weight        :: a
-                                 } 
+data MaxWeight = MaxFloat Float
+               | MaxDouble Double
+               -- | MaxComplex Complex a
+               deriving Show
 
-instance SSNum a => Show (Config a) where
+data Config = Config { population_size   :: Int
+                     , neuron_types      :: [Neuron]
+                     , goal              :: Goal
+                     , sequence_number   :: Int
+                     , innovation_number :: Int
+                     , num_inputs        :: Int
+                     , num_outputs       :: Int
+                     , rng               :: IO StdGen
+                     , max_weight        :: MaxWeight
+                     } 
+
+instance Show Config where
   show (Config popize nt goal snum inum ninp nout rng maxw) =
        " population_size: "   ++ show popize  
     ++ " neuron_types: "      ++ show nt
@@ -54,10 +60,10 @@ instance SSNum a => Show (Config a) where
     where
       rngShow = "<IO StdGen>"
 
-type SN a = SSNum a => StateT (Config a) IO a
+type SN a = StateT Config IO a
 
--- initialConfig :: SSNum a => Config a
-initialConfig :: Config Double
+-- initialConfig :: Config a
+initialConfig :: Config
 initialConfig = Config { population_size   = 100
                        , neuron_types      = [Neuron]
                        , goal              = Goal
@@ -66,15 +72,13 @@ initialConfig = Config { population_size   = 100
                        , num_inputs        = 20
                        , num_outputs       = 5
                        , rng               = newStdGen
-                       , max_weight        = 5.0
+                       , max_weight        = MaxDouble 5.0
                        }
 
-getConfig :: SSNum a => StateT (Config a) IO (Config a)
+getConfig :: StateT Config IO Config
 getConfig = get
 
--- updateConfig :: SSNum a => StateT (Config a) IO (Config a) -> SN ()
--- updateConfig :: SSNum a => Config a -> SN ()
-updateConfig :: Monad m => s -> StateT s m ()
+updateConfig :: Config -> SN ()
 updateConfig newconf = put newconf
 
 -- TODO: The following two monads share similar functionality and should
@@ -90,7 +94,7 @@ nextSequenceNumber = do
 nextInnovationNumber :: SN Int
 nextInnovationNumber = do
   config <- getConfig
-  let next_innov = innovation_number config
+  let next_innov = config.innovation_number
   let uconf = config {innovation_number = next_innov + 1 }
   updateConfig uconf
   return next_innov
