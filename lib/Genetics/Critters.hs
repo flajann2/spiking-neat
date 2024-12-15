@@ -22,7 +22,7 @@ class Eval where
   ecritter :: [a] -> SN [a]
   epopulation :: [a] -> SN [[a]]
 
-node :: SSNum a => NType -> Role -> Node
+node :: NType -> Role -> Node
 node nt r = Node { ntype = nt
                  , role = r }
 
@@ -34,7 +34,7 @@ conn in' out' innov = Connection { innovation = innov
                                  , enabled = True                             
                                  }
 
-mkCritter :: SSNum a => [Node] -> [Connection] -> SN (Critter)
+mkCritter :: [Node] -> [Connection] -> SN (Critter)
 mkCritter ns cs = do
   cfg <- getConfig
   let crit = Critter { nodes          = ns
