@@ -19,51 +19,55 @@ module Genetics.Genes ( NType(..)
 -- import Data.Hashable (Hashable)
 import SNMonad
 
-data (SSNum a) => NType a = Pyramidal  { activation     :: a -> a
-                                      , depolarization :: a } 
-                         | Purkinje   { activation     :: a -> a
-                                      , depolarization :: a
-                                      , rate :: Float }
-                         | Regular    { activation     :: a -> a }
-                         | Inhibitory { activation     :: a -> a }
+data NType = Pyramidal  { activation     :: SSNumeric -> SSNumeric
+                        , depolarization :: SSNumeric } 
+           | Purkinje   { activation     :: SSNumeric -> SSNumeric
+                        , depolarization :: SSNumeric
+                        , rate :: Float }
+           | Regular    { activation     :: SSNumeric -> SSNumeric }
+           | Inhibitory { activation     :: SSNumeric -> SSNumeric }
 
-instance (SSNum a) => Show (NType a) where
-    show :: SSNum a => NType a -> String
+instance Show NType where
+    show :: NType -> String
     show (Pyramidal _ dep) = "Pyramidal with depolarization: " ++ show dep
     show (Purkinje _ dep rate) = "Purkinje with depolarization: " ++ show dep ++ ", rate: " ++ show rate
     show (Regular _) = "Regular Neuron"
     show (Inhibitory _) = "Inhibitory Neuron"
 
+exp' :: SSNumeric -> SSNumeric
+exp' (SSFloat x)  = SSFloat (exp x)
+exp' (SSDouble x) = SSDouble (exp x)
+
 -- neuron constructor functions
-mkPyramidal'      :: SSNum a => (a -> a) -> a -> NType a
+mkPyramidal'      :: (SSNumeric -> SSNumeric) -> SSNumeric -> NType
 mkPyramidal' f d  = Pyramidal f d
 
-mkPurkinje'       :: SSNum a => (a -> a) -> a -> Float -> NType a
+mkPurkinje'       :: (SSNumeric -> SSNumeric) -> SSNumeric -> Float -> NType
 mkPurkinje' f d r = Purkinje f d r
 
-mkRegular'        :: SSNum a => (a -> a) -> NType a
+mkRegular'        :: (SSNumeric -> SSNumeric) -> NType
 mkRegular' f      = Regular f
 
-mkInhiborty'      :: SSNum a => (a -> a) -> NType a
+mkInhiborty'      :: (SSNumeric -> SSNumeric) -> NType 
 mkInhiborty' f    = Inhibitory f
 
 -- neuron constructor functions with sigmoid and other activations
 -- TODO: modify the activation functions to what they should be.
-mkPyramidal    :: SSNum a => a -> NType a
-mkPyramidal d  = mkPyramidal' (\x -> 1 / (1 + exp (-x))) d
+mkPyramidal    :: SSNumeric -> NType 
+mkPyramidal d  = mkPyramidal' (\x -> 1 / (1 + exp' (-x))) d
 
-mkPurkinje     :: SSNum a => a -> Float -> NType a
-mkPurkinje d r = mkPurkinje' (\x -> 1 / (1 + exp (-x))) d r
+mkPurkinje     :: SSNumeric -> Float -> NType
+mkPurkinje d r = mkPurkinje' (\x -> 1 / (1 + exp' (-x))) d r
 
-mkRegular      :: SSNum a => NType a
-mkRegular      = mkRegular' (\x -> 1 / (1 + exp (-x)))
+mkRegular      :: NType
+mkRegular      = mkRegular' (\x -> 1 / (1 + exp' (-x)))
 
-mkInhiborty    :: SSNum a => NType a
-mkInhiborty    = mkInhiborty' (\x -> 1 / (1 + exp (-x))) 
+mkInhiborty    :: NType 
+mkInhiborty    = mkInhiborty' (\x -> 1 / (1 + exp' (-x))) 
 
 -- TODO: remove this if we dont need the Eq
-instance SSNum a => Eq (NType a) where
-    (==) :: SSNum a => NType a -> NType a -> Bool
+instance Eq NType where
+    (==) :: NType -> NType -> Bool
     (Pyramidal _ dep1) == (Pyramidal _ dep2) = dep1 == dep2
     (Purkinje _ dep1 rate1) == (Purkinje _ dep2 rate2) = dep1 == dep2 && rate1 == rate2
     (Regular _) == (Regular _) = True
@@ -75,18 +79,18 @@ data Role = Input
           | Hidden
           deriving (Show, Eq)
 
-data SSNum a => Node a = Node { ntype    :: NType a
-                             , role     :: Role
-                             } deriving (Show, Eq)
+data Node = Node { ntype    :: NType
+                 , role     :: Role
+                 } deriving (Show, Eq)
 
-data SSNum a => Connection a = Connection { innovation :: SN Int
-                                         , node_in    :: Int
-                                         , node_out   :: Int
-                                         , weight     :: a
-                                         , enabled    :: Bool
-                                         }
+data Connection = Connection { innovation :: SN Int
+                             , node_in    :: Int
+                             , node_out   :: Int
+                             , weight     :: SSNumeric
+                             , enabled    :: Bool
+                             }
 
-instance (SSNum a) => Show (Connection a) where
+instance Show Connection where
   show (Connection _innov nin nout w en) = "conn innov: " ++ innovShow
     ++ " node_in: "  ++ show nin
     ++ " node_out: " ++ show nout
@@ -96,8 +100,8 @@ instance (SSNum a) => Show (Connection a) where
       innovShow = "<innov>" -- TODO: Get innovation show working
   
 
-instance (SSNum a) => Eq (Connection a) where
-  (==) :: Connection a -> Connection a -> Bool
+instance Eq Connection where
+  (==) :: Connection -> Connection -> Bool
   (Connection _innov1 nin1 nout1 w1 en1)
     == (Connection _innov2 nin2 nout2 w2 en2) = nin1 == nin2
     && nout1 == nout2

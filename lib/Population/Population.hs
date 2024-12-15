@@ -3,9 +3,9 @@
 module Population.Population where
 
 import Genetics.Critters
-import SNMonad ( SSNum )
+import SNMonad ( SSNumeric )
 
-data (SSNum a) => Population a = Population { critters :: [Critter a]
-                                         , epsilon :: [Maybe Float]
-                                         } deriving Show
+data Population = Population { critters :: [Critter]
+                             , epsilon :: [Maybe Float]
+                             } deriving Show
 

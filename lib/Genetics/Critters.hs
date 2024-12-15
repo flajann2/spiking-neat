@@ -9,24 +9,24 @@ module Genetics.Critters where
 import SNMonad 
 import Genetics.Genes
 
-data SSNum a => Critter a = Critter { nodes          :: [Node a]
-                                   , inputs         :: [Int] -- indices of the input nodes
-                                   , outputs        :: [Int] -- indices of the output nodes
-                                   , hidden         :: [Int] -- indices of the hidden nodes
-                                   , connections    :: [Connection a]
-                                   , number_inputs  :: Int
-                                   , number_outputs :: Int
-                                   } deriving Show
+data Critter = Critter { nodes          :: [Node]
+                       , inputs         :: [Int] -- indices of the input nodes
+                       , outputs        :: [Int] -- indices of the output nodes
+                       , hidden         :: [Int] -- indices of the hidden nodes
+                       , connections    :: [Connection]
+                       , number_inputs  :: Int
+                       , number_outputs :: Int
+                       } deriving Show
 
-class SSNum a => Eval a where
+class Eval where
   ecritter :: [a] -> SN [a]
   epopulation :: [a] -> SN [[a]]
 
-node :: SSNum a => NType a -> Role -> Node a
+node :: SSNum a => NType -> Role -> Node
 node nt r = Node { ntype = nt
                  , role = r }
 
-conn ::  SSNum a => Int -> Int -> SN Int -> Connection a
+conn ::  Int -> Int -> SN Int -> Connection
 conn in' out' innov = Connection { innovation = innov
                                  , node_in = in'
                                  , node_out = out'
@@ -34,7 +34,7 @@ conn in' out' innov = Connection { innovation = innov
                                  , enabled = True                             
                                  }
 
-mkCritter :: SSNum a => [Node a] -> [Connection a] -> SN (Critter a)
+mkCritter :: SSNum a => [Node] -> [Connection] -> SN (Critter)
 mkCritter ns cs = do
   cfg <- getConfig
   let crit = Critter { nodes          = ns
@@ -56,5 +56,5 @@ mkCritter ns cs = do
       findHidden :: [Int]
       findHidden = [i | (n, i) <- zip ns [0..], n.role == Hidden]
 
-genCritter :: SSNum a => SN (Critter a)
+genCritter :: SN Critter 
 genCritter = undefined
