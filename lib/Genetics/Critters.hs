@@ -34,7 +34,7 @@ conn in' out' innov = Connection { innovation = innov
                                  , enabled = True                             
                                  }
 
-mkCritter :: [Node] -> [Connection] -> SN (Critter)
+mkCritter :: [Node] -> [Connection] -> SN Critter
 mkCritter ns cs = do
   cfg <- getConfig
   let crit = Critter { nodes          = ns
@@ -57,4 +57,10 @@ mkCritter ns cs = do
       findHidden = [i | (n, i) <- zip ns [0..], n.role == Hidden]
 
 genCritter :: SN Critter 
-genCritter = undefined
+genCritter = do
+  cfg <- getConfig
+  crit <- mkCritter nodes connections
+  return crit
+  where
+    nodes = undefined
+    connections = undefined

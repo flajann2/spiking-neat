@@ -18,6 +18,7 @@ module Genetics.Genes ( NType(..)
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)
 import SNMonad
+import SSNumeric
 
 data NType = Pyramidal  { activation     :: SSNumeric -> SSNumeric
                         , depolarization :: SSNumeric } 

@@ -3,7 +3,8 @@
 module Population.Population where
 
 import Genetics.Critters
-import SNMonad ( SSNumeric )
+-- import SNMonad
+import SSNumeric
 
 data Population = Population { critters :: [Critter]
                              , epsilon :: [Maybe Float]

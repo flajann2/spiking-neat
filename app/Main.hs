@@ -30,4 +30,3 @@ mainSN = do
         ss5 <- nextInnovationNumber
         ss6 <- nextInnovationNumber
         return [ss4, ss5, ss6]
--- >>> putStrLn "Hello\nWorld"
