@@ -13,8 +13,8 @@ import GHC.Float (float2Double)
 --- TODO Delete this block
 type SSNum a = ( Num a
                , Show a
-               , Fractional a
-               , Floating a
+               --, Fractional a
+               --, Floating a
                , Eq a)
 
 data SSNumeric = SSFloat Float

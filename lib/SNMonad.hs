@@ -20,9 +20,8 @@ import Control.Applicative (liftA2)
 import GHC.Float (float2Double)
 import SSNumeric
 
-import {-# SOURCE #-} Genetics.Genes
-import {-# SOURCE #-} Evolution.Goals
--- import {-# SOURCE #-} Genetics.Neurons
+import Genetics.GeneTypes
+import Evolution.GoalTypes
 
 default (Double)
 
@@ -108,4 +107,3 @@ nextRandom (from, to) = do
     let (randNum, _) = randomR (from, to) gen
     return randNum
   return rn
-
