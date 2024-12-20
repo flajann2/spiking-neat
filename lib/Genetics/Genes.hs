@@ -53,13 +53,6 @@ mkInhiborty    :: NType
 mkInhiborty    = mkInhiborty' (\x -> 1 / (1 + exp' (-x))) 
 
 -- TODO: remove this if we dont need the Eq
-instance Eq NType where
-    (==) :: NType -> NType -> Bool
-    (Pyramidal _ dep1) == (Pyramidal _ dep2) = dep1 == dep2
-    (Purkinje _ dep1 rate1) == (Purkinje _ dep2 rate2) = dep1 == dep2 && rate1 == rate2
-    (Regular _) == (Regular _) = True
-    (Inhibitory _) == (Inhibitory _) = True
-    _ == _ = False  -- Different constructors are not equal
     
 data Role = Input
           | Output

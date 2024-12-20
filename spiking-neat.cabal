@@ -25,12 +25,13 @@ common commons
                  -threaded
     build-depends:
         base >=4.7 && <5
+      -- , llvm-general >= 3.8 && < 4.0
       , pretty-simple
       , random
       , ghc
       , ghc-paths
---      , ghc-prim
---      , hsc2hs
+      , ghc-prim
+      -- , hsc2hs
     default-language: GHC2021
 
 library
@@ -38,9 +39,12 @@ library
     exposed-modules:
         NEAT
       , SNMonad
+      , SSNumeric
       , Evolution.Goals
+      , Evolution.GoalTypes
       , Genetics.Critters
       , Genetics.Genes
+      , Genetics.GeneTypes
       , Genetics.Neurons
       , Population.Population
     other-modules:
@@ -54,7 +58,7 @@ library
       , lens
       , data-default
       , transformers
---      , plugins
+      -- , plugins
 executable sneat
     import:           commons
     ghc-options: -rtsopts
@@ -99,12 +103,12 @@ executable playground-random
 ---         playground
 
 test-suite sn-spec
-  import:           commons
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
-  hs-source-dirs: test
-  build-depends:
-      base >=4.7 && <5
-    , hspec
-    , QuickCheck
-    , spiking-neat
+    import:           commons
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    hs-source-dirs: test
+    build-depends:
+        base >=4.7 && <5
+      , hspec
+      , QuickCheck
+      , spiking-neat

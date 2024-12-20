@@ -21,8 +21,8 @@ main = do
     print $ "true random " ++ show randomNum  -- Print the generated random number
 
     -- Generate true multiple random numbers in the range [0.0, 1.0]
-    let randomNumbers = take 4 (randomRs (0.0, 1.0) newGen2 :: [Double])
-    print randomNumbers
+    let randomNumbers' = take 4 (randomRs (0.0, 1.0) newGen2 :: [Double])
+    print randomNumbers'
     
     -- Generate true multiple random numbers in the range [0.0, 1.0]
     let rinf = (randomRs (0.0, 1.0) newGen2 :: [Double])
@@ -45,5 +45,6 @@ main = do
              ++ "\nr4: " ++ show r4
     where
       inf :: [Double] -> Int -> [Double]
-      inf _ 0 = []
+      inf [] _ = []
+      inf rs 0 = rs
       inf (r : rs) n = r : inf rs (n - 1) 

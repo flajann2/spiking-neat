@@ -6,7 +6,7 @@ import Data.Semigroup
 import Data.Complex (Complex)
 import System.Random ( StdGen, Random(randomR), newStdGen )
 import Control.Applicative (liftA2)
-import GHC.Float (float2Double)
+import GHC.Float (float2Double, double2Float)
 
 -- To allow for a generalization of numeric types
 -- for example, complex numbers!
@@ -23,21 +23,27 @@ data SSNumeric = SSFloat Float
                deriving Show
 
 instance Eq SSNumeric where
-  (SSFloat x) == (SSFloat y) = x == y
+  (SSFloat x)  == (SSFloat y)  = x == y
   (SSDouble x) == (SSDouble y) = x == y
-  
+  (SSFloat x)  == (SSDouble y) = (float2Double x) == y  -- Convert SSFloat to Double
+  (SSDouble x) == (SSFloat y)  = x == (float2Double y)  -- Convert SSFloat to Double  
+
 instance Num SSNumeric where
     -- Negation
     negate (SSFloat x)  = SSFloat (negate x)
     negate (SSDouble x) = SSDouble (negate x)
 
     -- Addition
-    (SSFloat x) + (SSFloat y)   = SSFloat (x + y)
+    (SSFloat x)  + (SSFloat y)  = SSFloat  (x + y)
     (SSDouble x) + (SSDouble y) = SSDouble (x + y)
+    (SSFloat x)  + (SSDouble y) = SSFloat  (x + (double2Float y))
+    (SSDouble x) + (SSFloat y)  = SSDouble (x + (float2Double y))
 
     -- Subtraction
-    (SSFloat x) - (SSFloat y)   = SSFloat (x - y)
+    (SSFloat x)  - (SSFloat y)  = SSFloat  (x - y)
     (SSDouble x) - (SSDouble y) = SSDouble (x - y)
+    (SSFloat x)  - (SSDouble y) = SSFloat  (x - (double2Float y))
+    (SSDouble x) - (SSFloat y)  = SSDouble (x - (float2Double y))
 
     -- Multiplication
     (SSFloat x) * (SSFloat y)   = SSFloat (x * y)
