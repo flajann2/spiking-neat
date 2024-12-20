@@ -38,7 +38,7 @@ library
     import:           commons
     exposed-modules:
         NEAT
-      , SNMonad
+      , SSMonad
       , SSNumeric
       , Evolution.Goals
       , Evolution.GoalTypes

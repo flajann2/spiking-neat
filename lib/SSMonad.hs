@@ -3,7 +3,7 @@
 {-# LANGUAGE DatatypeContexts #-}
 {-# LANGUAGE MonoLocalBinds #-}
 
-module SNMonad ( module SNMonad
+module SSMonad ( module SNMonad
                , module Control.Monad.Trans.State
                , module Data.Semigroup
                , module Data.Complex
