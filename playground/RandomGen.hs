@@ -1,7 +1,14 @@
 module Main where
 
-import System.Random
-import SNMonad
+import System.Random ( StdGen
+                     , Random(randomRs, randomR)
+                     , mkStdGen
+                     , newStdGen )
+
+import SSMonad ( evalStateT
+               , initialConfig
+               , nextRandom
+               , SS(..) )
 
 main :: IO ()
 main = do
@@ -26,25 +33,20 @@ main = do
     
     -- Generate true multiple random numbers in the range [0.0, 1.0]
     let rinf = (randomRs (0.0, 1.0) newGen2 :: [Double])
-    print $ inf rinf 100
+    print $ take 100 rinf
 
     let iconfig = initialConfig
     (   r1
       , r2
       , r3
       , r4) <- evalStateT ( do
-                              rnum1 <- nextRandom (0.0, 1.0) :: SN Double
-                              rnum2 <- nextRandom (0.0, 1.0) :: SN Double
-                              rnum3 <- nextRandom (0.0, 1.0) :: SN Double
-                              rnum4 <- nextRandom (0.0, 1.0) :: SN Double
+                              rnum1 <- runSS $ nextRandom (0   :: Int,    10  :: Int)
+                              rnum2 <- runSS $ nextRandom (0.0 :: Double, 1.0 :: Double)
+                              rnum3 <- runSS $ nextRandom (0.0 :: Double, 1.0 :: Double)
+                              rnum4 <- runSS $ nextRandom (0.0 :: Double, 1.0 :: Double)
                               return (rnum1, rnum2, rnum3, rnum4)
                           ) iconfig
     putStrLn $    "r1: " ++ show r1
              ++ "\nr2: " ++ show r2
              ++ "\nr3: " ++ show r3
              ++ "\nr4: " ++ show r4
-    where
-      inf :: [Double] -> Int -> [Double]
-      inf [] _ = []
-      inf rs 0 = rs
-      inf (r : rs) n = r : inf rs (n - 1) 

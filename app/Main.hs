@@ -8,11 +8,11 @@ import NEAT
 main :: IO ()
 main = do
   let iconfig = initialConfig
-  _ <- evalStateT mainSN iconfig
+  _ <- evalStateT (runSS mainSS) iconfig
   return ()
 
-mainSN :: SN ()
-mainSN = do 
+mainSS :: SS ()
+mainSS = do 
   s1 <- nextSequenceNumber 
   s2 <- nextSequenceNumber 
   s3 <- nextSequenceNumber
@@ -24,7 +24,7 @@ mainSN = do
     ++ " and Innov " ++ show ar
     ++ "\n and the config: " ++ show cfg
     where
-      seqtest :: SN [Int]
+      seqtest :: SS [Int]
       seqtest = do
         ss4 <- nextInnovationNumber
         ss5 <- nextInnovationNumber

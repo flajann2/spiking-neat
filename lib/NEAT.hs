@@ -1,6 +1,6 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 
-module NEAT ( module SNMonad
+module NEAT ( module SSMonad
             , module SSNumeric
             , module Genetics.Genes
             , module Genetics.Neurons
@@ -10,7 +10,7 @@ module NEAT ( module SNMonad
             , pPrint
             ) where
 
-import SNMonad
+import SSMonad
 import SSNumeric
 import Genetics.Genes
 import Genetics.Neurons

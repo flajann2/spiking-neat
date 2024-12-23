@@ -1,11 +1,5 @@
 module SSNumeric where
 
-import Control.Monad.Trans.State
-import Control.Monad.IO.Class (liftIO)
-import Data.Semigroup
-import Data.Complex (Complex)
-import System.Random ( StdGen, Random(randomR), newStdGen )
-import Control.Applicative (liftA2)
 import GHC.Float (float2Double, double2Float)
 
 -- To allow for a generalization of numeric types
@@ -19,7 +13,7 @@ type SSNum a = ( Num a
 
 data SSNumeric = SSFloat Float
                | SSDouble Double
-               -- | SSComplex Complex a
+               -- | SSComplex Complex 
                deriving Show
 
 instance Eq SSNumeric where

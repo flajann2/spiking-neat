@@ -31,6 +31,8 @@ common commons
       , ghc
       , ghc-paths
       , ghc-prim
+      -- , ghc-debug
+      -- , ghc-debug-brick   
       -- , hsc2hs
     default-language: GHC2021
 

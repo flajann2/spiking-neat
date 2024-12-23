@@ -6,8 +6,12 @@
 
 module Genetics.Critters where
 
-import SNMonad 
+import SSMonad 
+import SSNumeric
 import Genetics.Genes
+import Control.Monad (mapM)
+import GHC.Cmm.Utils (mkRODataLits)
+import GHC.Builtin.Uniques (mkRegClassUnique)
 
 data Critter = Critter { nodes          :: [Node]
                        , inputs         :: [Int] -- indices of the input nodes
@@ -19,26 +23,35 @@ data Critter = Critter { nodes          :: [Node]
                        } deriving Show
 
 class Eval where
-  ecritter :: [a] -> SN [a]
-  epopulation :: [a] -> SN [[a]]
+  ecritter :: [a] -> SS [a]
+  epopulation :: [a] -> SS [[a]]
 
 node :: NType -> Role -> Node
 node nt r = Node { ntype = nt
                  , role = r }
 
-conn ::  Int -> Int -> SN Int -> Connection
-conn in' out' innov = Connection { innovation = innov
-                                 , node_in = in'
-                                 , node_out = out'
-                                 , weight = 0
-                                 , enabled = True                             
-                                 }
+rwei :: SS SSNumeric
+rwei = do
+  r <- nextRandom (0.0, 5.0)
+  pure $ SSDouble r
+  
+conn ::  Int -> Int -> SS Int -> SS Connection
+conn in' out' innov = do
+  innov' <- innov
+  rwei' <- rwei
+  return $ Connection { innovation = innov'
+                      , node_in    = in'
+                      , node_out   = out'
+                      , weight     = rwei'
+                      , enabled    = True                             
+                      }
 
-mkCritter :: [Node] -> [Connection] -> SN Critter
+mkCritter :: [Node] -> [SS Connection] -> SS Critter
 mkCritter ns cs = do
   cfg <- getConfig
+  cs' <- mapM id cs
   let crit = Critter { nodes          = ns
-                     , connections    = cs
+                     , connections    = cs'
                      , number_inputs  = cfg.num_inputs
                      , number_outputs = cfg.num_outputs
                      , inputs         = findInputs
@@ -56,11 +69,17 @@ mkCritter ns cs = do
       findHidden :: [Int]
       findHidden = [i | (n, i) <- zip ns [0..], n.role == Hidden]
 
-genCritter :: SN Critter 
+genCritter :: SS Critter 
 genCritter = do
   cfg <- getConfig
-  crit <- mkCritter nodes connections
+  crit <- mkCritter    ((nodes (cfg.num_inputs)  Input [])
+                   ++ (nodes (cfg.num_outputs) Output []))
+                   (connections  cfg.num_inputs  cfg.num_outputs [])
   return crit
   where
-    nodes = undefined
-    connections = undefined
+    nodes :: Int -> Role -> [Node] -> [Node]
+    nodes 0 _ ns = ns
+    nodes cnt r ns = nodes (cnt - 1) r $ (node mkRegular r) : ns
+
+    connections :: Int -> Int -> [SS Connection] -> [SS Connection]
+    connections ins outs cs = [conn i j nxi | i <- [0..(ins-1)], j <- [ins..(outs-1)]]

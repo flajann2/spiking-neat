@@ -3,7 +3,7 @@
 {-# LANGUAGE DatatypeContexts #-}
 {-# LANGUAGE MonoLocalBinds #-}
 
-module SSMonad ( module SNMonad
+module SSMonad ( module SSMonad
                , module Control.Monad.Trans.State
                , module Data.Semigroup
                , module Data.Complex
@@ -12,7 +12,7 @@ module SSMonad ( module SNMonad
                ) where
 
 import Control.Monad.Trans.State
-import Control.Monad.IO.Class (liftIO)
+import Control.Monad.IO.Class (liftIO, MonadIO)
 import Data.Semigroup
 import Data.Complex (Complex)
 import System.Random ( StdGen, Random(randomR), newStdGen )
@@ -33,7 +33,7 @@ data Config = Config { population_size   :: Int
                      , innovation_number :: Int
                      , num_inputs        :: Int
                      , num_outputs       :: Int
-                     , rng               :: IO StdGen -- TODO: We have nextRandom instead
+                     , rng               :: IO StdGen -- use nextRandom instead
                      , max_weight        :: SSNumeric
                      } 
 
@@ -52,8 +52,14 @@ instance Show Config where
       rngShow = "<IO StdGen>"
       ntShow = "<[NType]>"
 
-type SN a = StateT Config IO a
+-- type SS a = StateT Config IO a
+newtype SS a = SS { runSS :: StateT Config IO a }
+             deriving ( Functor
+                      , Applicative
+                      , Monad
+                      , MonadIO )
 
+  
 -- initialConfig :: Config a
 initialConfig :: Config
 initialConfig = Config { population_size   = 100
@@ -69,15 +75,15 @@ initialConfig = Config { population_size   = 100
                        , max_weight        = SSDouble 5.0
                        }
 
-getConfig :: StateT Config IO Config
-getConfig = get
+getConfig :: SS Config
+getConfig = SS get
 
-updateConfig :: Config -> SN ()
-updateConfig newconf = put newconf
+updateConfig :: Config -> SS ()
+updateConfig newconf = SS $ put newconf
 
 -- TODO: The following two monads share similar functionality and should
 -- TODO: be DRYed up. Or not bother?
-nextSequenceNumber :: SN Int
+nextSequenceNumber :: SS Int
 nextSequenceNumber = do
   config <- getConfig
   let next' = config.sequence_number
@@ -85,7 +91,7 @@ nextSequenceNumber = do
   updateConfig uconf
   pure next'
 
-nextInnovationNumber :: SN Int
+nextInnovationNumber :: SS Int
 nextInnovationNumber = do
   config <- getConfig
   let next_innov = config.innovation_number
@@ -93,13 +99,13 @@ nextInnovationNumber = do
   updateConfig uconf
   return next_innov
 
-nsi :: SN Int
+nsi :: SS Int
 nsi = nextSequenceNumber
 
-nxi :: SN Int
+nxi :: SS Int
 nxi = nextInnovationNumber
 
-nextRandom :: forall a. (SSNum a, Random a) => (a, a) -> SN a
+nextRandom :: forall a. (SSNum a, Random a) => (a, a) -> SS a
 nextRandom (from, to) = do
   cfg <- getConfig
   rn <- liftIO $ do

@@ -10,10 +10,10 @@ import Test.Hspec
 main :: IO ()
 main = do
   let iconfig = initialConfig
-  evalStateT mainSN iconfig
+  evalStateT (runSS  mainSS) iconfig
 
-mainSN :: SN ()
-mainSN = do
+mainSS :: SS ()
+mainSS = do
   cfg <- getConfig
   critter <- mkCritter [ node mkRegular             Input  -- 0
                       , node mkRegular             Input  -- 1

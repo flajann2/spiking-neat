@@ -3,7 +3,7 @@
 module Population.Population where
 
 import Genetics.Critters
--- import SNMonad
+-- import SSMonad
 import SSNumeric
 
 data Population = Population { critters :: [Critter]

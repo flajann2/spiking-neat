@@ -17,7 +17,7 @@ module Genetics.Genes ( NType(..)
 
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)
-import SNMonad
+import SSMonad
 import SSNumeric
 import Genetics.GeneTypes
 
@@ -63,7 +63,7 @@ data Node = Node { ntype    :: NType
                  , role     :: Role
                  } deriving (Show, Eq)
 
-data Connection = Connection { innovation :: SN Int
+data Connection = Connection { innovation :: Int
                              , node_in    :: Int
                              , node_out   :: Int
                              , weight     :: SSNumeric
