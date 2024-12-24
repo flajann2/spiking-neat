@@ -3,7 +3,6 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DatatypeContexts #-}
 
 module Genetics.Genes ( NType(..)
                       , Role(..)
@@ -17,7 +16,7 @@ module Genetics.Genes ( NType(..)
 
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)
-import SSMonad
+-- import SSMonad
 import SSNumeric
 import Genetics.GeneTypes
 
@@ -68,17 +67,7 @@ data Connection = Connection { innovation :: Int
                              , node_out   :: Int
                              , weight     :: SSNumeric
                              , enabled    :: Bool
-                             }
-
-instance Show Connection where
-  show (Connection _innov nin nout w en) = "conn innov: " ++ innovShow
-    ++ " node_in: "  ++ show nin
-    ++ " node_out: " ++ show nout
-    ++ " weight: "   ++ show w
-    ++ " enabled: "  ++ show en
-    where
-      innovShow = "<innov>" -- TODO: Get innovation show working
-  
+                             } deriving Show
 
 instance Eq Connection where
   (==) :: Connection -> Connection -> Bool

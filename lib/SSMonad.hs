@@ -1,6 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE OverloadedRecordDot #-}
-{-# LANGUAGE DatatypeContexts #-}
 {-# LANGUAGE MonoLocalBinds #-}
 
 module SSMonad ( module SSMonad
@@ -16,15 +15,12 @@ import Control.Monad.IO.Class (liftIO, MonadIO)
 import Data.Semigroup
 import Data.Complex (Complex)
 import System.Random ( StdGen, Random(randomR), newStdGen )
-import Control.Applicative (liftA2)
-import GHC.Float (float2Double)
 import SSNumeric
 
 import Genetics.GeneTypes
 import Evolution.GoalTypes
 
 default (Double)
-
 
 data Config = Config { population_size   :: Int
                      , neuron_types      :: [NType]
@@ -40,7 +36,7 @@ data Config = Config { population_size   :: Int
 instance Show Config where
   show (Config popize nt goal snum inum ninp nout rng maxw) =
        " population_size: "   ++ show popize  
-    ++ " neuron_types: "      ++ show ntShow -- TODO fix this 
+    ++ " neuron_types: "      ++ show nt
     ++ " goal: "              ++ show goal
     ++ " sequence_number: "   ++ show snum
     ++ " innovation_number: " ++ show inum
@@ -50,15 +46,12 @@ instance Show Config where
     ++ " max_weight: "        ++ show maxw
     where
       rngShow = "<IO StdGen>"
-      ntShow = "<[NType]>"
 
--- type SS a = StateT Config IO a
 newtype SS a = SS { runSS :: StateT Config IO a }
              deriving ( Functor
                       , Applicative
                       , Monad
                       , MonadIO )
-
   
 -- initialConfig :: Config a
 initialConfig :: Config

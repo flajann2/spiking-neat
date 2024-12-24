@@ -1,7 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
-{-# LANGUAGE DatatypeContexts #-}
 {-# LANGUAGE MonoLocalBinds #-}
 
 module Genetics.Critters where
@@ -72,14 +71,18 @@ mkCritter ns cs = do
 genCritter :: SS Critter 
 genCritter = do
   cfg <- getConfig
+  let conns = genconn cfg.num_inputs cfg.num_outputs
+  _ <- liftIO $ putStrLn $ show cfg.num_inputs
+  _ <- liftIO $ putStrLn $ show cfg.num_outputs
+  _ <- liftIO $ putStrLn $ show $ length conns
   crit <- mkCritter    ((nodes (cfg.num_inputs)  Input [])
-                   ++ (nodes (cfg.num_outputs) Output []))
-                   (connections  cfg.num_inputs  cfg.num_outputs [])
+                   ++ (nodes (cfg.num_outputs) Output [])) conns
+                   -- $ genconn cfg.num_inputs cfg.num_outputs
   return crit
   where
     nodes :: Int -> Role -> [Node] -> [Node]
     nodes 0 _ ns = ns
     nodes cnt r ns = nodes (cnt - 1) r $ (node mkRegular r) : ns
 
-    connections :: Int -> Int -> [SS Connection] -> [SS Connection]
-    connections ins outs cs = [conn i j nxi | i <- [0..(ins-1)], j <- [ins..(outs-1)]]
+    genconn :: Int -> Int -> [SS Connection]
+    genconn ins outs = [conn i j nxi | i <- [0..(ins-1)], j <- [ins..(ins+outs-1)]]

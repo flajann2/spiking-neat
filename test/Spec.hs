@@ -34,12 +34,21 @@ mainSS = do
                         , conn 3 7 nxi
                         , conn 4 7 nxi
                         ]
+  critgen <- genCritter
+  _ <- liftIO $ putStrLn "****** configuration ******"
   _ <- liftIO $ pPrint cfg
+  _ <- liftIO $ putStrLn "****** manual critter ******"
   _ <- liftIO $ pPrint critter
+  _ <- liftIO $ putStrLn "****** generated critter ******"
+  _ <- liftIO $ pPrint critgen
   _ <- liftIO $ hspec $ do
     describe "Critter" $ do
       it "has 8 nodes" $ do
         length critter.nodes == 8
+    
+    describe "GenCritter" $ do
+      it "has connections" $ do
+        length critgen.connections == critgen.number_inputs * critgen.number_outputs
     
     describe "Config" $ do
       it "has the initial populaion size set to 100" $ do
