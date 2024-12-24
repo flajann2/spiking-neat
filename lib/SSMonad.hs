@@ -62,10 +62,10 @@ initialConfig = Config { population_size   = 100
                        , goal              = Goal
                        , sequence_number   = 0
                        , innovation_number = 0
-                       , num_inputs        = 20
-                       , num_outputs       = 5
+                       , num_inputs        = 10
+                       , num_outputs       = 2
                        , rng               = newStdGen
-                       , max_weight        = SSDouble 5.0
+                       , max_weight        = SSDouble 2.0
                        }
 
 getConfig :: SS Config

@@ -90,4 +90,14 @@
     |   |
       9 |     module Data.Functor,
             | ^^^^^^^^^^^^^^^^^^^ |
-    
+    + said problems ameroliated
+** We now have First Critter
+*** Evaluation
+    We have decided to go in "whole hog" and 
+    implement the input from the external world, reshape the
+    signals, and feed it to the input of the critter, do the evaluation,
+    and deal with the output. Then we will do the evolution part.
+    + The spiking logic will be fully embraced.
+    + Signal shaping, vis a vis HTM approaches
+    + Spike generator
+

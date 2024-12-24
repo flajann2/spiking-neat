@@ -60,6 +60,7 @@ library
       , lens
       , data-default
       , transformers
+      , zeromq4-haskell 
       -- , plugins
 executable sneat
     import:           commons
