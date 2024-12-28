@@ -100,4 +100,26 @@
     + The spiking logic will be fully embraced.
     + Signal shaping, vis a vis HTM approaches
     + Spike generator
+**** Using ZeroMQ4-haskell
+     Let's see how this works out. There's bindings for
+     many languages. Other options are not as uptopdate.
+     + cabal run playground-zmq-pub -- tcp://127.0.0.1:6666 eltoro
+     + cabal run playground-zmq-sub -- tcp://127.0.0.1:6666
 
+*** Spiking
+    How will the spiking work? Neurons will vary between 0 and 1, and will climb as
+    the input is still present, and drop off after the input is gone. The inhibitory
+    neurons will kick in strong after a neuron fires to inhibit surrounding neurons.
+    + Since the neuron strengths will be dropping off quickly, there must be some
+      way to gate the optimal time to read out the results.
+    + There needs to be an interval driver. I am thinking that the ideal
+      would be to genenerate 1000 intervals per second, meaning each would only be
+      1 ms long. If processing times increase, it may stretch out. If quick, the
+      processisng times will be shorter. I am thinking of keeping them to 1 ms, even
+      though it will slow down prcoessing for some instances.
+    + Obviously said processing across many Critters must be carried out in parallell.
+*** Theory of Critters
+    + IVec -- input vector from "the world"
+    + OVec -- output vector to "the world"
+    + evalcrit :: IVec a -> Critter -> OVec a
+                  except there are side effects in the Critter

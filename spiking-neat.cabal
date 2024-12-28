@@ -31,6 +31,8 @@ common commons
       , ghc
       , ghc-paths
       , ghc-prim
+      , zeromq4-haskell
+      , bytestring
       -- , ghc-debug
       -- , ghc-debug-brick   
       -- , hsc2hs
@@ -60,7 +62,6 @@ library
       , lens
       , data-default
       , transformers
-      , zeromq4-haskell 
       -- , plugins
 executable sneat
     import:           commons
@@ -93,6 +94,28 @@ executable playground-random
       , spiking-neat
     hs-source-dirs:
         playground
+
+executable playground-zmq-pub
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     prompt.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground/zmq
+
+executable playground-zmq-sub
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     display.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground/zmq
 
 --- executable playground-load-1
 ---     import:           commons

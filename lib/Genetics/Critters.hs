@@ -22,8 +22,8 @@ data Critter = Critter { nodes          :: [Node]
                        } deriving Show
 
 class Eval where
-  ecritter :: [a] -> SS [a]
-  epopulation :: [a] -> SS [[a]]
+  ecrit :: [a] -> SS [a]
+  epop  :: [a] -> SS [[a]]
 
 node :: NType -> Role -> Node
 node nt r = Node { ntype = nt
