@@ -105,6 +105,9 @@
      many languages. Other options are not as uptopdate.
      + cabal run playground-zmq-pub -- tcp://127.0.0.1:6666 eltoro
      + cabal run playground-zmq-sub -- tcp://127.0.0.1:6666
+     + cereal for CBOR serialization / desealization
+     + ports 31000 - 32000 is what we'll use, and of course
+       it will be reconfigurable.
 
 *** Spiking
     How will the spiking work? Neurons will vary between 0 and 1, and will climb as

@@ -31,19 +31,45 @@ data Config = Config { population_size   :: Int
                      , num_outputs       :: Int
                      , rng               :: IO StdGen -- use nextRandom instead
                      , max_weight        :: SSNumeric
+                     , start_in_port     :: Int
+                     , end_in_port       :: Int
+                     , start_out_port    :: Int
+                     , end_out_port      :: Int
+                     , base_in_address   :: String
+                     , base_out_address  :: String
                      } 
 
 instance Show Config where
-  show (Config popize nt goal snum inum ninp nout rng maxw) =
-       " population_size: "   ++ show popize  
-    ++ " neuron_types: "      ++ show nt
-    ++ " goal: "              ++ show goal
-    ++ " sequence_number: "   ++ show snum
-    ++ " innovation_number: " ++ show inum
-    ++ " num_inputs: "        ++ show ninp
-    ++ " num_outputs: "       ++ show nout
-    ++ " rng: "               ++ show rngShow
-    ++ " max_weight: "        ++ show maxw
+  show (Config popize
+               nt
+               goal
+               snum
+               inum
+               ninp
+               nout
+               _rng
+               maxw
+               stin
+               endin
+               stout
+               endout
+               basein
+               baseout
+       ) =  " population_size: "   <> show popize  
+         <> " neuron_types: "      <> show nt
+         <> " goal: "              <> show goal
+         <> " sequence_number: "   <> show snum
+         <> " innovation_number: " <> show inum
+         <> " num_inputs: "        <> show ninp
+         <> " num_outputs: "       <> show nout
+         <> " rng: "               <> show rngShow
+         <> " max_weight: "        <> show maxw
+         <> " start_in_port: "     <> show stin
+         <> " end_in_port: "       <> show endin
+         <> " start_out_port: "    <> show stout
+         <> " end_out_port: "      <> show endout
+         <> " base_in_address: "   <> show basein
+         <> " base_out_address: "  <> show baseout
     where
       rngShow = "<IO StdGen>"
 
@@ -53,7 +79,6 @@ newtype SS a = SS { runSS :: StateT Config IO a }
                       , Monad
                       , MonadIO )
   
--- initialConfig :: Config a
 initialConfig :: Config
 initialConfig = Config { population_size   = 100
                        , neuron_types      = [ Regular (\x -> x)
@@ -66,6 +91,12 @@ initialConfig = Config { population_size   = 100
                        , num_outputs       = 2
                        , rng               = newStdGen
                        , max_weight        = SSDouble 2.0
+                       , start_in_port     = 31000
+                       , end_in_port       = 31499
+                       , start_out_port    = 31500
+                       , end_out_port      = 31999
+                       , base_in_address   = "tcp://127.0.0.1:"
+                       , base_out_address  = "tcp://127.0.0.1:"
                        }
 
 getConfig :: SS Config

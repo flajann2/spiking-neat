@@ -1,6 +1,10 @@
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
+
 module SSNumeric where
 
 import GHC.Float (float2Double, double2Float)
+import GHC.Generics (Generic)
+import Data.Serialize ( Serialize )
 
 -- To allow for a generalization of numeric types
 -- for example, complex numbers!
@@ -14,7 +18,7 @@ type SSNum a = ( Num a
 data SSNumeric = SSFloat Float
                | SSDouble Double
                -- | SSComplex Complex 
-               deriving Show
+               deriving (Show, Generic, Serialize)
 
 instance Eq SSNumeric where
   (SSFloat x)  == (SSFloat y)  = x == y
@@ -70,4 +74,3 @@ instance Fractional SSNumeric where
 
     -- Convert Rational to SSNumeric
     fromRational r = SSFloat $ fromRational r -- or convert to SSDouble if desired
-

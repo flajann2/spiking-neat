@@ -33,6 +33,9 @@ common commons
       , ghc-prim
       , zeromq4-haskell
       , bytestring
+      , cereal
+      , cborg-json
+      , haskell-gi
       -- , ghc-debug
       -- , ghc-debug-brick   
       -- , hsc2hs
@@ -51,6 +54,7 @@ library
       , Genetics.GeneTypes
       , Genetics.Neurons
       , Population.Population
+      , Data.Stream.Zio
     other-modules:
         Paths_spiking_neat
     hs-source-dirs:
@@ -128,7 +132,7 @@ executable playground-zmq-sub
 ---     hs-source-dirs:
 ---         playground
 
-test-suite sn-spec
+test-suite ss-spec
     import:           commons
     type: exitcode-stdio-1.0
     main-is: Spec.hs

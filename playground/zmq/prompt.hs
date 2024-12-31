@@ -10,6 +10,8 @@ import System.IO
 import System.Exit
 import System.Environment
 import System.ZMQ4.Monadic
+    ( bind, runZMQ, send, socket, liftIO, Pub(Pub) )
+import Data.Serialize
 
 main :: IO ()
 main = do
