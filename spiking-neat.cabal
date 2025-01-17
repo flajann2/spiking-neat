@@ -67,11 +67,22 @@ library
       , data-default
       , transformers
       -- , plugins
+
 executable sneat
     import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:     Main.hs
+    main-is:     SNeat.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:   app
+
+executable flumen
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     Flumen.hs
     build-depends:
         mtl
       , spiking-neat

@@ -108,7 +108,15 @@
      + cereal for CBOR serialization / desealization
      + ports 31000 - 32000 is what we'll use, and of course
        it will be reconfigurable.
-
+**** Design of interplay between the data sources, training, and data sinks with 0mq
+     + Data sources will have 2 modes -- training and inference. The inference
+        mode will obviously rely on previously trainedd TWEANNs.
+     + Evaluation takes place on a seperately-running eval program across
+        the zeromq connection. Should this be synchronous or async?
+     + I envvision a continuous "training" even if the data source is inference
+        mode. 
+*** Critter persistence
+    We must be able to serialize and deserialze critter populations.
 *** Spiking
     How will the spiking work? Neurons will vary between 0 and 1, and will climb as
     the input is still present, and drop off after the input is gone. The inhibitory
@@ -126,3 +134,21 @@
     + OVec -- output vector to "the world"
     + evalcrit :: IVec a -> Critter -> OVec a
                   except there are side effects in the Critter
+*** Using type classes and type families to handle different sigmoids
+    We can make the handling of the various sigmoid lambdas cleaner
+    than it is now.
+ 
+*** Neurons and a spatial-temporal indexing
+    Neurons can hava a spatial and temporal (or both) indexing,
+    allowing for Hebbian behavior solely based on proximal locality
+    shifting the probabilities of wiring together via the guassian.
+    + How will this work for a temporal index?
+      We will have to figure this out. My initial guess is to 
+      have time encoding in the imput data. The temporal index for
+      the neurons will be cyclic, and the cycle may vary as well. 
+    + Firing porbabilities based on cycling
+      We can shift activation levels based on cycling, and have
+      different cycles for different neurons.
+    + Instead of bias neurons, rhythm neurons.
+*** Data/Workflow between SS and the systems that will be learned
+    + Flumen Agents -- streaming data input to SS 

@@ -16,7 +16,7 @@ import Data.Serialize ( decode, encode, Serialize )
 import qualified Data.ByteString.Char8 as CS
 import GHC.Generics (Generic)
 
-import SSMonad ( SS )
+import SSMonad ( SS, getConfig )
 import SSNumeric ( SSNumeric )
 import GHC.Plugins (assertPprMaybe)
 -- import Data.HashMap.Internal.Array (new)
@@ -27,23 +27,33 @@ newtype Port     = Port     Int    deriving (Show, Generic, Serialize)
 newtype NameID   = NameID   String deriving (Show, Generic, Serialize)
 newtype Sequence = Sequence Int    deriving (Show, Generic, Serialize)
 
-data Payload = Payload     NameID Sequence [SSNumeric]
-             | EndOfStrean NameID
-             | NoData      NameID
-             | Header      NameID Address Sequence Topic Port
-             deriving (Show, Generic, Serialize)
+data Payload a = Payload     NameID Sequence a
+               | EndOfStrean NameID
+               | NoData      NameID
+               | Header      NameID Address Sequence Topic Port
+               deriving (Show, Generic, Serialize)
 
-sendZioStream :: NameID -> Address -> Topic -> (Payload -> Payload) -> SS ()
+sendZioStream :: forall a1. (Serialize a1) => NameID
+              -> Address
+              -> Topic
+              -> (Payload a1 -> Payload a1)
+              -> SS ()
 sendZioStream (NameID nid) (Address addr) (Topic topic) f = do
+  cfg <- getConfig
   return ()
   where
-    serPayload :: Payload -> ByteString
+    serPayload :: forall a2. (Serialize a2) => (Payload a2) -> ByteString
     serPayload = encode
 
-recvZioStream :: Address -> Topic -> (Payload -> Bool) -> SS Payload
-recvZioStream (Address addr) (Topic topic) f = undefined
+recvZioStream ::  forall a1. (Serialize a1) => Address
+              -> Topic
+              -> (Payload a1 -> Bool)
+              -> SS (Payload a1)
+recvZioStream (Address addr) (Topic topic) f = do
+  cfg <- getConfig
+  return _
   where
-    deserPayload :: ByteString -> Either String Payload
+    deserPayload ::  forall a2. (Serialize a2) => ByteString -> Either String (Payload a2)
     deserPayload = decode
 
 ---- import Data.Serialize

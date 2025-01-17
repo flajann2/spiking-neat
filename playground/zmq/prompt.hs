@@ -2,9 +2,7 @@
 
 module Main where
 
-import Control.Applicative
 import Control.Monad
-import Data.Monoid
 import Data.String
 import System.IO
 import System.Exit
