@@ -132,6 +132,17 @@ executable playground-zmq-sub
     hs-source-dirs:
         playground/zmq
 
+executable playground-zmq-bidir
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     bidirectional.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground/zmq
+
 --- executable playground-load-1
 ---     import:           commons
 ---     ghc-options: -rtsopts

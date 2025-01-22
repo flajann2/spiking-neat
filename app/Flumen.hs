@@ -1,6 +1,7 @@
-modules Main where
+module Main where
 
 import NEAT
 
 main :: IO()
-main = >>= \ -> putStrLn "Flumen TBD"
+main = do
+  putStrLn "Flumen Agent TBD"

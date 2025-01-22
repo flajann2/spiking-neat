@@ -8,7 +8,7 @@ import System.IO
 import System.Exit
 import System.Environment
 import System.ZMQ4.Monadic
-    ( bind, runZMQ, send, socket, liftIO, Pub(Pub) )
+--    ( bind, runZMQ, send, socket, liftIO, Pub(Pub) )
 import Data.Serialize
 
 main :: IO ()
@@ -20,7 +20,7 @@ main = do
     let addr = head args
         name = fromString (args !! 1) <> ": "
     runZMQ $ do
-        pub <- socket Pub
+        pub <- socket Dealer
         bind pub addr
         forever $ do
             line <- liftIO $ fromString <$> getLine

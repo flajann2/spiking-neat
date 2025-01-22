@@ -115,8 +115,11 @@
         the zeromq connection. Should this be synchronous or async?
      + I envvision a continuous "training" even if the data source is inference
         mode. 
-*** Critter persistence
-    We must be able to serialize and deserialze critter populations.
+*** Critters
+**** persistence
+     We must be able to serialize and deserialze critter populations.
+**** Modadic Critters?
+     A way to store transitory states of the neurons.
 *** Spiking
     How will the spiking work? Neurons will vary between 0 and 1, and will climb as
     the input is still present, and drop off after the input is gone. The inhibitory
@@ -137,7 +140,7 @@
 *** Using type classes and type families to handle different sigmoids
     We can make the handling of the various sigmoid lambdas cleaner
     than it is now.
- 
+    
 *** Neurons and a spatial-temporal indexing
     Neurons can hava a spatial and temporal (or both) indexing,
     allowing for Hebbian behavior solely based on proximal locality

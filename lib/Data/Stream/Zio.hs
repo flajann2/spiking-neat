@@ -28,9 +28,10 @@ newtype NameID   = NameID   String deriving (Show, Generic, Serialize)
 newtype Sequence = Sequence Int    deriving (Show, Generic, Serialize)
 
 data Payload a = Payload     NameID Sequence a
-               | EndOfStrean NameID
-               | NoData      NameID
                | Header      NameID Address Sequence Topic Port
+               | StartStream NameID
+               | Endtrean    NameID
+               | NoData      NameID
                deriving (Show, Generic, Serialize)
 
 sendZioStream :: forall a1. (Serialize a1) => NameID
@@ -49,12 +50,12 @@ recvZioStream ::  forall a1. (Serialize a1) => Address
               -> Topic
               -> (Payload a1 -> Bool)
               -> SS (Payload a1)
-recvZioStream (Address addr) (Topic topic) f = do
-  cfg <- getConfig
-  return _
-  where
-    deserPayload ::  forall a2. (Serialize a2) => ByteString -> Either String (Payload a2)
-    deserPayload = decode
+recvZioStream (Address addr) (Topic topic) f = undefined 
+--  cfg <- getConfig
+--  return _
+--  where
+--    deserPayload ::  forall a2. (Serialize a2) => ByteString -> Either String (Payload a2)
+--    deserPayload = decode
 
 ---- import Data.Serialize
 ---- import Data.ByteString (ByteString)

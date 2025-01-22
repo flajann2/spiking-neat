@@ -54,7 +54,7 @@ mainSS = do
       it "has the initial populaion size set to 100" $ do
         cfg.population_size  `shouldBe` (100 :: Int)
 
-    describe "Zmq" do
-      it "Sends and receives a Payload" $ do
+--    describe "Zmq" do
+--      it "Sends and receives a Payload" $ do
         
   return ()
