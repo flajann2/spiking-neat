@@ -114,7 +114,7 @@ executable playground-zmq-pub
     import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:     prompt.hs
+    main-is:     Prompt.hs
     build-depends:
         mtl
       , spiking-neat
@@ -125,7 +125,7 @@ executable playground-zmq-sub
     import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:     display.hs
+    main-is:     Display.hs
     build-depends:
         mtl
       , spiking-neat
@@ -136,7 +136,7 @@ executable playground-zmq-bidir
     import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:     bidirectional.hs
+    main-is:     Bidirectional.hs
     build-depends:
         mtl
       , spiking-neat

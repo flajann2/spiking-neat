@@ -71,9 +71,6 @@
    will lead. It may make it able to
    latch on to deeper nuances of learning.
    
-
-​
-
 ** Issues with compiles and builds
 *** You must add to exposed-modules
     everything in your library that might be used by
