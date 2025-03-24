@@ -152,3 +152,32 @@
     + Instead of bias neurons, rhythm neurons.
 *** Data/Workflow between SS and the systems that will be learned
     + Flumen Agents -- streaming data input to SS 
+** Trial problem to train on
+*** Crypto market feeds
+    + We need to complete the BiBit feed to use to
+      set up our first problem. It is idea because, well,
+      this is one of the first things I want to do anyway.
+      + The technical analysis should emcompass the history.
+        all we need to do is to send the klines, the volume,
+        and the Bollinger numbers, SMA, etc.
+      + For training, we do historical or live, and do the
+        actual evaluation in the short future to see how
+        the criters respond.
+      + Realtime evolution shall be used as well as spiking.
+      + The flow is streaming input, streaming output from the
+        many critters, and during training, the critiers are ranked, the ranks
+        are sent back to SNeat for evolution.
+      + If no criter ranks are sent back, no evolution will take
+        place. The critier evaluations can be listened for. We do
+        not even need to send the evaluation vectors back all the time,
+        but we actually should to avoid unwanted biasing.
+      + The evals should be sent back as Maybes.
+      + Thusly:
+        | StreamingFeed | Crit Ensemble      | Critt Out vectors | Eval   | Evolution |
+        |---------------+--------------------+-------------------+--------+-----------|
+        | Klines        | Input All Critters | Out Matrix        | Vector | Mate&Mut  |
+        | Volumes       |                    |                   |        |           |
+        | Technicals    |                    |                   |        |           |
+        
+      
+ 

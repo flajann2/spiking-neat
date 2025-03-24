@@ -1,5 +1,4 @@
 {-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE MonoLocalBinds #-}
 
 module SSMonad ( module SSMonad
