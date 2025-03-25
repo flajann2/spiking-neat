@@ -1,29 +1,39 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Control.Monad
-import System.ZMQ4
+import Control.Monad (forever)
+import Control.Exception (bracket)
+import System.ZMQ4 
 import qualified Data.ByteString.Char8 as C8
-import Data.List.NonEmpty (NonEmpty(..))
+import Control.Concurrent (threadDelay)
+
+-- Improved error handling with bracket
+withContext' :: (Context -> IO a) -> IO a
+withContext' = bracket context term
+
+-- Centralized socket setup and error handling
+setupSocket :: Context -> IO (Socket Pair)
+setupSocket ctx = do
+    sock <- socket ctx Pair
+    bind sock "tcp://*:5555"
+    putStrLn "Server listening on port 5555"
+    return sock
+
+-- Message processing function
+processMessage :: (Socket Pair) -> IO ()
+processMessage sock = do
+    msg <- receive sock
+    putStrLn $ "Received: " ++ show msg
+    send sock [] $ C8.pack "Hello from server!"
+    putStrLn "Sent response to client"
 
 main :: IO ()
-main = withContext $ \ctx -> do
-    -- Create a PAIR socket for bidirectional communication
-    sock <- socket ctx Pair
+main = withContext' $ \ctx -> do
+    sock <- setupSocket ctx
     
-    -- Bind the socket to a TCP endpoint
-    bind sock "tcp://*:5555"
+    -- Add graceful shutdown mechanism
+    let serverLoop = forever $ do
+            processMessage sock
+            threadDelay 10000  -- Prevent tight loop, 10ms delay
     
-    putStrLn "Server listening on port 5555"
-    
-    -- Loop to receive and send messages
-    forever $ do
-        -- Receive a message
-        --msg <- receive sock
-        msg <- receiveMulti sock
-        putStrLn $ "Received: " ++ show msg
-        
-        -- Send a response back
-        --send sock [SendMore] $ C8.pack "Hello from server!"
-        sendMulti sock $ C8.pack "Hello from server!" :| []
-        putStrLn "sent response to client"
+    serverLoop
