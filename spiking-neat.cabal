@@ -139,27 +139,27 @@ executable playground-zmq-sub
     hs-source-dirs:
         playground/zmq
 
-executable playground-zmq-bidir
+executable playground-zmq-bi-ser
     import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:     Bidirectional.hs
+    main-is:     BiServer.hs
     build-depends:
         mtl
       , spiking-neat
     hs-source-dirs:
         playground/zmq
 
---- executable playground-load-1
----     import:           commons
----     ghc-options: -rtsopts
----                  -with-rtsopts=-N
----     main-is:     Load1.hs
----     build-depends:
----         mtl
----       , spiking-neat
----     hs-source-dirs:
----         playground
+executable playground-zmq-bi-cli
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     BiClient.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground/zmq
 
 test-suite ss-spec
     import:           commons
