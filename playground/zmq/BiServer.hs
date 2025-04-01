@@ -1,9 +1,18 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
-import Control.Monad (forever)
 import Control.Exception (bracket)
-import System.ZMQ4 
+import System.ZMQ4
+    ( bind,
+      context,
+      receive,
+      send,
+      socket,
+      term,
+      Pair(..),
+      Context,
+      Socket ) 
 import qualified Data.ByteString.Char8 as C8
 import Control.Concurrent (threadDelay)
 
@@ -20,11 +29,11 @@ setupSocket ctx = do
     return sock
 
 -- Message processing function
-processMessage :: (Socket Pair) -> IO ()
-processMessage sock = do
+processMessage :: (Socket Pair) -> Int -> IO ()
+processMessage sock i = do
     msg <- receive sock
     putStrLn $ "Received: " ++ show msg
-    send sock [] $ C8.pack "Hello from server!"
+    send sock [] $ C8.pack $ "Hello from server: " <> show i
     putStrLn "Sent response to client"
 
 main :: IO ()
@@ -32,8 +41,9 @@ main = withContext' $ \ctx -> do
     sock <- setupSocket ctx
     
     -- Add graceful shutdown mechanism
-    let serverLoop = forever $ do
-            processMessage sock
+    let serverLoop i = do
+            processMessage sock i
             threadDelay 10000  -- Prevent tight loop, 10ms delay
+            serverLoop $ i+1
     
-    serverLoop
+    serverLoop 0

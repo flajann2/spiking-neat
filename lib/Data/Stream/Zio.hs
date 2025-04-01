@@ -4,14 +4,15 @@
 module Data.Stream.Zio where
 
 import Control.Applicative
-import Control.Monad
+import Control.Monad (forever)
+import Control.Exception (bracket)
 import Data.Monoid
 import Data.String
 import Data.ByteString (ByteString)
 import System.IO
 import System.Exit
 import System.Environment
-import System.ZMQ4.Monadic
+import System.ZMQ4
 import Data.Serialize ( decode, encode, Serialize )
 import qualified Data.ByteString.Char8 as CS
 import GHC.Generics (Generic)

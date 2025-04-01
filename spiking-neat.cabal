@@ -20,7 +20,7 @@ build-type:         Simple
 extra-doc-files:    CHANGELOG.org
 
 common commons
-    ghc-options: -O3
+    ghc-options: -O2
                  -Wall
                  -threaded
     build-depends:

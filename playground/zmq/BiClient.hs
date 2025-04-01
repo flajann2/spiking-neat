@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
 import Control.Monad (forever)
@@ -20,10 +21,10 @@ setupSocket ctx = do
     return sock
 
 -- Message exchange function
-exchangeMessage :: Socket Pair -> IO ()
-exchangeMessage sock = do
+exchangeMessage :: Socket Pair -> Int -> IO ()
+exchangeMessage sock i = do
     -- Send a message to the server
-    send sock [] $ C8.pack "Hello from client!"
+    send sock [] $ C8.pack $ "Hello from client: " <> show i
     putStrLn "Sent message to server"
     
     -- Receive a response from the server
@@ -35,8 +36,9 @@ main = withContext' $ \ctx -> do
     sock <- setupSocket ctx
     
     -- Add graceful message exchange loop
-    let clientLoop = forever $ do
-            exchangeMessage sock
-            threadDelay 100000  -- 1 second delay between messages
+    let clientLoop i = forever $ do
+          exchangeMessage sock i
+          threadDelay 100000  -- 1 second delay between messages
+          clientLoop $ i+1
     
-    clientLoop
+    clientLoop 0
