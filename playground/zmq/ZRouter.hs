@@ -30,35 +30,7 @@ main = withContext $ \ctx -> do
 
 broadcastLoop :: Socket Router -> TVar (Set.Set ByteString) -> IO ()
 broadcastLoop router clientsVar = forever $ do
-    threadDelay 5000000  -- 5 seconds
+    threadDelay 100000  -- 0.1 seconds
     clients <- atomically $ readTVar clientsVar
     mapM_ (\clientId -> sendMulti router (clientId :| ["START"])) (Set.toList clients)
-    putStrLn "Broadcasted START to all clients"
-
-
-
-
---- {-# LANGUAGE OverloadedStrings #-}
---- 
---- module Main where
---- 
---- import System.ZMQ4
---- import qualified Data.ByteString.Char8 as C
---- 
---- main :: IO ()
---- main = withContext $ \context -> do
----     -- Create a ROUTER socket to accept multiple client connections
----     routerSocket <- socket context Router
----     bind routerSocket "tcp://*:5555"
----     
----     -- Accept and handle multiple client messages
----     let serverLoop i = do
----           -- Receive a message from a client
----           [clientAddress, message] <- receiveMulti routerSocket
----           putStrLn $ "Dealer response: <" ++ show clientAddress ++ ">: " ++ show message
----           -- Send a response back to the client
----           sendMulti routerSocket [clientAddress, (C.pack ("Router" <> show i))]
----           serverLoop $ i+1
---- 
----     serverLoop 0
-
+    -- putStrLn "Broadcasted START to all clients"
