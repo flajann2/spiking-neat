@@ -31,16 +31,13 @@
 **** We use ZMQ for IPC
       since it is supported for nearly all languages that are in
       popular or semi-popular use.
-**** Port allocations and connection workflow
-      There will be a main request port an application can
-      request a dedicated port for connection with, and
-      a successful resppmse shall return a dedicated
-      port number, or Nothing if it fails (Might we use Either instead of
-      Maybe?)
-      + Then said application will connect to that given port and
-        begin streaming data. If in training mode, will accept result vectors and compute and return the errors
-      + Will compute the error vector and return that to SN.
-      + Evolution will commence on the basis of the error vector
+**** Port Dedicated, using  Dealer/Router in ZMQ4
+      All Dealer clients must present a unique identifer when
+      they connect. All connections shall be bidirectional.
+      + The messae Payloads shall define the protocols they may use.
+***** Errors with ZMQ4
+      Assertion failed: !_current_out (/usr/src/debug/zeromq/zeromq/src/router.cpp:166)
+      fish: Job 1, 'cabal run playground-zmq-router' terminated by signal SIGABRT (Abort)
 
 ** Sequence Numbers and Innovation Numbers
    Innovation numbers are used to trace this history of
