@@ -27,6 +27,21 @@
      execution of these neurons, should we maintain
      that? Perhaps we should simply create the IR from
      the indicies directly.
+*** ZMQ, Ports, bidirectional TCP connections
+**** We use ZMQ for IPC
+      since it is supported for nearly all languages that are in
+      popular or semi-popular use.
+**** Port allocations and connection workflow
+      There will be a main request port an application can
+      request a dedicated port for connection with, and
+      a successful resppmse shall return a dedicated
+      port number, or Nothing if it fails (Might we use Either instead of
+      Maybe?)
+      + Then said application will connect to that given port and
+        begin streaming data. If in training mode, will accept result vectors and compute and return the errors
+      + Will compute the error vector and return that to SN.
+      + Evolution will commence on the basis of the error vector
+
 ** Sequence Numbers and Innovation Numbers
    Innovation numbers are used to trace this history of
    evolution.  They are not intended to be IDs.

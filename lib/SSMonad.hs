@@ -30,6 +30,7 @@ data Config = Config { population_size   :: Int
                      , num_outputs       :: Int
                      , rng               :: IO StdGen -- use nextRandom instead
                      , max_weight        :: SSNumeric
+                     , request_port      :: Int
                      , start_in_port     :: Int
                      , end_in_port       :: Int
                      , start_out_port    :: Int
@@ -48,6 +49,7 @@ instance Show Config where
                nout
                _rng
                maxw
+               rport
                stin
                endin
                stout
@@ -63,6 +65,7 @@ instance Show Config where
          <> " num_outputs: "       <> show nout
          <> " rng: "               <> show rngShow
          <> " max_weight: "        <> show maxw
+         <> " request_port: "      <> show rport
          <> " start_in_port: "     <> show stin
          <> " end_in_port: "       <> show endin
          <> " start_out_port: "    <> show stout
@@ -90,7 +93,8 @@ initialConfig = Config { population_size   = 100
                        , num_outputs       = 2
                        , rng               = newStdGen
                        , max_weight        = SSDouble 2.0
-                       , start_in_port     = 31000
+                       , request_port      = 31000
+                       , start_in_port     = 31020
                        , end_in_port       = 31499
                        , start_out_port    = 31500
                        , end_out_port      = 31999

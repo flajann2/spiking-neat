@@ -36,6 +36,8 @@ common commons
       , cereal
       , cborg-json
       , haskell-gi
+      , stm
+      , containers
       -- , ghc-debug
       -- , ghc-debug-brick   
       -- , hsc2hs
@@ -139,11 +141,33 @@ executable playground-zmq-sub
     hs-source-dirs:
         playground/zmq
 
+executable playground-zmq-router
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     ZRouter.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground/zmq
+
+executable playground-zmq-dealer
+    import:           commons
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     ZDealer.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground/zmq
+
 executable playground-zmq-bi-ser
     import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:     BiServer.hs
+    main-is:     PairServer.hs
     build-depends:
         mtl
       , spiking-neat
@@ -154,7 +178,7 @@ executable playground-zmq-bi-cli
     import:           commons
     ghc-options: -rtsopts
                  -with-rtsopts=-N
-    main-is:     BiClient.hs
+    main-is:     PairClient.hs
     build-depends:
         mtl
       , spiking-neat
