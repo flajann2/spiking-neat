@@ -1,4 +1,4 @@
-cabal-version:      3.4
+cabal-version:      3.14
 name:               spiking-neat
 
 version:            0.1.0.0
@@ -64,6 +64,9 @@ library
       , Genetics.Neurons
       , Population.Population
       , Data.Stream.Zio
+      , Data.Stream.Zio.Common
+      , Data.Stream.Zio.Dealer
+      , Data.Stream.Zio.Router
     other-modules:
         Paths_spiking_neat
     hs-source-dirs:

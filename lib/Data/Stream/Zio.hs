@@ -19,6 +19,9 @@ import GHC.Generics (Generic)
 import SSMonad ( SS, getConfig )
 import SSNumeric ( SSNumeric )
 import GHC.Plugins (assertPprMaybe)
+import Data.Stream.Zio.Dealer
+import Data.Stream.Zio.Router
+
 -- import Data.HashMap.Internal.Array (new)
 
 newtype Topic    = Topic    String deriving (Show, Generic, Serialize)
