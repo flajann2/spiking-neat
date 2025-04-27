@@ -37,10 +37,10 @@ dealerForever (UniqueID uniqID) zsnd zrcv = withContext $ \ctx -> do
       let recvLooper i = do
             response <- receive dealer
             case unpack response of
-              "ACK"   -> putStrLn "Server acknowledged"
-              "START" -> do
-                putStrLn $ "Starting data transmission " <> show i <> "..."
-                send dealer [] $ pack $ "PAYLOAD(" <> uniqID <> "): " <> show i
-              _       -> putStrLn $ "Received: " <> unpack response
+              p | p == pACK   -> putStrLn "Server acknowledged"
+                | p == pSTART -> do
+                    putStrLn $ "Starting data transmission " <> show i <> "..."
+                    send dealer [] $ pack $ "PAYLOAD(" <> uniqID <> "): " <> show i
+                | otherwise   -> putStrLn $ "Received: " <> unpack response
             recvLooper $ i+1
       recvLooper 0

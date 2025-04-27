@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings, DeriveGeneric, DeriveAnyClass #-}
 
-module Data.Stream.Zio where
+module Data.Stream.Zio ( module Data.Stream.Zio.Dealer
+                       , module Data.Stream.Zio.Router
+                       ) where
 
 import Control.Applicative
 import Control.Monad (forever)
@@ -19,6 +21,7 @@ import GHC.Generics (Generic)
 import SSMonad ( SS, getConfig )
 import SSNumeric ( SSNumeric )
 import GHC.Plugins (assertPprMaybe)
+
 import Data.Stream.Zio.Dealer
 import Data.Stream.Zio.Router
 

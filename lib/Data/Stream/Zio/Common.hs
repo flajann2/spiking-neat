@@ -22,3 +22,7 @@ import Data.Restricted ()
 newtype UniqueID  = UniqueID String deriving Show
 data    BSPayload = BSPayload { bsSeq :: Int
                               , bs    :: ByteString} deriving Show
+-- | protocol ACK
+pACK   = "ACK"
+-- | protocol START
+pSTART = "START"
