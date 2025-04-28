@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings, DeriveGeneric, DeriveAnyClass #-}
+{-# LANGUAGE UndecidableInstances, StandaloneDeriving #-}
 
 module Data.Stream.Zio ( module Data.Stream.Zio.Dealer
                        , module Data.Stream.Zio.Router
@@ -12,12 +13,14 @@ import Data.String
 import Data.ByteString (ByteString)
 import System.IO
 import System.Exit
-import System.Environment
+import System.Environment ()
 import System.ZMQ4
 import Data.Serialize ( decode, encode, Serialize )
 import qualified Data.ByteString.Char8 as CS
 import GHC.Generics (Generic)
 
+import Data.ULID
+import Data.WideWord.Word128
 import SSMonad ( SS, getConfig )
 import SSNumeric ( SSNumeric )
 import GHC.Plugins (assertPprMaybe)
@@ -27,20 +30,32 @@ import Data.Stream.Zio.Router
 
 -- import Data.HashMap.Internal.Array (new)
 
-newtype Topic    = Topic    String deriving (Show, Generic, Serialize)
-newtype Address  = Address  String deriving (Show, Generic, Serialize)
-newtype Port     = Port     Int    deriving (Show, Generic, Serialize)
-newtype NameID   = NameID   String deriving (Show, Generic, Serialize)
-newtype Sequence = Sequence Int    deriving (Show, Generic, Serialize)
+-- | generate unique ULIDs as Word128 integers
+iULID :: IO Word128
+iULID = do
+  i <- fmap integerToWW $ ulidToInteger <$> getULID
+  return i
+  where
+    integerToWW i = fromInteger i
+    
+newtype Topic    = Topic    String  deriving (Show, Generic, Serialize)
+newtype Address  = Address  String  deriving (Show, Generic, Serialize)
+newtype Port     = Port     Int     deriving (Show, Generic, Serialize)
+newtype NameID   = NameID   String  deriving (Show, Generic, Serialize)
+newtype Sequence = Sequence Word128 deriving (Show, Generic)
+
+deriving instance Serialize Word128 => Serialize Sequence
 
 data Payload a = Payload     NameID Sequence a
                | Header      NameID Address Sequence Topic Port
                | StartStream NameID
                | Endtrean    NameID
                | NoData      NameID
-               deriving (Show, Generic, Serialize)
+               deriving (Show, Generic)
 
-sendZioStream :: forall a1. (Serialize a1) => NameID
+deriving instance (Serialize a, Serialize Word128) => Serialize (Payload a)
+
+sendZioStream :: forall a1. (Serialize a1, Serialize Word128) => NameID
               -> Address
               -> Topic
               -> (Payload a1 -> Payload a1)

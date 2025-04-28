@@ -1,8 +1,35 @@
-* Notes
-  These notes are for me only, and I do not promise to
-  keep them up-to-date or even accurate.
-  
-  The official docs are in the README.org.
+* Notes       :TOC_5_gh:
+  - [[#basic-design][Basic design]]
+    - [[#zmq-ports-bidirectional-tcp-connections][ZMQ, Ports, bidirectional TCP connections]]
+      - [[#we-use-zmq-for-ipc][We use ZMQ for IPC]]
+      - [[#port-dedicated-using--dealerrouter-in-zmq4-deprecated][Port Dedicated, using  Dealer/Router in ZMQ4 (deprecated)]]
+      - [[#basic-flow][Basic Flow]]
+        - [[#multiple-simultaneous-populations][Multiple simultaneous populations?]]
+      - [[#unique-itentifiers----ulids][Unique Itentifiers -- ULIDs]]
+      - [[#errors-with-zmq4][Errors with ZMQ4]]
+  - [[#sequence-numbers-and-innovation-numbers][Sequence Numbers and Innovation Numbers]]
+  - [[#miscellaneous][Miscellaneous]]
+  - [[#hebbian-learning][Hebbian Learning]]
+  - [[#spiking][Spiking]]
+    - [[#neuron-per-spike][Neuron per spike]]
+  - [[#generic-floats][Generic Floats]]
+  - [[#issues-with-compiles-and-builds][Issues with compiles and builds]]
+    - [[#you-must-add-to-exposed-modules][You must add to exposed-modules]]
+    - [[#llvm-general-building][LLVM-general building]]
+  - [[#we-now-have-first-critter][We now have First Critter]]
+    - [[#evaluation][Evaluation]]
+      - [[#using-zeromq4-haskell][Using ZeroMQ4-haskell]]
+      - [[#design-of-interplay-between-the-data-sources-training-and-data-sinks-with-0mq][Design of interplay between the data sources, training, and data sinks with 0mq]]
+    - [[#critters][Critters]]
+      - [[#persistence][persistence]]
+      - [[#modadic-critters][Modadic Critters?]]
+    - [[#spiking-1][Spiking]]
+    - [[#theory-of-critters][Theory of Critters]]
+    - [[#using-type-classes-and-type-families-to-handle-different-sigmoids][Using type classes and type families to handle different sigmoids]]
+    - [[#neurons-and-a-spatial-temporal-indexing][Neurons and a spatial-temporal indexing]]
+    - [[#dataworkflow-between-ss-and-the-systems-that-will-be-learned][Data/Workflow between SS and the systems that will be learned]]
+  - [[#trial-problem-to-train-on][Trial problem to train on]]
+    - [[#crypto-market-feeds][Crypto market feeds]]
 
 ** Basic design
    + We shall have, instead of negative weights,
@@ -31,14 +58,66 @@
 **** We use ZMQ for IPC
       since it is supported for nearly all languages that are in
       popular or semi-popular use.
-**** Port Dedicated, using  Dealer/Router in ZMQ4
+**** Port Dedicated, using  Dealer/Router in ZMQ4 (deprecated)
       All Dealer clients must present a unique identifer when
       they connect. All connections shall be bidirectional.
       + The messae Payloads shall define the protocols they may use.
-***** Errors with ZMQ4
+      + Since we are using the Dealer-Router
+        configuration, no need to have lots of ports
+        anymore. We may need a seperate port per
+        dealer, but even that is not entirely clear.
+**** Basic Flow
+      + During the initial handshake, SN will send to
+        the Dealers(s) the initial Population ID(s)
+      + The Dealer will start streaming to SN.
+      + SN (the Router) will receive this stream, and give it to the population(s) for
+	result evaluations
+      + SN, asynchronously, will send this result vector back to the Dealer
+      + The dealer -- during the training phase -- will compute the error vectors
+      + The Dealer will send the error vectors back to SN
+      + Upon receiving the error vector, SN will evolve
+        the population, along with a new population
+        number.
+      + The Delear will receive the updated population
+        ID(s) and discard the old ones.
+      | Step | Client Delear            | SN Router          | Go to?       |
+      |------+--------------------------+--------------------+--------------|
+      |    1 | recd PopIDs              | <-- initial PopIDs |              |
+      |    2 | get data                 |                    |              |
+      |    3 | Streaming(w/PopIDs)  --> | recd streams       |              |
+      |    4 | recd ResultVector        | <-- Result vectors |              |
+      |    5 | compute error vectors    |                    |              |
+      |    6 | error vectors -->        | recd error vectors |              |
+      |    7 |                          | Evolve populations |              |
+      |    8 | recd PopIDs update       | <-- new PopIDs     |              |
+      |    9 |                          |                    | Go to step 2 |
+***** Multiple simultaneous populations?
+      Since we will initially train on the crypto
+      market, we will look at multiple time
+      periods. Like 5-minute, 10-minute, 30-minute,
+      1-hour, 1-day, etc. Why not have a different
+      population for each? And we can allow
+      cross-breeding among populations. A critter that
+      does well in one time period is likely to also do
+      well in an adjacent time period. So multiple
+      result vectors will be sent back to the Dealer,
+      one for each time period. Error vectors will then
+      be sent to SN for evolution.
+      + There is no need to send all of the population
+        error vectors back right away, since what might
+        be done on the 5-minute klines may not be
+        complete on the 15-minute klines.
+**** Unique Itentifiers -- ULIDs
+      We have elected to use ULIDs, since they are
+      monontonic.  The default implementations have
+      resolutions only down to the millisecond. Which
+      is fine for a single server. We will not deal
+      with multiple distributed severs at this time.
+**** Errors with ZMQ4
       Assertion failed: !_current_out (/usr/src/debug/zeromq/zeromq/src/router.cpp:166)
       fish: Job 1, 'cabal run playground-zmq-router' terminated by signal SIGABRT (Abort)
-
+      + If I have to clone ZMQ4 and fix this problem myself, I will.
+      
 ** Sequence Numbers and Innovation Numbers
    Innovation numbers are used to trace this history of
    evolution.  They are not intended to be IDs.

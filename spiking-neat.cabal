@@ -36,8 +36,13 @@ common commons
       , cereal
       , cborg-json
       , haskell-gi
+      , async
       , stm
+      , stm-chans
+      , stm-containers
       , containers
+      , ulid
+      , wide-word
       -- , ghc-debug
       -- , ghc-debug-brick   
       -- , hsc2hs
