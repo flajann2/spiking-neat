@@ -30,22 +30,31 @@ import Data.Stream.Zio.Router
 
 -- import Data.HashMap.Internal.Array (new)
 
--- | generate unique ULIDs as Word128 integers
-iULID :: IO Word128
-iULID = do
+-- | Generate unique ULIDs as Word128 integers
+--   for Sequence numbers
+newSequence :: IO Sequence
+newSequence = do
   i <- fmap integerToWW $ ulidToInteger <$> getULID
-  return i
+  return $ Sequence i
   where
     integerToWW i = fromInteger i
-    
+
 newtype Topic    = Topic    String  deriving (Show, Generic, Serialize)
 newtype Address  = Address  String  deriving (Show, Generic, Serialize)
 newtype Port     = Port     Int     deriving (Show, Generic, Serialize)
+
+-- | NameID is the identifier for a stream instance.
+--   TODO: Finbd a better name for this! StreamID?
 newtype NameID   = NameID   String  deriving (Show, Generic, Serialize)
+
+-- | Sequence ID for making sortable "UUIDs"
+--   If the use gets more specific,
+--   one should derive a new type from this.
 newtype Sequence = Sequence Word128 deriving (Show, Generic)
 
 deriving instance Serialize Word128 => Serialize Sequence
 
+-- | Payload defines the handshake flow.
 data Payload a = Payload     NameID Sequence a
                | Header      NameID Address Sequence Topic Port
                | StartStream NameID

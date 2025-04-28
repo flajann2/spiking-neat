@@ -4,7 +4,6 @@
       - [[#we-use-zmq-for-ipc][We use ZMQ for IPC]]
       - [[#port-dedicated-using--dealerrouter-in-zmq4-deprecated][Port Dedicated, using  Dealer/Router in ZMQ4 (deprecated)]]
       - [[#basic-flow][Basic Flow]]
-        - [[#multiple-simultaneous-populations][Multiple simultaneous populations?]]
       - [[#unique-itentifiers----ulids][Unique Itentifiers -- ULIDs]]
       - [[#errors-with-zmq4][Errors with ZMQ4]]
   - [[#sequence-numbers-and-innovation-numbers][Sequence Numbers and Innovation Numbers]]
@@ -67,46 +66,7 @@
         anymore. We may need a seperate port per
         dealer, but even that is not entirely clear.
 **** Basic Flow
-      + During the initial handshake, SN will send to
-        the Dealers(s) the initial Population ID(s)
-      + The Dealer will start streaming to SN.
-      + SN (the Router) will receive this stream, and give it to the population(s) for
-	result evaluations
-      + SN, asynchronously, will send this result vector back to the Dealer
-      + The dealer -- during the training phase -- will compute the error vectors
-      + The Dealer will send the error vectors back to SN
-      + Upon receiving the error vector, SN will evolve
-        the population, along with a new population
-        number.
-      + The Delear will receive the updated population
-        ID(s) and discard the old ones.
-      | Step | Client Delear            | SN Router          | Go to?       |
-      |------+--------------------------+--------------------+--------------|
-      |    1 | recd PopIDs              | <-- initial PopIDs |              |
-      |    2 | get data                 |                    |              |
-      |    3 | Streaming(w/PopIDs)  --> | recd streams       |              |
-      |    4 | recd ResultVector        | <-- Result vectors |              |
-      |    5 | compute error vectors    |                    |              |
-      |    6 | error vectors -->        | recd error vectors |              |
-      |    7 |                          | Evolve populations |              |
-      |    8 | recd PopIDs update       | <-- new PopIDs     |              |
-      |    9 |                          |                    | Go to step 2 |
-***** Multiple simultaneous populations?
-      Since we will initially train on the crypto
-      market, we will look at multiple time
-      periods. Like 5-minute, 10-minute, 30-minute,
-      1-hour, 1-day, etc. Why not have a different
-      population for each? And we can allow
-      cross-breeding among populations. A critter that
-      does well in one time period is likely to also do
-      well in an adjacent time period. So multiple
-      result vectors will be sent back to the Dealer,
-      one for each time period. Error vectors will then
-      be sent to SN for evolution.
-      + There is no need to send all of the population
-        error vectors back right away, since what might
-        be done on the 5-minute klines may not be
-        complete on the 15-minute klines.
+      See README.org's Interfacing with Spiking NEAT
 **** Unique Itentifiers -- ULIDs
       We have elected to use ULIDs, since they are
       monontonic.  The default implementations have

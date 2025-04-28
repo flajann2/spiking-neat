@@ -8,7 +8,8 @@
     - [[#installation][Installation]]
     - [[#development][Development]]
       - [[#this-project][This Project]]
-      - [[#interfacing-witth-spiking-neat][Interfacing witth Spiking NEAT]]
+      - [[#interfacing-witth-spiking-neat-preliminary][Interfacing witth Spiking NEAT (Preliminary)]]
+        - [[#multiple-simultaneous-populations][Multiple simultaneous populations?]]
 
 ** The usual stuff
 *** Author: Fred Mitchell
@@ -20,5 +21,50 @@
 *** Development
 **** This Project
       + We have some default extensions set up in the Cabal file.
-**** Interfacing witth Spiking NEAT
+**** Interfacing witth Spiking NEAT (Preliminary)
+      + During the initial handshake, SN will send to
+        the Dealers(s) the initial Population ID(s)
+      + The Dealer will start streaming to SN.
+      + SN (the Router) will receive this stream, and give it to the population(s) for
+	result evaluations
+      + SN, asynchronously, will send this result vector back to the Dealer
+      + The dealer -- during the training phase -- will compute the error vectors
+      + The Dealer will send the error vectors back to SN
+      + Upon receiving the error vector, SN will evolve
+        the population, along with a new population
+        number.
+      + The Delear will receive the updated population
+        ID(s) and discard the old ones.
+      Sequence Diagram (not to e confused with Sequence IDs!)
+      | Step | SN Router           | Client Delear                   | Go to?       |
+      |------+---------------------+---------------------------------+--------------|
+      |    0 | Start SN            | after SN, Start Client          |              |
+      |    1 | prep initial PopIDs | <-- send StartStrean            |              |
+      |    2 | send PopIDs -->     | recd PopIDs                     |              |
+      |    3 |                     | get data                        |              |
+      |    4 | recd Payload        | <-- Payload Streaming(w/PopIDs) |              |
+      |    5 | Result vectors -->  | recd ResultVector               |              |
+      |    6 |                     | compute error vectors           |              |
+      |    7 | recd error vectors  | <-- error vectors               |              |
+      |    8 | Evolve populations  |                                 |              |
+      |    9 | new PopIDs -->      | recd PopIDs update              |              |
+      |   10 |                     | if not done                     | Go to step 3 |
+      |   11 | tidy up resources   | <-- otherwise send EndStream    |              |
+***** Multiple simultaneous populations?
+      Since we will initially train on the crypto
+      market, we will look at multiple time
+      periods. Like 5-minute, 10-minute, 30-minute,
+      1-hour, 1-day, etc. Why not have a different
+      population for each? And we can allow
+      cross-breeding among populations. A critter that
+      does well in one time period is likely to also do
+      well in an adjacent time period. So multiple
+      result vectors will be sent back to the Dealer,
+      one for each time period. Error vectors will then
+      be sent to SN for evolution.
+      + There is no need to send all of the population
+        error vectors back right away, since what might
+        be done on the 5-minute klines may not be
+        complete on the 15-minute klines.
+
 
