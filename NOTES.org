@@ -29,6 +29,7 @@
     - [[#dataworkflow-between-ss-and-the-systems-that-will-be-learned][Data/Workflow between SS and the systems that will be learned]]
   - [[#trial-problem-to-train-on][Trial problem to train on]]
     - [[#crypto-market-feeds][Crypto market feeds]]
+  - [[#gotchas-and-deleted-code-snippets][Gotchas and Deleted Code Snippets]]
 
 ** Basic design
    + We shall have, instead of negative weights,
@@ -230,3 +231,44 @@
         | Volumes       |                    |                   |        |           |
         | Technicals    |                    |                   |        |           |
         
+** Gotchas and Deleted Code Snippets
+  + We cannot do this globally in the cabal file. Has to be file-by-Haskell-file.
+    #BEGIN_SRC Cabal
+      default-extensions: OverloadedStrings -- blows up SSMonad
+                        , GADTs
+                        , DeriveGeneric
+                        , DeriveAnyClass
+    #END_SRC
+  + Zio.hs
+       #BEGIN_SRC Haskell
+           cfg <- getConfig
+           return _
+           where
+             deserPayload ::  forall a2. (Serialize a2) => ByteString -> Either String (Payload a2)
+             deserPayload = decode
+          
+          import Data.Serialize
+          import Data.ByteString (ByteString)
+          import qualified Data.ByteString.Char8 as BS
+          import GHC.Generics (Generic)
+          
+          data MyData = MyData Int String deriving (Show, Generic)
+          
+          instance Serialize MyData
+          
+          serializeList :: [MyData] -> ByteString
+          serializeList = encode
+          
+          deserializeList :: ByteString -> Either String [MyData]
+          deserializeList = decode
+          
+          main :: IO ()
+          main = do
+              let myList = [MyData 1 "Hello", MyData 2 "World"]
+              let serialized = serializeList myList
+              putStrLn $ "Serialized data: " ++ BS.unpack serialized
+              
+              case deserializeList serialized of
+                  Left err -> putStrLn $ "Error during deserialization: " ++ err
+                   Right deserialized -> putStrLn $ "Deserialized data: " ++ show deserialized
+       #END_SRC

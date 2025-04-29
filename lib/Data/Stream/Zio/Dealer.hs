@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE OverloadedRecordDot, DuplicateRecordFields  #-}
 
 -- | Module    : Data.Stream.Zio.Dealer
 -- Description : Raw Payload Dealer

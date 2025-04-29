@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE OverloadedRecordDot, DuplicateRecordFields #-}
 
 -- | Module    : Data.Stream.Zio.Common
 -- Description : Common types and instances with Dealer and Router

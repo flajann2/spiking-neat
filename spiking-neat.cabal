@@ -46,20 +46,9 @@ common commons
       , liquidhaskell
       , liquidhaskell-boot
       , liquid-prelude
-      -- , z3 
-      -- , liquid-containers
-      -- , liquid-base
-      -- , ghc-debug
-      -- , ghc-debug-brick   
-      -- , hsc2hs
     default-language: GHC2024
     default-extensions: OverloadedRecordDot 
-
----     We cannot do this globally. Has to be file-by-file.
----     default-extensions: OverloadedStrings -- blows up SSMonad
----                       , GADTs
----                       , DeriveGeneric
----                       , DeriveAnyClass
+                      , DuplicateRecordFields
 
 common bincoms
     build-depends:
