@@ -43,6 +43,12 @@ common commons
       , containers
       , ulid
       , wide-word
+      , liquidhaskell
+      , liquidhaskell-boot
+      , liquid-prelude
+      -- , z3 
+      -- , liquid-containers
+      -- , liquid-base
       -- , ghc-debug
       -- , ghc-debug-brick   
       -- , hsc2hs
@@ -55,6 +61,12 @@ common commons
 ---                       , DeriveGeneric
 ---                       , DeriveAnyClass
 
+common bincoms
+    build-depends:
+        mtl
+      , liquidhaskell-boot
+      , spiking-neat
+                                 
 library
     import:           commons
     exposed-modules:
@@ -87,26 +99,31 @@ library
 
 executable sneat
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     SNeat.hs
     build-depends:
         mtl
+      , liquidhaskell-boot
       , spiking-neat
     hs-source-dirs:   app
 
 executable flumen
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     Flumen.hs
     build-depends:
         mtl
+      , liquidhaskell-boot
       , spiking-neat
     hs-source-dirs:   app
 
 executable playground-dsl
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     CritterDSL.hs
@@ -118,6 +135,7 @@ executable playground-dsl
 
 executable playground-random
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     RandomGen.hs
@@ -129,17 +147,20 @@ executable playground-random
 
 executable playground-zmq-pub
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     Prompt.hs
     build-depends:
         mtl
+      , liquidhaskell-boot
       , spiking-neat
     hs-source-dirs:
         playground/zmq
 
 executable playground-zmq-sub
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     Display.hs
@@ -151,6 +172,7 @@ executable playground-zmq-sub
 
 executable playground-zmq-router
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     ZRouter.hs
@@ -162,17 +184,20 @@ executable playground-zmq-router
 
 executable playground-zmq-dealer
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     ZDealer.hs
     build-depends:
         mtl
+      , liquidhaskell-boot
       , spiking-neat
     hs-source-dirs:
         playground/zmq
 
 executable playground-zmq-bi-ser
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     PairServer.hs
@@ -184,17 +209,20 @@ executable playground-zmq-bi-ser
 
 executable playground-zmq-bi-cli
     import:           commons
+                    , bincoms
     ghc-options: -rtsopts
                  -with-rtsopts=-N
     main-is:     PairClient.hs
     build-depends:
         mtl
+      , liquidhaskell-boot
       , spiking-neat
     hs-source-dirs:
         playground/zmq
 
 test-suite ss-spec
     import:           commons
+                    , bincoms
     type: exitcode-stdio-1.0
     main-is: Spec.hs
     hs-source-dirs: test

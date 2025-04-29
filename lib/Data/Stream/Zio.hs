@@ -39,9 +39,10 @@ newSequence = do
   where
     integerToWW i = fromInteger i
 
-newtype Topic    = Topic    String  deriving (Show, Generic, Serialize)
-newtype Address  = Address  String  deriving (Show, Generic, Serialize)
-newtype Port     = Port     Int     deriving (Show, Generic, Serialize)
+newtype Topic    = Topic    String   deriving (Show, Generic, Serialize)
+newtype Address  = Address  String   deriving (Show, Generic, Serialize)
+newtype Port     = Port     Int      deriving (Show, Generic, Serialize)
+newtype PopID    = PopID    Sequence deriving (Show, Generic)
 
 -- | NameID is the identifier for a stream instance.
 --   TODO: Finbd a better name for this! StreamID?
@@ -52,17 +53,21 @@ newtype NameID   = NameID   String  deriving (Show, Generic, Serialize)
 --   one should derive a new type from this.
 newtype Sequence = Sequence Word128 deriving (Show, Generic)
 
-deriving instance Serialize Word128 => Serialize Sequence
+deriving instance Serialize Word128  => Serialize Sequence
+deriving instance Serialize Sequence => Serialize PopID
 
 -- | Payload defines the handshake flow.
-data Payload a = Payload     NameID Sequence a
-               | Header      NameID Address Sequence Topic Port
-               | StartStream NameID
-               | Endtrean    NameID
-               | NoData      NameID
+data Payload a = Payload       NameID Sequence a
+               | StartStream   NameID Address Sequence Port
+               | PopulationIDs NameID [PopID]
+               | Endtrean      NameID
+               | NoData        NameID
                deriving (Show, Generic)
 
-deriving instance (Serialize a, Serialize Word128) => Serialize (Payload a)
+deriving instance (Serialize a
+                  , Serialize Word128
+                  , Serialize Sequence
+                  , Serialize PopID) => Serialize (Payload a)
 
 sendZioStream :: forall a1. (Serialize a1, Serialize Word128) => NameID
               -> Address
