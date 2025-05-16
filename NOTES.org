@@ -1,4 +1,5 @@
 * Notes       :TOC_5_gh:
+  - [[#about-these-notes][About these notes]]
   - [[#basic-design][Basic design]]
     - [[#zmq-ports-bidirectional-tcp-connections][ZMQ, Ports, bidirectional TCP connections]]
       - [[#we-use-zmq-for-ipc][We use ZMQ for IPC]]
@@ -31,6 +32,13 @@
     - [[#crypto-market-feeds][Crypto market feeds]]
   - [[#gotchas-and-deleted-code-snippets][Gotchas and Deleted Code Snippets]]
 
+** About these notes
+   These notes are basically meant for only me. I make no
+   promises that they will be up-to-date or even meaningful to anyone
+   but myself. For the authorative docs, see the README.org. You may find
+   some utility here as these notes may represent a history of
+   various design decisions I've made to create Spiking NEAT, but as I said,
+   no promises.
 ** Basic design
    + We shall have, instead of negative weights,
      negative or inhibitory neurons, which will send
