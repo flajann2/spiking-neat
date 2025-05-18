@@ -31,6 +31,7 @@
   - [[#trial-problem-to-train-on][Trial problem to train on]]
     - [[#crypto-market-feeds][Crypto market feeds]]
   - [[#gotchas-and-deleted-code-snippets][Gotchas and Deleted Code Snippets]]
+  - [[#unagi-chan][Unagi Chan]]
 
 ** About these notes
    These notes are basically meant for only me. I make no
@@ -280,3 +281,10 @@
                   Left err -> putStrLn $ "Error during deserialization: " ++ err
                    Right deserialized -> putStrLn $ "Deserialized data: " ++ show deserialized
        #END_SRC
+** Unagi Chan
+  + 2 channels. One for the send and one for the response.
+  + multiple threads to handle both the output and input
+  + On both sides, the dealers and the router
+  + Low-level BSPayload, serialized Payload objects
+  + Payload constructurs form the protocols. 
+       

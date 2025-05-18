@@ -9,14 +9,15 @@
 -- Portability : portable
 module Data.Stream.Zio.Dealer where
 
-import System.IO
-import System.Exit
-import System.Environment
-import System.ZMQ4
+import Control.Concurrent.Chan.Unagi
 import Control.Monad
-import Data.String
 import Data.ByteString.Char8 (pack, unpack, ByteString)
 import Data.Restricted ()
+import Data.String
+import System.Environment
+import System.Exit
+import System.IO
+import System.ZMQ4
 
 import Data.Stream.Zio.Common
 

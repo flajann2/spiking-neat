@@ -9,13 +9,14 @@
 -- Portability : portable
 module Data.Stream.Zio.Router where
 
-import System.ZMQ4
-import Control.Monad
 import Control.Concurrent
+import Control.Concurrent.Chan.Unagi
 import Control.Concurrent.STM
+import Control.Monad
 import Data.ByteString.Char8 (unpack, ByteString)
-import qualified Data.Set as Set
 import Data.List.NonEmpty (NonEmpty(..))
+import System.ZMQ4
+import qualified Data.Set as Set
 
 import Data.Stream.Zio.Common
 

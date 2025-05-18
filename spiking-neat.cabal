@@ -46,6 +46,7 @@ common commons
       , liquidhaskell
       , liquidhaskell-boot
       , liquid-prelude
+      , unagi-chan
     default-language: GHC2024
     default-extensions: OverloadedRecordDot 
                       , DuplicateRecordFields
