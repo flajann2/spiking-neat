@@ -41,6 +41,7 @@ common commons
       , stm-chans
       , stm-containers
       , containers
+      , text
       , ulid
       , wide-word
       , liquidhaskell
@@ -209,6 +210,18 @@ executable playground-zmq-bi-cli
       , spiking-neat
     hs-source-dirs:
         playground/zmq
+
+executable playground-unagi
+    import:           commons
+                    , bincoms
+    ghc-options: -rtsopts
+                 -with-rtsopts=-N
+    main-is:     Unagi.hs
+    build-depends:
+        mtl
+      , spiking-neat
+    hs-source-dirs:
+        playground
 
 test-suite ss-spec
     import:           commons
