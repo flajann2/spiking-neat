@@ -1,5 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-
+{-
+   give me example code for using unagi-chan in Haskell
+   with multiple input threads and multiple worker
+   threads
+-}
 module Main where
 
 import Control.Concurrent
@@ -76,27 +80,18 @@ main = do
   hSetBuffering stdout LineBuffering  -- Ensure output appears immediately
   
   -- Configuration
-  let numProducers = 3
-      itemsPerProducer = 10
-      numWorkers = 4
+  let numProducers = 20
+      itemsPerProducer = 20
+      numWorkers = 10
       totalItems = numProducers * itemsPerProducer
   
   -- Create unagi channel
   (inChan, outChan) <- U.newChan
   
-  -- Create counter for tracking completion
-  counterMVar <- newMVar 0
-  
-  -- Start monitor thread
-  monitorThread <- async $ monitor counterMVar totalItems
-  
-  -- Start worker threads
-  workerThreads <- forM [1..numWorkers] $ \i ->
-    async $ worker i outChan counterMVar
-  
-  -- Start producer threads
-  producerThreads <- forM [1..numProducers] $ \i ->
-    async $ inputProducer i inChan itemsPerProducer
+  counterMVar     <- newMVar 0
+  monitorThread   <- async $ monitor counterMVar totalItems
+  workerThreads   <- forM [1..numWorkers] $ \i   -> async $ worker i outChan counterMVar
+  producerThreads <- forM [1..numProducers] $ \i -> async $ inputProducer i inChan itemsPerProducer
   
   -- Wait for all producers to finish
   putStrLn "Waiting for producers to finish..."
