@@ -9,12 +9,12 @@
 -- Portability : portable
 module Data.Stream.Zio.Common where
 
-import System.IO
-import System.Exit
-import System.Environment
-import System.ZMQ4
-import Control.Monad
-import Data.String
+--- import System.IO
+--- import System.Exit
+--- import System.Environment
+--- import System.ZMQ4
+--- import Control.Monad
+--- import Data.String
 import Data.ByteString.Char8 (ByteString)
 import Data.Restricted ()
 

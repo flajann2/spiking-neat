@@ -60,7 +60,7 @@ deriving instance Serialize Sequence => Serialize PopID
 data Payload a = Payload       NameID Sequence a
                | StartStream   NameID Address Sequence Port
                | PopulationIDs NameID [PopID]
-               | Endtrean      NameID
+               | EndStream     NameID
                | NoData        NameID
                deriving (Show, Generic)
 

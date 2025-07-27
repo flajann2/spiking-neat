@@ -164,8 +164,6 @@
      + cabal run playground-zmq-pub -- tcp://127.0.0.1:6666 eltoro
      + cabal run playground-zmq-sub -- tcp://127.0.0.1:6666
      + cereal for CBOR serialization / desealization
-     + ports 31000 - 32000 is what we'll use, and of course
-       it will be reconfigurable.
 **** Design of interplay between the data sources, training, and data sinks with 0mq
      + Data sources will have 2 modes -- training and inference. The inference
         mode will obviously rely on previously trainedd TWEANNs.

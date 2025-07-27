@@ -2,12 +2,20 @@
 
 module Main where
 
-import System.IO
-import System.Exit
-import System.Environment
+import System.IO ( hPutStrLn, stderr )
+import System.Exit ( exitFailure )
+import System.Environment ( getArgs )
 import System.ZMQ4
-import Control.Monad
-import Data.String
+    ( Dealer(Dealer),
+      restrict,
+      withContext,
+      withSocket,
+      setIdentity,
+      connect,
+      send,
+      receive )
+import Control.Monad ( when )
+-- import Data.String
 import Data.ByteString.Char8 (pack, unpack)
 import Data.Restricted ()
 

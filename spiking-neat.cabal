@@ -32,6 +32,7 @@ common commons
       , ghc-paths
       , ghc-prim
       , zeromq4-haskell
+      , lens
       , bytestring
       , cereal
       , cborg-json
@@ -83,7 +84,6 @@ library
         mtl
       , unordered-containers
       , hashable
-      , lens
       , data-default
       , transformers
       -- , plugins

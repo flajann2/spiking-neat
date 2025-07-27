@@ -2,6 +2,7 @@
 
 module Main where
 
+import Control.Monad
 import Data.Stream.Zio
 
 {-
@@ -11,4 +12,3 @@ the SpikingNeat Engine.
 
 main :: IO ()
 main = undefined
-  

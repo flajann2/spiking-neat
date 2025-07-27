@@ -10,6 +10,7 @@
       - [[#this-project][This Project]]
       - [[#interfacing-witth-spiking-neat-preliminary][Interfacing witth Spiking NEAT (Preliminary)]]
         - [[#multiple-simultaneous-populations][Multiple simultaneous populations?]]
+        - [[#seperate-eval-client][Seperate Eval Client?]]
 
 ** The usual stuff
 *** Author: Fred Mitchell
@@ -36,20 +37,20 @@
       + The Delear will receive the updated population
         ID(s) and discard the old ones.
       Sequence Diagram (not to e confused with Sequence IDs!)
-      | Step | SN Router           | Client Delear                   | Go to?       |
-      |------+---------------------+---------------------------------+--------------|
-      |    0 | Start SN            | after SN, Start Client          |              |
-      |    1 | prep initial PopIDs | <-- send StartStrean            |              |
-      |    2 | send PopIDs -->     | recd PopIDs                     |              |
-      |    3 |                     | get data                        |              |
-      |    4 | recd Payload        | <-- Payload Streaming(w/PopIDs) |              |
-      |    5 | Result vectors -->  | recd ResultVector               |              |
-      |    6 |                     | compute error vectors           |              |
-      |    7 | recd error vectors  | <-- error vectors               |              |
-      |    8 | Evolve populations  |                                 |              |
-      |    9 | new PopIDs -->      | recd PopIDs update              |              |
-      |   10 |                     | if not done                     | Go to step 3 |
-      |   11 | tidy up resources   | <-- otherwise send EndStream    |              |
+      | Step | SN Router           | Data Client                  | Eval Client            | Go to?  |
+      |------+---------------------+------------------------------+------------------------+---------|
+      |    0 | Start SN            | after SN, Start Client       |                        |         |
+      |    1 | prep initial PopIDs | <-- send StartStrean         |                        |         |
+      |    2 | send PopIDs -->     | recd PopIDs                  |                        |         |
+      |    3 |                     | get data                     |                        |         |
+      |    4 | recd Payload        | <-- Payload Stream(w/PopIDs) |                        |         |
+      |    5 | Result vectors -->  | -->                          | recd Result Vectors    |         |
+      |    6 |                     |                              | compute errors         |         |
+      |    7 | recd error vectors  | <--                          | <-- send error vectors |         |
+      |    8 | Evolve populations  |                              |                        |         |
+      |    9 | new PopIDs -->      | recd PopIDs update           |                        |         |
+      |   10 |                     | if not done                  |                        | Goto  3 |
+      |   11 | tidy up resources   | <-- otherwise send EndStream |                        |         |
 ***** Multiple simultaneous populations?
       Since we will initially train on the crypto
       market, we will look at multiple time
@@ -66,5 +67,8 @@
         error vectors back right away, since what might
         be done on the 5-minute klines may not be
         complete on the 15-minute klines.
-
-
+***** Seperate Eval Client?
+      The Eval Client, while could be a part of the Data Client,
+      is made a sperate module for scalabiliy purposes. Since
+      the clients can be written in any language, the intent is to
+      offer the greatest flexibility possible.
