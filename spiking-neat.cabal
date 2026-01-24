@@ -1,4 +1,4 @@
-cabal-version:      3.14
+cabal-version:      3.16
 name:               spiking-neat
 
 version:            0.1.0.0
@@ -49,6 +49,7 @@ common commons
       , liquidhaskell-boot
       , liquid-prelude
       , unagi-chan
+      , conduit
     default-language: GHC2024
     default-extensions: OverloadedRecordDot 
                       , DuplicateRecordFields
