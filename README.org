@@ -1,4 +1,4 @@
-* Spiking Neural Evolution of Augmenting Topologies -- Spiking NEAT       :TOC_5_gh:
+* Rhayader -- A collection of alternative machine learning enginges :TOC_5_gh:
   - [[#the-usual-stuff][The usual stuff]]
     - [[#author-fred-mitchell][Author: Fred Mitchell]]
     - [[#license-mit][License: MIT]]
