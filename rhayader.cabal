@@ -1,13 +1,13 @@
 cabal-version:      3.16
-name:               spiking-neat
+name:               Rhayader
 
-version:            0.1.0.0
+version:            0.0.0.0
 
 synopsis:
-  Implementation of Spiking Neural Evolution of Augmenting Topologies
+  A collection of composable Machine Learning engines such as Spiking NEAT, HTM, etc.
 
 description:
-  Influenced by NEAT and HTM.
+  Influenced by NEAT, HTM, and Active Inference.
 
 license:            MIT
 license-file:       LICENSE

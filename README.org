@@ -3,26 +3,30 @@
     - [[#author-fred-mitchell][Author: Fred Mitchell]]
     - [[#license-mit][License: MIT]]
   - [[#documentation][Documentation]]
-    - [[#introduction][Introduction]]
-      - [[#what-is-spiking-neat][What is Spiking NEAT?]]
-    - [[#installation][Installation]]
-    - [[#development][Development]]
-      - [[#this-project][This Project]]
-      - [[#interfacing-witth-spiking-neat-preliminary][Interfacing witth Spiking NEAT (Preliminary)]]
-        - [[#multiple-simultaneous-populations][Multiple simultaneous populations?]]
-        - [[#seperate-eval-client][Seperate Eval Client?]]
+    - [[#spiking-neat][Spiking NEAT]]
+      - [[#introduction][Introduction]]
+        - [[#what-is-spiking-neat][What is Spiking NEAT?]]
+      - [[#installation][Installation]]
+      - [[#development][Development]]
+        - [[#this-project][This Project]]
+        - [[#interfacing-witth-spiking-neat-preliminary][Interfacing witth Spiking NEAT (Preliminary)]]
+    - [[#heirarchial-temporal-memory-htm][Heirarchial Temporal Memory (HTM)]]
+    - [[#pytorch-integration][PyTorch Integration]]
 
 ** The usual stuff
 *** Author: Fred Mitchell
 *** License: MIT
 ** Documentation
-*** Introduction
-**** What is Spiking NEAT?
-*** Installation
-*** Development
-**** This Project
+   Rhayader cmprises multiple Machine Learning engines, allowing you to
+   compose them using Rhayader Combinators. TBD
+*** Spiking NEAT
+**** Introduction
+***** What is Spiking NEAT?
+**** Installation
+**** Development
+***** This Project
       + We have some default extensions set up in the Cabal file.
-**** Interfacing witth Spiking NEAT (Preliminary)
+***** Interfacing witth Spiking NEAT (Preliminary)
       + During the initial handshake, SN will send to
         the Dealers(s) the initial Population ID(s)
       + The Dealer will start streaming to SN.
@@ -51,7 +55,7 @@
       |    9 | new PopIDs -->      | recd PopIDs update           |                        |         |
       |   10 |                     | if not done                  |                        | Goto  3 |
       |   11 | tidy up resources   | <-- otherwise send EndStream |                        |         |
-***** Multiple simultaneous populations?
+****** Multiple simultaneous populations?
       Since we will initially train on the crypto
       market, we will look at multiple time
       periods. Like 5-minute, 10-minute, 30-minute,
@@ -67,8 +71,13 @@
         error vectors back right away, since what might
         be done on the 5-minute klines may not be
         complete on the 15-minute klines.
-***** Seperate Eval Client?
+****** Seperate Eval Client?
       The Eval Client, while could be a part of the Data Client,
       is made a sperate module for scalabiliy purposes. Since
       the clients can be written in any language, the intent is to
       offer the greatest flexibility possible.
+
+*** Heirarchial Temporal Memory (HTM)
+*** PyTorch Integration
+
+      
