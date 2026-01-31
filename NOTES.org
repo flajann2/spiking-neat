@@ -32,6 +32,7 @@
     - [[#crypto-market-feeds][Crypto market feeds]]
   - [[#gotchas-and-deleted-code-snippets][Gotchas and Deleted Code Snippets]]
   - [[#unagi-chan][Unagi Chan]]
+  - [[#combinators][Combinators]]
 
 ** About these notes
    These notes are basically meant for only me. I make no
@@ -285,5 +286,11 @@
   + On both sides, the dealers and the router
   + Low-level BSPayload, serialized Payload objects
   + Payload constructurs form the protocols. 
-       
+** Combinators
+   We wish to go in the direction of making NEAT and HTM completely driven
+   via combinators, including configuration. Thusly, this branch was created
+   for that sole purpose. The executables in the app directory (as well as library importers)
+   shall simply create the main executables that will orchestrate everything through\
+   the combinators that shall serve as a DSL.
+   + We shall work out the syntax here. This is not final by any regards.
    

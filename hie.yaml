@@ -1,0 +1,40 @@
+cradle:
+  cabal:
+    - path: "./lib"
+      component: "lib:spiking-neat"
+
+    - path: "./app/SNeat.hs"
+      component: "spiking-neat:exe:sneat"
+
+    - path: "./app/Flumen.hs"
+      component: "spiking-neat:exe:flumen"
+
+    - path: "./playground/CritterDSL.hs"
+      component: "spiking-neat:exe:playground-dsl"
+
+    - path: "./playground/RandomGen.hs"
+      component: "spiking-neat:exe:playground-random"
+
+    - path: "./playground/zmq/Prompt.hs"
+      component: "spiking-neat:exe:playground-zmq-pub"
+
+    - path: "./playground/zmq/Display.hs"
+      component: "spiking-neat:exe:playground-zmq-sub"
+
+    - path: "./playground/zmq/ZRouter.hs"
+      component: "spiking-neat:exe:playground-zmq-router"
+
+    - path: "./playground/zmq/ZDealer.hs"
+      component: "spiking-neat:exe:playground-zmq-dealer"
+
+    - path: "./playground/zmq/PairServer.hs"
+      component: "spiking-neat:exe:playground-zmq-bi-ser"
+
+    - path: "./playground/zmq/PairClient.hs"
+      component: "spiking-neat:exe:playground-zmq-bi-cli"
+
+    - path: "./playground/Unagi.hs"
+      component: "spiking-neat:exe:playground-unagi"
+
+    - path: "./test"
+      component: "spiking-neat:test:ss-spec"
