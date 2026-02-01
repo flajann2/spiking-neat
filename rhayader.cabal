@@ -1,5 +1,5 @@
 cabal-version:      3.16
-name:               Rhayader
+name:               rhayader
 
 version:            0.0.0.0
 
@@ -58,7 +58,7 @@ common bincoms
     build-depends:
         mtl
       , liquidhaskell-boot
-      , spiking-neat
+      , rhayader
                                  
 library
     import:           commons
@@ -79,7 +79,7 @@ library
       , Data.Stream.Zio.Dealer
       , Data.Stream.Zio.Router
     other-modules:
-        Paths_spiking_neat
+        Paths_rhayader
     hs-source-dirs:
         lib
     build-depends:
@@ -99,7 +99,7 @@ executable sneat
     build-depends:
         mtl
       , liquidhaskell-boot
-      , spiking-neat
+      , rhayader
     hs-source-dirs:   app
 
 executable flumen
@@ -111,7 +111,7 @@ executable flumen
     build-depends:
         mtl
       , liquidhaskell-boot
-      , spiking-neat
+      , rhayader
     hs-source-dirs:   app
 
 executable playground-dsl
@@ -122,7 +122,7 @@ executable playground-dsl
     main-is:     CritterDSL.hs
     build-depends:
         mtl
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground
 
@@ -134,7 +134,7 @@ executable playground-random
     main-is:     RandomGen.hs
     build-depends:
         mtl
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground
 
@@ -147,7 +147,7 @@ executable playground-zmq-pub
     build-depends:
         mtl
       , liquidhaskell-boot
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground/zmq
 
@@ -159,7 +159,7 @@ executable playground-zmq-sub
     main-is:     Display.hs
     build-depends:
         mtl
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground/zmq
 
@@ -171,7 +171,7 @@ executable playground-zmq-router
     main-is:     ZRouter.hs
     build-depends:
         mtl
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground/zmq
 
@@ -184,7 +184,7 @@ executable playground-zmq-dealer
     build-depends:
         mtl
       , liquidhaskell-boot
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground/zmq
 
@@ -196,7 +196,7 @@ executable playground-zmq-bi-ser
     main-is:     PairServer.hs
     build-depends:
         mtl
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground/zmq
 
@@ -209,7 +209,7 @@ executable playground-zmq-bi-cli
     build-depends:
         mtl
       , liquidhaskell-boot
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground/zmq
 
@@ -221,7 +221,7 @@ executable playground-unagi
     main-is:     Unagi.hs
     build-depends:
         mtl
-      , spiking-neat
+      , rhayader
     hs-source-dirs:
         playground
 
@@ -235,4 +235,4 @@ test-suite ss-spec
         base >=4.7 && <5
       , hspec
       , QuickCheck
-      , spiking-neat
+      , rhayader
