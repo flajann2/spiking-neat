@@ -4,7 +4,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DataKinds #-}
 
-module Genetics.GeneTypes where
+module Engine.NEAT.Genetics.GeneTypes where
 
 import SSNumeric
 

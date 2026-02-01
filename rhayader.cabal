@@ -63,17 +63,18 @@ common bincoms
 library
     import:           commons
     exposed-modules:
-        NEAT
+        Engine.NEAT
       , SSMonad
       , SSNumeric
-      , Combinators
-      , Evolution.Goals
-      , Evolution.GoalTypes
-      , Genetics.Critters
-      , Genetics.Genes
-      , Genetics.GeneTypes
-      , Genetics.Neurons
-      , Population.Population
+      , Engine.AI
+      , Engine.Combinators
+      , Engine.NEAT.Evolution.Goals
+      , Engine.NEAT.Evolution.GoalTypes
+      , Engine.NEAT.Genetics.Critters
+      , Engine.NEAT.Genetics.Genes
+      , Engine.NEAT.Genetics.GeneTypes
+      , Engine.NEAT.Genetics.Neurons
+      , Engine.NEAT.Population
       , Data.Stream.Zio
       , Data.Stream.Zio.Common
       , Data.Stream.Zio.Dealer

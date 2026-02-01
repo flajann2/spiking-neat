@@ -1,4 +1,4 @@
-module Population.Population where
+module Engine.NEAT.Population where
 
 import Genetics.Critters
 import SSMonad ( SS )

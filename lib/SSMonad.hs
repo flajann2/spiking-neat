@@ -16,8 +16,8 @@ import Data.Complex (Complex)
 import System.Random ( StdGen, Random(randomR), newStdGen )
 import SSNumeric
 
-import Genetics.GeneTypes
-import Evolution.GoalTypes
+import Engine.NEAT.Genetics.GeneTypes
+import Engine.NEAT.Evolution.GoalTypes
 
 default (Double)
 

@@ -3,7 +3,7 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE MonoLocalBinds #-}
 
-module Genetics.Critters where
+module Engine.NEAT.Genetics.Critters where
 
 import SSMonad 
 import SSNumeric

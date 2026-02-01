@@ -4,15 +4,15 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DataKinds #-}
 
-module Genetics.Genes ( NType(..)
-                      , Role(..)
-                      , Node(..)
-                      , Connection(..)
-                      , mkPyramidal
-                      , mkPurkinje
-                      , mkRegular
-                      , mkInhiborty
-                      ) where
+module Engine.NEAT.Genetics.Genes ( NType(..)
+                                  , Role(..)
+                                  , Node(..)
+                                  , Connection(..)
+                                  , mkPyramidal
+                                  , mkPurkinje
+                                  , mkRegular
+                                  , mkInhiborty
+                                  ) where
 
 -- import qualified Data.HashMap.Strict as HM
 -- import Data.Hashable (Hashable)

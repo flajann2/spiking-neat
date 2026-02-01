@@ -2,11 +2,11 @@
 
 module NEAT ( module SSMonad
             , module SSNumeric
-            , module Genetics.Genes
-            , module Genetics.Neurons
-            , module Genetics.Critters
-            , module Population.Population
-            , module Evolution.Goals
+            , module Engine.NEAT.Genetics.Genes
+            , module Engine.NEAT.Genetics.Neurons
+            , module Engine.NEAT.Genetics.Critters
+            , module Engine.NEAT.Population
+            , module Engine.NEAT.Evolution.Goals
             , pPrint
             ) where
 
