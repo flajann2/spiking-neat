@@ -66,6 +66,7 @@ library
         NEAT
       , SSMonad
       , SSNumeric
+      , Combinators
       , Evolution.Goals
       , Evolution.GoalTypes
       , Genetics.Critters

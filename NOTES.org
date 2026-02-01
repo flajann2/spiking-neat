@@ -1,18 +1,18 @@
 * Notes       :TOC_5_gh:
   - [[#about-these-notes][About these notes]]
-  - [[#basic-design][Basic design]]
-    - [[#zmq-ports-bidirectional-tcp-connections][ZMQ, Ports, bidirectional TCP connections]]
-      - [[#we-use-zmq-for-ipc][We use ZMQ for IPC]]
-      - [[#port-dedicated-using--dealerrouter-in-zmq4-deprecated][Port Dedicated, using  Dealer/Router in ZMQ4 (deprecated)]]
-      - [[#basic-flow][Basic Flow]]
-      - [[#unique-itentifiers----ulids][Unique Itentifiers -- ULIDs]]
-      - [[#errors-with-zmq4][Errors with ZMQ4]]
-  - [[#sequence-numbers-and-innovation-numbers][Sequence Numbers and Innovation Numbers]]
-  - [[#miscellaneous][Miscellaneous]]
-  - [[#hebbian-learning][Hebbian Learning]]
-  - [[#spiking][Spiking]]
-    - [[#neuron-per-spike][Neuron per spike]]
-  - [[#generic-floats][Generic Floats]]
+  - [[#basic-design-of-the-engines][Basic Design of the Engines]]
+    - [[#basic-design-of-the-combinators][Basic design of the Combinators]]
+    - [[#basic-design-of-neat][Basic design of NEAT]]
+      - [[#sequence-numbers-and-innovation-numbers][Sequence Numbers and Innovation Numbers]]
+      - [[#basic-design][Basic design]]
+        - [[#zmq-ports-bidirectional-tcp-connections][ZMQ, Ports, bidirectional TCP connections]]
+      - [[#miscellaneous][Miscellaneous]]
+      - [[#hebbian-learning][Hebbian Learning]]
+      - [[#spiking][Spiking]]
+        - [[#neuron-per-spike][Neuron per spike]]
+      - [[#generic-floats][Generic Floats]]
+    - [[#basic-design-of-htm][Basic design of HTM]]
+    - [[#basic-design-of-pytorcvh-integration][Basic design of PyTorcvh Integration]]
   - [[#issues-with-compiles-and-builds][Issues with compiles and builds]]
     - [[#you-must-add-to-exposed-modules][You must add to exposed-modules]]
     - [[#llvm-general-building][LLVM-general building]]
@@ -41,7 +41,21 @@
    some utility here as these notes may represent a history of
    various design decisions I've made to create Spiking NEAT, but as I said,
    no promises.
-** Basic design
+** Basic Design of the Engines
+*** Basic design of the Combinators
+    We want the combinators to be completely composable amoung the ML engines.
+    For example, we would like the NEAT engine to be composable with the HTM engine
+    allowing for, example, NEAT to be an automatic SDR converter for NEAT.
+    #+BEGIN_SRC Haskell
+       NEAT a b c &> HTM d e f &> OUTPUT d e f
+    #+END_SRC
+    Or something similar.
+*** Basic design of NEAT
+**** Sequence Numbers and Innovation Numbers
+   Innovation numbers are used to trace this history of
+   evolution.  They are not intended to be IDs.
+
+**** Basic design
    + We shall have, instead of negative weights,
      negative or inhibitory neurons, which will send
      the weights as negative to the neuros its conneted
@@ -64,11 +78,11 @@
      execution of these neurons, should we maintain
      that? Perhaps we should simply create the IR from
      the indicies directly.
-*** ZMQ, Ports, bidirectional TCP connections
-**** We use ZMQ for IPC
+***** ZMQ, Ports, bidirectional TCP connections
+****** We use ZMQ for IPC
       since it is supported for nearly all languages that are in
       popular or semi-popular use.
-**** Port Dedicated, using  Dealer/Router in ZMQ4 (deprecated)
+****** Port Dedicated, using  Dealer/Router in ZMQ4 (deprecated)
       All Dealer clients must present a unique identifer when
       they connect. All connections shall be bidirectional.
       + The messae Payloads shall define the protocols they may use.
@@ -76,35 +90,31 @@
         configuration, no need to have lots of ports
         anymore. We may need a seperate port per
         dealer, but even that is not entirely clear.
-**** Basic Flow
+****** Basic Flow
       See README.org's Interfacing with Spiking NEAT
-**** Unique Itentifiers -- ULIDs
+****** Unique Itentifiers -- ULIDs
       We have elected to use ULIDs, since they are
       monontonic.  The default implementations have
       resolutions only down to the millisecond. Which
       is fine for a single server. We will not deal
       with multiple distributed severs at this time.
-**** Errors with ZMQ4
+****** Errors with ZMQ4
       Assertion failed: !_current_out (/usr/src/debug/zeromq/zeromq/src/router.cpp:166)
       fish: Job 1, 'cabal run playground-zmq-router' terminated by signal SIGABRT (Abort)
       + If I have to clone ZMQ4 and fix this problem myself, I will.
       
-** Sequence Numbers and Innovation Numbers
-   Innovation numbers are used to trace this history of
-   evolution.  They are not intended to be IDs.
-
-** Miscellaneous
+**** Miscellaneous
    + I had to remove Node and Connection from Gene
      and make them separate. Haskell doesnät like to
      array the type constructor otherwise.
-** Hebbian Learning
+**** Hebbian Learning
    I need to explore the inclusion of Hebbian leaarning for S-NEAT.
    + w ij ←w ij +η⋅r i ⋅r j -- just look up the actual formula.
    + How will this work in the spiking context? Do I allow the
      weights to change as the critter is working, as opposed to only
      doing that during evolution?
    + Do I Lamackian those changes back to the genes?
-** Spiking
+**** Spiking
    I have not understood how I shall exactly implement
    spiking. Do I evaluate the entire critter per spike?
    Or do I evaluate each neuron per spike?
@@ -118,14 +128,14 @@
      intensive, meaning more parallel computation perhaps.
    + I am leaning toward the latter. Neuron per spike. We will
      have to optimize for speed later.
-*** Neuron per spike
+***** Neuron per spike
     A vector of neurons -- or nodes -- will have to be
     maintained somewhere, and I was thinking floats. But what
     if we used Complex numbers or even quaternions instead?
 
     I will need to make it all generic, which Haskell
     will allow me to do easily enough.
-** Generic Floats
+**** Generic Floats
    I am calling them that for now,
    but really I want to be able to
    use complex numbers or even quaturnions
@@ -133,6 +143,8 @@
    will lead. It may make it able to
    latch on to deeper nuances of learning.
    
+*** Basic design of HTM
+*** Basic design of PyTorcvh Integration
 ** Issues with compiles and builds
 *** You must add to exposed-modules
     everything in your library that might be used by
