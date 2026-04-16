@@ -1,31 +1,21 @@
-cabal-version:      3.16
-name:               rhayader
-
-version:            0.0.0.0
-
-synopsis:
-  A collection of composable Machine Learning engines such as Spiking NEAT, HTM, etc.
-
-description:
-  Influenced by NEAT, HTM, and Active Inference.
-
-license:            MIT
-license-file:       LICENSE
-author:             Fred Mitchell
-maintainer:         eltoro@atomlogik.de
-
-copyright:          2024 Fred Mitchell & Atomlogik.de
-category:           Machine Learning
-build-type:         Simple
-extra-doc-files:    CHANGELOG.org
+cabal-version: 3.16
+name:          rhayader
+version:       0.0.0.0
+synopsis:      A collection of composable Machine Learning engines such as Spiking NEAT, HTM, etc.
+description:   Influenced by NEAT, HTM, and Active Inference.
+license:       MIT
+license-file:  LICENSE
+author:        Fred Mitchell
+maintainer:    eltoro@atomlogik.de
+copyright:     2024 Fred Mitchell & Atomlogik.de
+category:      Machine Learning
+build-type:    Simple
+extra-doc-files: CHANGELOG.org
 
 common commons
-    ghc-options: -O2
-                 -Wall
-                 -threaded
+    ghc-options:     -O2 -Wall -threaded
     build-depends:
         base >=4.7 && <5
-      -- , llvm-general >= 3.8 && < 4.0
       , pretty-simple
       , random
       , ghc
@@ -51,17 +41,18 @@ common commons
       , unagi-chan
       , conduit
     default-language: GHC2024
-    default-extensions: OverloadedRecordDot 
-                      , DuplicateRecordFields
+    default-extensions:
+        OverloadedRecordDot
+      , DuplicateRecordFields
 
 common bincoms
     build-depends:
         mtl
       , liquidhaskell-boot
       , rhayader
-                                 
+
 library
-    import:           commons
+    import: commons
     exposed-modules:
         Engine.NEAT
       , SSMonad
@@ -81,159 +72,85 @@ library
       , Data.Stream.Zio.Router
     other-modules:
         Paths_rhayader
-    hs-source-dirs:
-        lib
+    hs-source-dirs:  lib
     build-depends:
         mtl
       , unordered-containers
       , hashable
       , data-default
       , transformers
-      -- , plugins
 
 executable sneat
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     SNeat.hs
-    build-depends:
-        mtl
-      , liquidhaskell-boot
-      , rhayader
-    hs-source-dirs:   app
+    hs-source-dirs: app
 
 executable flumen
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     Flumen.hs
-    build-depends:
-        mtl
-      , liquidhaskell-boot
-      , rhayader
-    hs-source-dirs:   app
+    hs-source-dirs: app
 
 executable playground-dsl
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     CritterDSL.hs
-    build-depends:
-        mtl
-      , rhayader
-    hs-source-dirs:
-        playground
+    hs-source-dirs: playground
 
 executable playground-random
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     RandomGen.hs
-    build-depends:
-        mtl
-      , rhayader
-    hs-source-dirs:
-        playground
+    hs-source-dirs: playground
 
 executable playground-zmq-pub
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     Prompt.hs
-    build-depends:
-        mtl
-      , liquidhaskell-boot
-      , rhayader
-    hs-source-dirs:
-        playground/zmq
+    hs-source-dirs: playground/zmq
 
 executable playground-zmq-sub
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     Display.hs
-    build-depends:
-        mtl
-      , rhayader
-    hs-source-dirs:
-        playground/zmq
+    hs-source-dirs: playground/zmq
 
 executable playground-zmq-router
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     ZRouter.hs
-    build-depends:
-        mtl
-      , rhayader
-    hs-source-dirs:
-        playground/zmq
+    hs-source-dirs: playground/zmq
 
 executable playground-zmq-dealer
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     ZDealer.hs
-    build-depends:
-        mtl
-      , liquidhaskell-boot
-      , rhayader
-    hs-source-dirs:
-        playground/zmq
+    hs-source-dirs: playground/zmq
 
 executable playground-zmq-bi-ser
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     PairServer.hs
-    build-depends:
-        mtl
-      , rhayader
-    hs-source-dirs:
-        playground/zmq
+    hs-source-dirs: playground/zmq
 
 executable playground-zmq-bi-cli
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     PairClient.hs
-    build-depends:
-        mtl
-      , liquidhaskell-boot
-      , rhayader
-    hs-source-dirs:
-        playground/zmq
+    hs-source-dirs: playground/zmq
 
 executable playground-unagi
-    import:           commons
-                    , bincoms
-    ghc-options: -rtsopts
-                 -with-rtsopts=-N
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     Unagi.hs
-    build-depends:
-        mtl
-      , rhayader
-    hs-source-dirs:
-        playground
+    hs-source-dirs: playground
 
 test-suite ss-spec
-    import:           commons
-                    , bincoms
-    type: exitcode-stdio-1.0
-    main-is: Spec.hs
+    import:      commons, bincoms
+    type:        exitcode-stdio-1.0
+    main-is:     Spec.hs
     hs-source-dirs: test
     build-depends:
-        base >=4.7 && <5
-      , hspec
+        hspec
       , QuickCheck
-      , rhayader

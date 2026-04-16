@@ -12,11 +12,11 @@ module Engine.NEAT ( module SSMonad
 
 import SSMonad
 import SSNumeric
-import Genetics.Genes
-import Genetics.Neurons
-import Genetics.Critters
-import Population.Population
-import Evolution.Goals
+import Engine.NEAT.Genetics.Genes
+import Engine.NEAT.Genetics.Neurons
+import Engine.NEAT.Genetics.Critters
+import Engine.NEAT.Population.Population
+import Engine.NEAT.Evolution.Goals
 import Text.Pretty.Simple (pPrint)
 -- import NEAT (SSNumeric(SSDouble))
 

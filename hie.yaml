@@ -1,40 +1,40 @@
 cradle:
   cabal:
     - path: "./lib"
-      component: "lib:spiking-neat"
+      component: "lib:rhayader"
 
     - path: "./app/SNeat.hs"
-      component: "spiking-neat:exe:sneat"
+      component: "rhayader:exe:sneat"
 
     - path: "./app/Flumen.hs"
-      component: "spiking-neat:exe:flumen"
+      component: "rhayader:exe:flumen"
 
     - path: "./playground/CritterDSL.hs"
-      component: "spiking-neat:exe:playground-dsl"
+      component: "rhayader:exe:playground-dsl"
 
     - path: "./playground/RandomGen.hs"
-      component: "spiking-neat:exe:playground-random"
+      component: "rhayader:exe:playground-random"
 
     - path: "./playground/zmq/Prompt.hs"
-      component: "spiking-neat:exe:playground-zmq-pub"
+      component: "rhayader:exe:playground-zmq-pub"
 
     - path: "./playground/zmq/Display.hs"
-      component: "spiking-neat:exe:playground-zmq-sub"
+      component: "rhayader:exe:playground-zmq-sub"
 
     - path: "./playground/zmq/ZRouter.hs"
-      component: "spiking-neat:exe:playground-zmq-router"
+      component: "rhayader:exe:playground-zmq-router"
 
     - path: "./playground/zmq/ZDealer.hs"
-      component: "spiking-neat:exe:playground-zmq-dealer"
+      component: "rhayader:exe:playground-zmq-dealer"
 
     - path: "./playground/zmq/PairServer.hs"
-      component: "spiking-neat:exe:playground-zmq-bi-ser"
+      component: "rhayader:exe:playground-zmq-bi-ser"
 
     - path: "./playground/zmq/PairClient.hs"
-      component: "spiking-neat:exe:playground-zmq-bi-cli"
+      component: "rhayader:exe:playground-zmq-bi-cli"
 
     - path: "./playground/Unagi.hs"
-      component: "spiking-neat:exe:playground-unagi"
+      component: "rhayader:exe:playground-unagi"
 
     - path: "./test"
-      component: "spiking-neat:test:ss-spec"
+      component: "rhayader:test:ss-spec"

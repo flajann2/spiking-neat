@@ -21,7 +21,7 @@ import qualified Data.Set as Set
 import Data.Stream.Zio.Common
 
 routerForever ::IO (UniqueID, BSPayload) -> ((UniqueID, BSPayload) -> IO ()) -> IO ()
-routerForever zrcv zresp = withContext $ \ctx -> do
+routerForever _zrcv _zresp = withContext $ \ctx -> do
     withSocket ctx Router $ \router -> do
       clientsVar <- startSN router
       popIDs <- prepInitialPopIDs
@@ -29,8 +29,8 @@ routerForever zrcv zresp = withContext $ \ctx -> do
         
       -- Main receive loop
       forever $ do
-        receivePayload
-        evaluateResults
+        _ <- receivePayload
+        _ <- evaluateResults
         sendResults     -- send results to be asynchronously evaluatedf
         receiveEpsilons -- error vectors from the evaluated results
         evolvePopulations

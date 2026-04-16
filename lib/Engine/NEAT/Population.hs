@@ -1,6 +1,6 @@
 module Engine.NEAT.Population where
 
-import Genetics.Critters
+import Engine.NEAT.Genetics.Critters
 import SSMonad ( SS )
 -- import SSNumeric
 

@@ -7,7 +7,7 @@ module Engine.NEAT.Genetics.Critters where
 
 import SSMonad 
 import SSNumeric
-import Genetics.Genes
+import Engine.NEAT.Genetics.Genes
 import Control.Monad (mapM)
 import GHC.Cmm.Utils (mkRODataLits)
 import GHC.Builtin.Uniques (mkRegClassUnique)

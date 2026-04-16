@@ -18,7 +18,7 @@ module Engine.NEAT.Genetics.Genes ( NType(..)
 -- import Data.Hashable (Hashable)
 -- import SSMonad
 import SSNumeric
-import Genetics.GeneTypes
+import Engine.NEAT.Genetics.GeneTypes
 
 exp' :: SSNumeric -> SSNumeric
 exp' (SSFloat x)  = SSFloat (exp x)
