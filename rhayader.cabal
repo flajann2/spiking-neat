@@ -92,6 +92,12 @@ executable flumen
     main-is:     Flumen.hs
     hs-source-dirs: app
 
+executable playground-combinators
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
+    main-is:     Combinators.hs
+    hs-source-dirs: playground
+
 executable playground-dsl
     import:      commons, bincoms
     ghc-options: -rtsopts -with-rtsopts=-N
