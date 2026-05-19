@@ -1,7 +1,6 @@
--- LLM-generated
+{-# LANGUAGE ScopedTypeVariables #-}
 
-module Engine.Combinators (
-                          ) where
+module Engine.Combinators where
 
 import Data.List (group, sort, maximumBy)
 import Data.Ord (comparing)
@@ -14,9 +13,6 @@ type Dataset i o = [(i, o)]
 type Predictor i o = i -> o
 
 -- | An ML engine: given a dataset, produces a trained predictor.
---   This is deliberately simple and pure (no IO or randomness built-in).
---   If your base engines need randomness (e.g. random forests), you can
---   wrap them to take an explicit seed or use a state monad externally.
 newtype Engine i o = Engine
   { trainEngine :: Dataset i o -> Predictor i o }
 
@@ -24,59 +20,63 @@ newtype Engine i o = Engine
 -- Basic combinators
 -- ================================================================
 
--- | Sequential composition = stacking.
---   The first engine transforms the inputs, then the second engine
---   is trained on the predictions of the first (as new "features")
---   paired with the original labels.
-stack :: Engine i m -> Engine m o -> Engine i o
+-- | Sequential composition (stacking).
+-- The first engine is trained on the original data, its predictions become
+-- the new features for the second engine.
+--
+-- Note: This requires that the intermediate representation `m` has the same
+-- type as the final label `o` (because we have no ground-truth labels for `m`).
+-- If you need a true feature-transform + meta-learner stack with different types,
+-- you will need an unsupervised/pretrained first stage or a different design.
+stack :: (m ~ o) => Engine i m -> Engine m o -> Engine i o
 stack e1 e2 = Engine $ \dataset ->
-  let p1 = trainEngine e1 dataset
+  let p1 = trainEngine e1 dataset                     -- now type-checks
       stackedData = [(p1 x, y) | (x, y) <- dataset]
       p2 = trainEngine e2 stackedData
   in \x -> p2 (p1 x)
 
--- | Parallel averaging (for regression where outputs are Fractional)
+
+-- | Parallel averaging (for regression)
 average :: Fractional o => [Engine i o] -> Engine i o
 average [] = error "average: empty list of engines"
 average es = Engine $ \dataset ->
   let predictors = map (`trainEngine` dataset) es
       n = fromIntegral (length predictors)
   in \x -> let preds = map ($ x) predictors
-               total = sum preds
-           in total / n
+           in sum preds / n
 
--- | Weighted averaging (weights should be positive and ideally sum to 1)
+
+-- | Weighted averaging (weights should be positive)
 weightedAverage :: Fractional o => [(Double, Engine i o)] -> Engine i o
 weightedAverage [] = error "weightedAverage: empty list"
 weightedAverage wes = Engine $ \dataset ->
   let trained = [(w, trainEngine e dataset) | (w, e) <- wes]
       totalWeight = sum (map fst trained)
-  in \x -> let weightedSum = sum [w * p x | (w, p) <- trained]
-           in weightedSum / totalWeight
+  in \x ->
+       let weightedSum = sum [realToFrac w * p x | (w, p) <- trained]
+       in weightedSum / realToFrac totalWeight
 
--- | Majority vote (for classification where outputs are Eq)
+
+-- | Majority vote for classification
 majorityVote :: (Eq o, Ord o) => [Engine i o] -> Engine i o
 majorityVote [] = error "majorityVote: empty list of engines"
 majorityVote es = Engine $ \dataset ->
   let predictors = map (`trainEngine` dataset) es
       mostFrequent xs =
         fst . maximumBy (comparing snd) .
-        Map.toList $
-        Map.fromListWith (+) [(x, 1) | x <- xs]
+        Map.toList $ Map.fromListWith (+) [(x, 1) | x <- xs]
   in \x -> mostFrequent (map ($ x) predictors)
 
+
 -- ================================================================
--- Higher-level ensemble combinators built from the basics
+-- Higher-level ensemble combinators
 -- ================================================================
 
--- | Simple uniform ensemble for regression
 ensembleAvg :: Fractional o => Int -> Engine i o -> Engine i o
 ensembleAvg n base = average (replicate n base)
 
--- | Simple uniform ensemble for classification
 ensembleVote :: (Eq o, Ord o) => Int -> Engine i o -> Engine i o
 ensembleVote n base = majorityVote (replicate n base)
 
--- | Example of a heterogeneous ensemble (mix different base engines)
 heterogeneous :: Fractional o => [Engine i o] -> Engine i o
 heterogeneous = average

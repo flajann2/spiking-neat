@@ -1,6 +1,6 @@
 module Main where
 
-import NEAT
+import Engine.NEAT
 
 default (Double)
 main :: IO ()

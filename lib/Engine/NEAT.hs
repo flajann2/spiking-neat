@@ -21,5 +21,5 @@ import Text.Pretty.Simple (pPrint)
 -- import NEAT (SSNumeric(SSDouble))
 
 default (Double)
--- >>> 2 + 2
--- 4
+-- >>> 6 * 2
+-- 12

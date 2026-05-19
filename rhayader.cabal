@@ -86,16 +86,16 @@ executable sneat
     main-is:     SNeat.hs
     hs-source-dirs: app
 
-executable flumen
+executable main
     import:      commons, bincoms
     ghc-options: -rtsopts -with-rtsopts=-N
-    main-is:     Flumen.hs
+    main-is:     Main.hs
     hs-source-dirs: app
 
-executable playground-combinators
+executable playground-aicombinators
     import:      commons, bincoms
     ghc-options: -rtsopts -with-rtsopts=-N
-    main-is:     Combinators.hs
+    main-is:     AICombinators.hs
     hs-source-dirs: playground
 
 executable playground-dsl

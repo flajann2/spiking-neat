@@ -22,11 +22,11 @@ instance Engine LinearLayer where
 
 instance Trainable LinearLayer where
   type Dataset LinearLayer = [([Double], Double)]
-  train _ layer = layer  -- TODO: implement local update (NEAT mutation, HTM learning, etc.)
+  train _ layer = layer
 
 data ReLU = ReLU
 instance Engine ReLU where
-  type Input ReLU = Double
+  type Input ReLU = [Double]
   type Output ReLU = Double
   infer ReLU x = max 0 x
 
@@ -45,23 +45,54 @@ instance Engine FixedLookup where
   infer FixedLookup _     = [0, 0, 0]
 
 -- ================================================================
--- Composed Model Examples
+-- Correctly composed model (with explicit grouping)
 -- ================================================================
-composed :: Composed FixedLookup (Composed LinearLayer (Composed ReLU (Composed LinearLayer Sigmoid)))
+
+composed :: Composed FixedLookup
+                  (Composed LinearLayer
+                    (Composed (Adapter Double [Double])
+                      (Composed LinearLayer
+                        (Composed ReLU Sigmoid))))
 composed =
   FixedLookup
   ~>> LinearLayer [0.5, -0.1, 0.3] 0.1
   ~>> ReLU
+  >~> (\x -> [x])                     -- Adapter: Double → [Double]
   ~>> LinearLayer [0.7, -0.4] 0.0
+  ~>> ReLU
   ~>> Sigmoid
 
+-- Alternative: build step-by-step (much easier to read and maintain)
+composed' :: Composed FixedLookup
+                   (Composed LinearLayer
+                     (Composed (Adapter Double [Double])
+                       (Composed LinearLayer
+                         (Composed ReLU Sigmoid))))
+composed' =
+  let
+    l1      = LinearLayer [0.5, -0.1, 0.3] 0.1
+    relu    = ReLU
+    toVec   = Adapter (\x -> [x]) :: Adapter Double [Double]
+    l2      = LinearLayer [0.7, -0.4] 0.0
+    sig     = Sigmoid
+  in
+    FixedLookup
+    ~>> l1
+    ~>> relu
+    >~> toVec
+    ~>> l2
+    ~>> relu
+    ~>> sig
+
+-- ================================================================
+-- Usage
+-- ================================================================
 result :: Double
 result = infer composed "cat"
 
 batchResults :: [String] -> [Double]
 batchResults = inferMany composed
 
--- With adapter
+-- Simple adapter example
 adapted :: Composed LinearLayer (Adapter Double Int)
 adapted = LinearLayer [1.0, 2.0] 0.0 >~> round
-

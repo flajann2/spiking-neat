@@ -3,7 +3,7 @@
 
 module Main where
 
-import NEAT
+import Engine.NEAT
 
 main :: IO ()
 main = do
