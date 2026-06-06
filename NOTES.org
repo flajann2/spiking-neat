@@ -10,6 +10,7 @@
       - [[#hebbian-learning][Hebbian Learning]]
       - [[#spiking][Spiking]]
         - [[#neuron-per-spike][Neuron per spike]]
+        - [[#spiking-understood][Spiking Understood]]
       - [[#generic-floats][Generic Floats]]
     - [[#basic-design-of-htm][Basic design of HTM]]
     - [[#basic-design-of-pytorcvh-integration][Basic design of PyTorcvh Integration]]
@@ -135,6 +136,19 @@
 
     I will need to make it all generic, which Haskell
     will allow me to do easily enough.
+
+***** Spiking Understood
+    + We shall use the logistics approach that many
+      neuroscientists use.
+    + The parameters of the logistics equations will themselves
+      be evolvable per neuron. This will allow them to model a wide
+      variety of neuron activation functions.
+    + We will "hard code" specific firing patterns upfront, especially
+      Pyramidial cells.
+    + The updates shall be clocked. Also, we shall maintain 2 general classes 
+      of neurons: excitatory and inhibitory. Excitatory outputs shall always
+      be positive, and negative for inhibitory.
+
 **** Generic Floats
    I am calling them that for now,
    but really I want to be able to

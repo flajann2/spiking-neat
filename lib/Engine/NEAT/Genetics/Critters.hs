@@ -5,9 +5,16 @@
 
 module Engine.NEAT.Genetics.Critters where
 
-import SSMonad 
-import SSNumeric
+import SSMonad
+    ( getConfig,
+      nextRandom,
+      nxi,
+      liftIO,
+      Config(num_outputs, num_inputs),
+      SS ) 
+import SSNumeric ( SSNumeric(SSDouble) )
 import Engine.NEAT.Genetics.Genes
+    ( mkRegular, NType, Connection(..), Node(..), Role(..) )
 import Control.Monad (mapM)
 import GHC.Cmm.Utils (mkRODataLits)
 import GHC.Builtin.Uniques (mkRegClassUnique)
