@@ -5,6 +5,7 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE GADTs #-}
 module Engine.AI where
 
 import Data.Kind (Type)
@@ -14,7 +15,7 @@ import Data.Kind (Type)
 -- Core Inference Engine
 -- ================================================================
 class Engine engine where
-  type Input engine :: Type
+  type Input engine  :: Type
   type Output engine :: Type
   infer :: engine -> Input engine -> Output engine
 
@@ -77,8 +78,9 @@ instance (Trainable e1, Trainable e2,
 newtype Adapter a b = Adapter (a -> b)
 
 instance Engine (Adapter a b) where
-  type Input (Adapter a b) = a
+  type Input (Adapter a b)  = a
   type Output (Adapter a b) = b
+  infer :: Adapter a b -> Input (Adapter a b) -> Output (Adapter a b)
   infer (Adapter f) = f
 
 -- ================================================================

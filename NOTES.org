@@ -10,7 +10,7 @@
       - [[#hebbian-learning][Hebbian Learning]]
       - [[#spiking][Spiking]]
         - [[#neuron-per-spike][Neuron per spike]]
-        - [[#spiking-understood][Spiking Understood]]
+        - [[#spiking-understood----izhikevich-logistics][Spiking Understood -- Izhikevich Logistics]]
       - [[#generic-floats][Generic Floats]]
     - [[#basic-design-of-htm][Basic design of HTM]]
     - [[#basic-design-of-pytorcvh-integration][Basic design of PyTorcvh Integration]]
@@ -137,7 +137,7 @@
     I will need to make it all generic, which Haskell
     will allow me to do easily enough.
 
-***** Spiking Understood
+***** Spiking Understood -- Izhikevich Logistics
     + We shall use the logistics approach that many
       neuroscientists use.
     + The parameters of the logistics equations will themselves
@@ -148,7 +148,13 @@
     + The updates shall be clocked. Also, we shall maintain 2 general classes 
       of neurons: excitatory and inhibitory. Excitatory outputs shall always
       be positive, and negative for inhibitory.
-
+****** Details of the logistics
+       + The Izhikevich logistics shall be used. They sport 4 
+	  parameters (a, b, c, d), which can be made subject to the normal
+	  viarations during evolution. Innovation numbers will help
+	  preserve the good ones. 
+****** Wandler --> to represent Adapter and Engine
+       We work this into the type classes, etc.
 **** Generic Floats
    I am calling them that for now,
    but really I want to be able to
