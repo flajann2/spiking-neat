@@ -1,4 +1,5 @@
-* Notes       :TOC_5_gh:
+#+STARTUP: inlineimages
+* Notes       :TOC_7_gh:
   - [[#about-these-notes][About these notes]]
   - [[#basic-design-of-the-engines][Basic Design of the Engines]]
     - [[#basic-design-of-the-combinators][Basic design of the Combinators]]
@@ -6,11 +7,18 @@
       - [[#sequence-numbers-and-innovation-numbers][Sequence Numbers and Innovation Numbers]]
       - [[#basic-design][Basic design]]
         - [[#zmq-ports-bidirectional-tcp-connections][ZMQ, Ports, bidirectional TCP connections]]
+          - [[#we-use-zmq-for-ipc][We use ZMQ for IPC]]
+          - [[#port-dedicated-using--dealerrouter-in-zmq4-deprecated][Port Dedicated, using  Dealer/Router in ZMQ4 (deprecated)]]
+          - [[#basic-flow][Basic Flow]]
+          - [[#unique-itentifiers----ulids][Unique Itentifiers -- ULIDs]]
+          - [[#errors-with-zmq4][Errors with ZMQ4]]
       - [[#miscellaneous][Miscellaneous]]
       - [[#hebbian-learning][Hebbian Learning]]
       - [[#spiking][Spiking]]
         - [[#neuron-per-spike][Neuron per spike]]
-        - [[#spiking-understood----izhikevich-logistics][Spiking Understood -- Izhikevich Logistics]]
+        - [[#spiking-understood----izhikevich-logistics][Spiking Understood -- *Izhikevich Logistics*]]
+          - [[#details-of-the-logistics][Details of the logistics]]
+          - [[#wandler----to-represent-adapter-and-engine][Wandler --> to represent Adapter and Engine]]
       - [[#generic-floats][Generic Floats]]
     - [[#basic-design-of-htm][Basic design of HTM]]
     - [[#basic-design-of-pytorcvh-integration][Basic design of PyTorcvh Integration]]
@@ -55,7 +63,6 @@
 **** Sequence Numbers and Innovation Numbers
    Innovation numbers are used to trace this history of
    evolution.  They are not intended to be IDs.
-
 **** Basic design
    + We shall have, instead of negative weights,
      negative or inhibitory neurons, which will send
@@ -137,7 +144,7 @@
     I will need to make it all generic, which Haskell
     will allow me to do easily enough.
 
-***** Spiking Understood -- Izhikevich Logistics
+***** Spiking Understood -- *Izhikevich Logistics* 
     + We shall use the logistics approach that many
       neuroscientists use.
     + The parameters of the logistics equations will themselves
@@ -149,8 +156,8 @@
       of neurons: excitatory and inhibitory. Excitatory outputs shall always
       be positive, and negative for inhibitory.
 ****** Details of the logistics
-       + The Izhikevich logistics shall be used. They sport 4 
-	  parameters (a, b, c, d), which can be made subject to the normal
+       + The *Izhikevich logistics* shall be used. They sport 4 
+	  parameters *(a, b, c, d)*, which can be made subject to the normal
 	  viarations during evolution. Innovation numbers will help
 	  preserve the good ones. 
 ****** Wandler --> to represent Adapter and Engine

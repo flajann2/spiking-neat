@@ -12,11 +12,16 @@ import Data.Kind (Type)
 --- import Data.Functor.Identity (Identity(..))
 
 -- ================================================================
+-- Supertype that encompasses Engine and Adapter
+-- ================================================================
+class Wandler w where
+  type Input  w :: Type
+  type Output w :: Type
+
+-- ================================================================
 -- Core Inference Engine
 -- ================================================================
-class Engine engine where
-  type Input engine  :: Type
-  type Output engine :: Type
+class Wandler engine => Engine engine where
   infer :: engine -> Input engine -> Output engine
 
 -- Batch inference (works on any Functor)

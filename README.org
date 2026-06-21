@@ -1,4 +1,5 @@
-* Rhayader -- A collection of alternative machine learning enginges :TOC_5_gh:
+#+STARTUP: inlineimages
+* Rhayader -- A collection of alternative machine learning enginges :TOC_7_gh:
   - [[#the-usual-stuff][The usual stuff]]
     - [[#author-fred-mitchell][Author: Fred Mitchell]]
     - [[#license-mit][License: MIT]]
@@ -10,8 +11,11 @@
       - [[#development][Development]]
         - [[#this-project][This Project]]
         - [[#interfacing-witth-spiking-neat-preliminary][Interfacing witth Spiking NEAT (Preliminary)]]
+          - [[#multiple-simultaneous-populations][Multiple simultaneous populations?]]
+          - [[#seperate-eval-client][Seperate Eval Client?]]
     - [[#heirarchial-temporal-memory-htm][Heirarchial Temporal Memory (HTM)]]
     - [[#pytorch-integration][PyTorch Integration]]
+    - [[#tensorflow-integration][TensorFlow Integration]]
 
 ** The usual stuff
   #+CAPTION: Rhayader
@@ -29,11 +33,15 @@
 *** Spiking NEAT
 **** Introduction
 ***** What is Spiking NEAT?
+      *Spiking NEAT* is an enhancement of the NEAT algorithm to
+      leverage **Izhikevich Logistics** as the activation function. This
+      will require several iterations to converge on the activation,
+      and the resultant spike trains shall be encoded.
 **** Installation
 **** Development
 ***** This Project
       + We have some default extensions set up in the Cabal file.
-***** Interfacing witth Spiking NEAT (Preliminary)
+***** TODO Interfacing witth Spiking NEAT (Preliminary)
       + During the initial handshake, SN will send to
         the Dealers(s) the initial Population ID(s)
       + The Dealer will start streaming to SN.
@@ -86,5 +94,5 @@
 
 *** Heirarchial Temporal Memory (HTM)
 *** PyTorch Integration
-
+*** TensorFlow Integration
       
