@@ -40,6 +40,7 @@ common commons
       , liquid-prelude
       , unagi-chan
       , conduit
+      , h-raylib
     default-language: GHC2024
     default-extensions:
         OverloadedRecordDot
