@@ -159,6 +159,24 @@ executable playground-rl-example
     main-is:     RLExample.hs
     hs-source-dirs: playground
 
+executable playground-rl-mouse
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
+    main-is:     RLMouseExample.hs
+    hs-source-dirs: playground
+
+executable playground-rl-gui
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
+    main-is:     RLGUIExample.hs
+    hs-source-dirs: playground
+
+executable playground-rl-Izhikevich
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
+    main-is:     RLIzhikevich.hs
+    hs-source-dirs: playground
+
 test-suite ss-spec
     import:      commons, bincoms
     type:        exitcode-stdio-1.0

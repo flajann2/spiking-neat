@@ -5,18 +5,21 @@ module Main where
 import Raylib.Core
   ( clearBackground
   , isKeyPressed
+  , isMouseButtonDown
+  , getMouseDelta
+  , getMouseWheelMove
   )
-import Raylib.Core.Camera (updateCamera)
 import Raylib.Core.Models (drawGrid, drawLine3D, drawSphere)
 import Raylib.Core.Text (drawText, drawFPS)
 import Raylib.Types
-  ( Vector3
+  ( pattern Vector2
+  , Vector3
   , pattern Vector3
   , Color (..)
   , Camera3D (..)
   , CameraProjection (CameraPerspective)
-  , CameraMode (CameraModeOrbital)
   , KeyboardKey (KeyR)
+  , MouseButton (MouseButtonLeft)
   )
 import Raylib.Util (whileWindowOpen0, withWindow, drawing, mode3D)
 import Raylib.Util.Colors (white, red, green, blue)
@@ -44,17 +47,36 @@ stepLorenz (Vec3 x y z) =
       dz = x * y - beta * z
   in Vec3 (x + dx * dt) (y + dy * dt) (z + dz * dt)
 
-main :: IO ()
-main = withWindow 2560 1600 "3D Phase Portrait - Lorenz Attractor, Free rotating" 60 $ \_ -> do
-  let initialCamera =
-        Camera3D
-          (Vector3 0 22 42)   -- position
-          (Vector3 0 0 0)     -- target (origin - what we orbit around)
-          (Vector3 0 1 0)     -- up
-          50.0                -- fovy
-          CameraPerspective   -- projection
+-- Orbit-camera state: yaw/pitch angles (radians) and distance from origin.
+data OrbitState = OrbitState
+  { orbitYaw      :: !Float
+  , orbitPitch    :: !Float
+  , orbitDistance :: !Float
+  }
 
-  cameraRef     <- newIORef initialCamera
+mouseSensitivity :: Float
+mouseSensitivity = 0.005
+
+zoomSensitivity :: Float
+zoomSensitivity = 2.0
+
+minDistance, maxDistance, maxPitch :: Float
+minDistance = 5.0
+maxDistance = 150.0
+maxPitch    = 1.5   -- just under pi/2, so we never flip over the poles
+
+-- Turn (yaw, pitch, distance) into a camera position orbiting the origin.
+orbitToVector3 :: OrbitState -> Vector3
+orbitToVector3 (OrbitState yaw pitch dist) =
+  let cosPitch = cos pitch
+      x = dist * cosPitch * sin yaw
+      y = dist * sin pitch
+      z = dist * cosPitch * cos yaw
+  in Vector3 x y z
+
+main :: IO ()
+main = withWindow 2560 1600 "3D Phase Portrait - Lorenz Attractor, Mouse control" 60 $ \_ -> do
+  orbitRef      <- newIORef (OrbitState 0.8 0.5 45.0)
   currentPosRef <- newIORef (vec3 0.1 0 0)
   trailRef      <- newIORef ([] :: [Vec3])
   let maxPoints = 15000 :: Int
@@ -72,23 +94,49 @@ main = withWindow 2560 1600 "3D Phase Portrait - Lorenz Attractor, Free rotating
       writeIORef currentPosRef (vec3 0.1 0 0)
       writeIORef trailRef []
 
-    cam    <- readIORef cameraRef
-    newCam <- updateCamera cam CameraModeOrbital
-    writeIORef cameraRef newCam
+    -- Mouse-drag orbit: only rotate while the left button is held.
+    dragging        <- isMouseButtonDown MouseButtonLeft
+    Vector2 mdx mdy <- getMouseDelta
+    wheel           <- getMouseWheelMove
+
+    modifyIORef' orbitRef $ \(OrbitState yaw pitch dist) ->
+      let (yaw', pitch') =
+            if dragging
+              then ( yaw   - mdx * mouseSensitivity
+                   , clampPitch (pitch - mdy * mouseSensitivity)
+                   )
+              else (yaw, pitch)
+          dist' = clampDistance (dist - wheel * zoomSensitivity)
+      in OrbitState yaw' pitch' dist'
+
+    orbit <- readIORef orbitRef
+    let camera =
+          Camera3D
+            (orbitToVector3 orbit)  -- position, computed from yaw/pitch/distance
+            (Vector3 0 0 0)         -- target: always the origin
+            (Vector3 0 1 0)         -- up
+            50.0
+            CameraPerspective
 
     trailPoints <- readIORef trailRef
 
     drawing $ do
-      clearBackground (Color 15 15 25 255)
-      mode3D newCam $ do
-        drawGrid 25 1.0
+      clearBackground (Color 15 45 25 255)
+      mode3D camera $ do
+        drawGrid 50 1.0
         drawAxes 18
         drawTrail trailPoints
         drawSphere (toVector3 newPos) 0.2 (Color 255 70 70 255)
       drawText "Lorenz Attractor -- 3D Phase Portrait" 20 20 24 white
-      drawText "Orbiting the origin * R = reset" 20 50 18 (Color 200 200 220 255)
+      drawText "Drag mouse to orbit * Scroll to zoom * R = reset" 20 50 18 (Color 200 200 220 255)
       drawFPS 20 80
   where
+    clampPitch :: Float -> Float
+    clampPitch p = max (-maxPitch) (min maxPitch p)
+
+    clampDistance :: Float -> Float
+    clampDistance d = max minDistance (min maxDistance d)
+
     drawAxes :: Float -> IO ()
     drawAxes s = do
       let o = Vector3 0 0 0
