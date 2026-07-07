@@ -6,8 +6,11 @@ cradle:
     - path: "./app/SNeat.hs"
       component: "rhayader:exe:sneat"
 
-    - path: "./app/Flumen.hs"
-      component: "rhayader:exe:flumen"
+    - path: "./app/Main.hs"
+      component: "rhayader:exe:main"
+
+    - path: "./playground/AICombinators.hs"
+      component: "rhayader:exe:playground-aicombinators"
 
     - path: "./playground/CritterDSL.hs"
       component: "rhayader:exe:playground-dsl"
