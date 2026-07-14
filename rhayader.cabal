@@ -67,6 +67,7 @@ library
       , Engine.NEAT.Genetics.GeneTypes
       , Engine.NEAT.Genetics.Neurons
       , Engine.NEAT.Population
+      , Engine.NEAT.Visualization.Izhikevich
       , Data.Stream.Zio
       , Data.Stream.Zio.Common
       , Data.Stream.Zio.Dealer
