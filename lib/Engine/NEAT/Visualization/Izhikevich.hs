@@ -63,11 +63,11 @@ data NeuronState = NeuronState { nV :: !Float
                                , nU :: !Float
                                }
 
-data IzhikevichParams = IzhikevichParams { a -- ^ recovery time scale
-                                         , b -- ^ sensitivity of u to subth
-                                         , c -- ^ post-spike reset value of
-                                         , d -- ^ post-spike bump to u
-                                           :: Float
+data IzhikevichParams = IzhikevichParams { za -- ^ recovery time scale
+                                         , zb -- ^ sensitivity of u to subth
+                                         , zc -- ^ post-spike reset value of
+                                         , zd -- ^ post-spike bump to u
+                                           :: !Float
                                          }
 
 data CameraState = CameraState
@@ -85,16 +85,21 @@ data Config = Config { windowWidth   :: Int
                      , windowName    :: String
                      }
 
+initialIzhikevichParams :: IzhikevichParams
+initialIzhikevichParams = (IzhikevichParams 0.02 0.2 (-65.0) 8.0) 
+
 defaultConfig :: Config
 defaultConfig = (Config 2560 1600
-                        (IzhikevichParams 0.02 0.2 -65.0 8.0)
+                        initialIzhikevichParams
                         (CameraState 0.8 0.5 45.0)
-                        
+                        0.0
+                        10.0
+                        "3D Phase Portrait - Izhikevich Neuron, Delay Embedding"
                 )
 defaultI = 10.0  -- injected/synaptic current
 
-initialNeuronState ::IzhikevichParams -> NeuronState
-initialNeuronState ns = NeuronState ns.c (ns.b * ns.c)
+initialNeuronState :: IzhikevichParams -> NeuronState
+initialNeuronState ns = NeuronState ns.zc (ns.zb * ns.zc)
 
 -- | Delay-embedding window: how many 1ms steps back to sample v(t-tau) from.
 delaySteps :: Int
@@ -140,15 +145,14 @@ maxHistory = delaySteps + 1
 -- show up as the trajectory looping through a slower,
 -- larger-amplitude excursion before returning to the fast spike manifold.
 
-stepIzh :: Float -> Float -> Float -> Float -> Float -> NeuronState -> NeuronState
-stepIzh a b c d iCur (NeuronState v u) =
-  let v1 = v + 0.5 * (0.04 * v * v + 5 * v + 140 - u + iCur)
+stepIzh :: IzhikevichParams -> Float -> NeuronState -> NeuronState
+stepIzh (IzhikevichParams a b c d) iCur (NeuronState v u) =
+  let v1 = v  + 0.5 * (0.04 * v  * v  + 5 * v  + 140 - u + iCur)
       v2 = v1 + 0.5 * (0.04 * v1 * v1 + 5 * v1 + 140 - u + iCur)
-      u' = u + a * (b * v2 - u)
+      u' = u  + a * (b * v2 - u)
   in if v2 >= 30
-       then NeuronState c (u' + d)
-       else NeuronState v2 u'
-
+     then NeuronState c (u' + d)
+     else NeuronState v2 u'
 
 mouseSensitivity :: Float
 mouseSensitivity = 0.005
@@ -158,7 +162,7 @@ zoomSensitivity = 2.0
 
 minDistance, maxDistance, maxPitch :: Float
 minDistance = 5.0
-maxDistance = 150.0
+maxDistance = 200.0
 maxPitch    = 1.5
 
 orbitToVector3 :: CameraState -> Vector3
@@ -172,13 +176,13 @@ orbitToVector3 (CameraState yaw pitch dist) =
 run :: Config -> IO ()
 run cfg = withWindow cfg.windowWidth cfg.windowHeight cfg.windowName 60 $ \_ -> do
   orbitRef      <- newIORef (CameraState 0.8 0.5 45.0)
-  neuronRef     <- newIORef initialNeuronState
+  neuronRef     <- newIORef (initialNeuronState initialIzhikevichParams)
   vHistoryRef   <- newIORef ([] :: [Float])
   trailRef      <- newIORef ([] :: [Vec3])
-  aRef          <- newIORef cfg.neuronParams.a
-  bRef          <- newIORef cfg.neuronParams.b
-  cRef          <- newIORef cfg.neuronParams.c
-  dRef          <- newIORef cfg.neuronParams.d
+  aRef          <- newIORef cfg.neuronParams.za
+  bRef          <- newIORef cfg.neuronParams.zb
+  cRef          <- newIORef cfg.neuronParams.zc
+  dRef          <- newIORef cfg.neuronParams.zd
   iRef          <- newIORef cfg.initialI
   let maxPoints = 15000 :: Int
 
@@ -190,7 +194,7 @@ run cfg = withWindow cfg.windowWidth cfg.windowHeight cfg.windowName 60 $ \_ -> 
     iCur <- readIORef iRef
 
     neuron <- readIORef neuronRef
-    let neuron' = stepIzh a b c d iCur neuron
+    let neuron' = stepIzh (IzhikevichParams a b c d) iCur neuron
     writeIORef neuronRef neuron'
 
     vHist <- readIORef vHistoryRef
@@ -208,7 +212,7 @@ run cfg = withWindow cfg.windowWidth cfg.windowHeight cfg.windowName 60 $ \_ -> 
 
     resetPressed <- isKeyPressed KeyR
     when resetPressed $ do
-      writeIORef neuronRef initialNeuronState
+      writeIORef neuronRef neuron 
       writeIORef trailRef []
       writeIORef vHistoryRef []
     dragging        <- isMouseButtonDown MouseButtonRight
@@ -267,7 +271,7 @@ run cfg = withWindow cfg.windowWidth cfg.windowHeight cfg.windowName 60 $ \_ -> 
 
       redrawClicked <- guiButton (Rectangle 20 290 120 30) (Just "Redraw")
       when redrawClicked $ do
-        writeIORef neuronRef initialNeuronState
+        writeIORef neuronRef (initialNeuronState initialIzhikevichParams)
         writeIORef trailRef []
         writeIORef vHistoryRef []
   where
