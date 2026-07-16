@@ -145,13 +145,14 @@ maxHistory = delaySteps + 1
 -- show up as the trajectory looping through a slower,
 -- larger-amplitude excursion before returning to the fast spike manifold.
 
-stepIzh :: IzhikevichParams -> Float -> NeuronState -> NeuronState
-stepIzh (IzhikevichParams a b c d) iCur (NeuronState v u) =
-  let v1 = v  + 0.5 * (0.04 * v  * v  + 5 * v  + 140 - u + iCur)
-      v2 = v1 + 0.5 * (0.04 * v1 * v1 + 5 * v1 + 140 - u + iCur)
-      u' = u  + a * (b * v2 - u)
+stepIzh :: Float -> IzhikevichParams -> Float -> NeuronState -> NeuronState
+stepIzh dt (IzhikevichParams a b c d) iCur (NeuronState v u) =
+  let half = dt / 2
+      v1 = v  + half * (0.04 * v  * v  + 5 * v  + 140 - u + iCur)
+      v2 = v1 + half * (0.04 * v1 * v1 + 5 * v1 + 140 - u + iCur)
+      u' = b * v2 + (u - b * v2) * exp (-a * dt)  -- exact linear integration, dt-independent
   in if v2 >= 30
-     then NeuronState c (u' + d)
+     then NeuronState c (u' + d)   -- d applied once, per spike event, no dt scaling needed
      else NeuronState v2 u'
 
 mouseSensitivity :: Float
@@ -172,6 +173,9 @@ orbitToVector3 (CameraState yaw pitch dist) =
       y = dist * sin pitch
       z = dist * cosPitch * cos yaw
   in Vector3 x y z
+
+dt :: Float
+dt = 0.5
 
 run :: Config -> IO ()
 run cfg = withWindow cfg.windowWidth cfg.windowHeight cfg.windowName 60 $ \_ -> do
@@ -194,7 +198,7 @@ run cfg = withWindow cfg.windowWidth cfg.windowHeight cfg.windowName 60 $ \_ -> 
     iCur <- readIORef iRef
 
     neuron <- readIORef neuronRef
-    let neuron' = stepIzh (IzhikevichParams a b c d) iCur neuron
+    let neuron' = stepIzh dt (IzhikevichParams a b c d) iCur neuron
     writeIORef neuronRef neuron'
 
     vHist <- readIORef vHistoryRef
