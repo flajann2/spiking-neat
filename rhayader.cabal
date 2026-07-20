@@ -41,6 +41,7 @@ common commons
       , unagi-chan
       , conduit
       , h-raylib
+      , clock
     default-language: GHC2024
     default-extensions:
         OverloadedRecordDot
@@ -58,6 +59,7 @@ library
         Engine.NEAT
       , SSMonad
       , SSNumeric
+      , Engine.Clock
       , Engine.AI
       , Engine.Combinators
       , Engine.NEAT.Evolution.Goals
@@ -176,6 +178,12 @@ executable playground-rl-Izhikevich
     import:      commons, bincoms
     ghc-options: -rtsopts -with-rtsopts=-N
     main-is:     RLIzhikevich.hs
+    hs-source-dirs: playground
+
+executable playground-clocker
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
+    main-is:     Clocker.hs
     hs-source-dirs: playground
 
 test-suite ss-spec
