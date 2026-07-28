@@ -102,12 +102,6 @@ executable main
 ----     main-is:     AICombinators.hs
 ----     hs-source-dirs: playground
 ---- 
----- executable playground-dsl
-----     import:      commons, bincoms
-----     ghc-options: -rtsopts -with-rtsopts=-N
-----     main-is:     CritterDSL.hs
-----     hs-source-dirs: playground
----- 
 ---- executable playground-random
 ----     import:      commons, bincoms
 ----     ghc-options: -rtsopts -with-rtsopts=-N
@@ -155,6 +149,12 @@ executable main
 ----     ghc-options: -rtsopts -with-rtsopts=-N
 ----     main-is:     Unagi.hs
 ----     hs-source-dirs: playground
+
+executable playground-dsl
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
+    main-is:     CritterDSL.hs
+    hs-source-dirs: playground
 
 executable playground-rl-example
     import:      commons, bincoms

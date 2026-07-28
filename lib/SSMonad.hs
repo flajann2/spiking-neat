@@ -14,10 +14,10 @@ import Control.Monad.IO.Class (liftIO, MonadIO)
 import Data.Semigroup
 import Data.Complex (Complex)
 import System.Random ( StdGen, Random(randomR), newStdGen )
-import SSNumeric
+import SSNumeric ( SSNum, SSNumeric(SSDouble) )
 
-import Engine.NEAT.Genetics.GeneTypes
-import Engine.NEAT.Evolution.GoalTypes
+import Engine.NEAT.Genetics.GeneTypes  ( NType(Inhibitory, Regular) )
+import Engine.NEAT.Evolution.GoalTypes ( Goal(..) )
 
 default (Double)
 

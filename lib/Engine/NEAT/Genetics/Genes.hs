@@ -58,6 +58,7 @@ data Role = Input
           | Hidden
           deriving (Show, Eq)
 
+-- | 
 data Node = Node { ntype    :: NType
                  , role     :: Role
                  } deriving (Show, Eq)

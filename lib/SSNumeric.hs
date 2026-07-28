@@ -28,34 +28,41 @@ instance Eq SSNumeric where
 
 instance Num SSNumeric where
     -- Negation
+    negate :: SSNumeric -> SSNumeric
     negate (SSFloat x)  = SSFloat (negate x)
     negate (SSDouble x) = SSDouble (negate x)
 
     -- Addition
+    (+) :: SSNumeric -> SSNumeric -> SSNumeric
     (SSFloat x)  + (SSFloat y)  = SSFloat  (x + y)
     (SSDouble x) + (SSDouble y) = SSDouble (x + y)
     (SSFloat x)  + (SSDouble y) = SSFloat  (x + (double2Float y))
     (SSDouble x) + (SSFloat y)  = SSDouble (x + (float2Double y))
 
     -- Subtraction
+    (-) :: SSNumeric -> SSNumeric -> SSNumeric
     (SSFloat x)  - (SSFloat y)  = SSFloat  (x - y)
     (SSDouble x) - (SSDouble y) = SSDouble (x - y)
     (SSFloat x)  - (SSDouble y) = SSFloat  (x - (double2Float y))
     (SSDouble x) - (SSFloat y)  = SSDouble (x - (float2Double y))
 
     -- Multiplication
+    (*) :: SSNumeric -> SSNumeric -> SSNumeric
     (SSFloat x) * (SSFloat y)   = SSFloat (x * y)
     (SSDouble x) * (SSDouble y) = SSDouble (x * y)
 
     -- Absolute value
+    abs :: SSNumeric -> SSNumeric
     abs (SSFloat x)  = SSFloat (abs x)
     abs (SSDouble x) = SSDouble (abs x)
 
     -- Signum function
+    signum :: SSNumeric -> SSNumeric
     signum (SSFloat x)  = SSFloat (signum x)
     signum (SSDouble x) = SSDouble (signum x)
 
     -- Conversion from Integer
+    fromInteger :: Integer -> SSNumeric
     fromInteger n = SSFloat  $ fromInteger n
     fromInteger n = SSDouble $ fromInteger n
 

@@ -16,24 +16,24 @@ mainSS :: SS ()
 mainSS = do
   cfg <- getConfig
   critter <- mkCritter [ node mkRegular             Input  -- 0
-                      , node mkRegular             Input  -- 1
-                      , node mkRegular             Input  -- 2
-                      , node (mkPyramidal 0.5)     Hidden -- 3
-                      , node (mkPurkinje  0.5 0.1) Hidden -- 4
-                      , node mkInhiborty           Hidden -- 5
-                      , node mkRegular             Output -- 6
-                      , node mkRegular             Output -- 7
-                      ] [ conn 0 3 nxi
-                        , conn 1 3 nxi
-                        , conn 2 3 nxi
-                        , conn 0 4 nxi
-                        , conn 1 4 nxi
-                        , conn 2 4 nxi
-                        , conn 3 6 nxi
-                        , conn 4 6 nxi
-                        , conn 3 7 nxi
-                        , conn 4 7 nxi
-                        ]
+                       , node mkRegular             Input  -- 1
+                       , node mkRegular             Input  -- 2
+                       , node (mkPyramidal 0.5)     Hidden -- 3
+                       , node (mkPurkinje  0.5 0.1) Hidden -- 4
+                       , node mkInhiborty           Hidden -- 5
+                       , node mkRegular             Output -- 6
+                       , node mkRegular             Output -- 7
+                       ] [ conn 0 3 nxi
+                         , conn 1 3 nxi
+                         , conn 2 3 nxi
+                         , conn 0 4 nxi
+                         , conn 1 4 nxi
+                         , conn 2 4 nxi
+                         , conn 3 6 nxi
+                         , conn 4 6 nxi
+                         , conn 3 7 nxi
+                         , conn 4 7 nxi
+                         ]
   critgen <- genCritter
   _ <- liftIO $ putStrLn "****** configuration ******"
   _ <- liftIO $ pPrint cfg

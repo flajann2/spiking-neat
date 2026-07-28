@@ -15,10 +15,15 @@ import SSMonad
 import SSNumeric ( SSNumeric(SSDouble) )
 import Engine.NEAT.Genetics.Genes
     ( mkRegular, NType, Connection(..), Node(..), Role(..) )
-import Control.Monad (mapM)
-import GHC.Cmm.Utils (mkRODataLits)
-import GHC.Builtin.Uniques (mkRegClassUnique)
+--- import Control.Monad (mapM)
+--- import GHC.Cmm.Utils (mkRODataLits)
+--- import GHC.Builtin.Uniques (mkRegClassUnique)
 
+-- |Critter comprises the nodes, which are really the neurons,
+--  and the indices inputs, outputs, and hidden, which defines
+--  the functionality of the nodes (neurons)
+--  We also have connections, which are the connections
+--  among the nodes.
 data Critter = Critter { nodes          :: [Node]
                        , inputs         :: [Int] -- indices of the input nodes
                        , outputs        :: [Int] -- indices of the output nodes

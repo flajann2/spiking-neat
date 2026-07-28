@@ -20,7 +20,6 @@ module Engine.Clock ( MonadClock(..)
 
 import Control.Monad.State.Strict
 import Control.Monad.Reader
-import Control.Monad.IO.Class (MonadIO, liftIO)
 import Data.IORef
 import System.Clock (Clock(Monotonic), getTime, toNanoSecs)
 
@@ -42,10 +41,13 @@ newtype SimClock a = SimClock { unSimClock :: StateT (Float, Float) IO a }
   deriving (Functor, Applicative, Monad, MonadIO, MonadState (Float, Float))
 
 instance MonadClock SimClock where
+  tick :: SimClock Float
   tick = SimClock $ do
     (dt, t) <- get
     put (dt, t + dt)
     pure dt
+    
+  currentTime :: SimClock Float
   currentTime = SimClock $ gets snd
 
 -- | Run a 'SimClock' computation with a fixed step size, returning the
@@ -75,6 +77,7 @@ newtype RealClock a = RealClock { unRealClock :: ReaderT RealClockEnv IO a }
   deriving (Functor, Applicative, Monad, MonadIO, MonadReader RealClockEnv)
 
 instance MonadClock RealClock where
+  tick :: RealClock Float
   tick = RealClock $ do
     env <- ask
     now <- liftIO $ toNanoSecs <$> getTime Monotonic
@@ -83,6 +86,8 @@ instance MonadClock RealClock where
     liftIO $ writeIORef (rcLastTimeNs env) now
     liftIO $ modifyIORef' (rcElapsed env) (+ dt)
     pure dt
+
+  currentTime :: RealClock Float
   currentTime = RealClock $ do
     env <- ask
     liftIO $ readIORef (rcElapsed env)
@@ -90,8 +95,8 @@ instance MonadClock RealClock where
 -- | Create a fresh real-time clock environment, anchored to "now".
 newRealClock :: IO RealClockEnv
 newRealClock = do
-  now <- toNanoSecs <$> getTime Monotonic
-  lastT <- newIORef now
+  now     <- toNanoSecs <$> getTime Monotonic
+  lastT   <- newIORef now
   elapsed <- newIORef 0
   pure $ RealClockEnv lastT elapsed
 
