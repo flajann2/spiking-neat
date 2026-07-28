@@ -6,7 +6,9 @@
 
 module Engine.NEAT.Genetics.GeneTypes where
 
+import Data.IORef
 import SSNumeric
+import Engine.NEAT.Izhikevich
 
 data NType = Pyramidal  { activation     :: SSNumeric -> SSNumeric
                         , depolarization :: SSNumeric } 
@@ -15,6 +17,10 @@ data NType = Pyramidal  { activation     :: SSNumeric -> SSNumeric
                         , rate :: Float }
            | Regular    { activation     :: SSNumeric -> SSNumeric }
            | Inhibitory { activation     :: SSNumeric -> SSNumeric }
+           | Izhikevich { activation     :: SSNumeric -> SSNumeric
+                        , parms          :: IzhikevichParams
+                        , state          :: IORef NeuronState -- ^ ever-changing state per tick
+                        }
 
 instance Show NType where
     show :: NType -> String
@@ -25,8 +31,8 @@ instance Show NType where
 
 instance Eq NType where
     (==) :: NType -> NType -> Bool
-    (Pyramidal _ dep1) == (Pyramidal _ dep2) = dep1 == dep2
+    (Pyramidal _ dep1)      == (Pyramidal _ dep2) = dep1 == dep2
     (Purkinje _ dep1 rate1) == (Purkinje _ dep2 rate2) = dep1 == dep2 && rate1 == rate2
-    (Regular _) == (Regular _) = True
-    (Inhibitory _) == (Inhibitory _) = True
+    (Regular _)             == (Regular _) = True
+    (Inhibitory _)          == (Inhibitory _) = True
     _ == _ = False  -- Different constructors are not equal

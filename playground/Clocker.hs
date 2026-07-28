@@ -31,8 +31,8 @@ runSimDemo dt n = do
 -- | Live demo: real wall-clock ticks, printed as they happen.
 -- Sleeps briefly between ticks just so dt is visibly nonzero.
 -- Also demonstates the use of forever.
-runRealDemo :: Int -> IO ()
-runRealDemo n = do
+runRealDemoForever :: IO ()
+runRealDemoForever = do
   env <- newRealClock
   runRealClock env $ forever $ do
     liftIO $ threadDelay 200000  -- 200ms, just to make dt visible
@@ -45,4 +45,4 @@ main = do
 
   putStrLn ""
   putStrLn "-- RealClock demo (wall-clock, ~200ms steps) --"
-  runRealDemo 25
+  runRealDemoForever

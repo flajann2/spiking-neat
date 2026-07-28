@@ -63,6 +63,7 @@ data Node = Node { ntype    :: NType
                  , role     :: Role
                  } deriving (Show, Eq)
 
+-- | Connection between nodes (neurons) which are evolvable.
 data Connection = Connection { innovation :: Int
                              , node_in    :: Int
                              , node_out   :: Int

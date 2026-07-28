@@ -67,7 +67,7 @@ evalSimClock dt m = fst <$> runSimClock dt m
 
 -- | Mutable environment: last tick timestamp (ns) and accumulated elapsed
 -- time (s). Not exported -- constructed via 'newRealClock' and threaded
--- opaquely through 'runRealClock'.
+-- opaquely through 'runRealClock'. Timing depends on the implementor.
 data RealClockEnv = RealClockEnv
   { rcLastTimeNs :: IORef Integer
   , rcElapsed    :: IORef Float
