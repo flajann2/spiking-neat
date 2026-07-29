@@ -1,4 +1,5 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving
+           , RankNTypes #-}
 
 {-|
 Module      : Engine.Clock
@@ -9,15 +10,19 @@ Maintainer  : fred.mitchell@atomlogik.de
 TODO Here is a longer description of this module, containing some
 commentary with @some markup@.
 -}
+
 module Engine.Clock ( MonadClock(..)
                     , SimClock
-                    , runSimClock
-                    , evalSimClock
                     , RealClock
-                    , runRealClock
-                    , newRealClock
+                    , clockS
+                    , clockR
                     ) where
 
+import Control.Monad (replicateM_
+                     , forever)
+
+import Control.Monad.IO.Class (MonadIO, liftIO)
+import Control.Concurrent (threadDelay)
 import Control.Monad.State.Strict
 import Control.Monad.Reader
 import Data.IORef
@@ -103,3 +108,17 @@ newRealClock = do
 -- | Run a 'RealClock' computation against a given clock environment.
 runRealClock :: RealClockEnv -> RealClock a -> IO a
 runRealClock env (RealClock m) = runReaderT m env
+
+-- | call the given clocking the function perodically forever 
+clockR :: (forall m. (MonadClock m, MonadIO m) => m ()) -> Float -> IO ()
+clockR cf dt = do
+  env <- newRealClock
+  runRealClock env $ forever $ do
+    liftIO $ threadDelay $ round (dt * 1_000_000)
+    cf
+
+-- | simulate clocking the function, no delays, for n times
+clockS :: (forall m. (MonadClock m, MonadIO m) => m ()) -> Float -> Int -> IO Float
+clockS cf dt n = do
+  (_, total) <- runSimClock dt (replicateM_ n cf)
+  pure total
