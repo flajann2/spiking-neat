@@ -71,6 +71,7 @@ library
       , Engine.NEAT.Population
       , Engine.NEAT.Izhikevich
       , Engine.NEAT.Visualization.Izhikevich
+      , Data.SDR
       , Data.Stream.Zio
       , Data.Stream.Zio.Common
       , Data.Stream.Zio.Dealer

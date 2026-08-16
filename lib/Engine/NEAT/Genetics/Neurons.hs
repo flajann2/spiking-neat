@@ -1,5 +1,5 @@
 {-|
-Depreciated. See Critter
+Depreciated. See Critters
 -}
 
 module Engine.NEAT.Genetics.Neurons where
