@@ -1,12 +1,8 @@
 module Data.SDR.Algebras where
 
 import qualified Data.IntSet as IS
-import Data.IntSet (IntSet)
-import qualified Data.IntMap.Strict as IM
-import Data.IntMap.Strict (IntMap)
-import Data.List (sortOn)
-import Data.Ord (Down(..))
 import Numeric (showFFloat)
+import Data.SDR.Core
 
 --------------------------------------------------------------------------------
 -- Set-algebraic combinators (HTM primitives)
@@ -58,3 +54,22 @@ jaccard a b
 concatSDR :: SDR -> SDR -> SDR
 concatSDR a b = SDR (sdrWidth a + sdrWidth b)
                      (IS.union (sdrBits a) (IS.map (+ sdrWidth a) (sdrBits b)))
+
+
+-- | Pretty printing an SDR
+--   This is mainly for debugging purposes
+prettySDR :: SDR -> String
+prettySDR s = mconcat
+  [ "SDR<w=", show (sdrWidth s)
+  , ", n=", show (IS.size (sdrBits s))
+  , ", sparsity=", showFFloat (Just 3) (sparsity s) ""
+  , "> ", show (take 12 (IS.toList (sdrBits s)))
+  , if IS.size (sdrBits s) > 12 then "..." else ""
+  ]
+
+-- | Pretty printing an SDR bitmap
+--   This is mainly for debugging purposes, and for very large bitmaps
+--   it may become ungangly.
+bitmapSDR :: SDR -> String
+bitmapSDR s = [ if IS.member i bits then '#' else '.' | i <- [0 .. sdrWidth s - 1] ]
+  where bits = sdrBits s

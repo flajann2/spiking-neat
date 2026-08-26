@@ -1,12 +1,7 @@
 module Data.SDR.Encoders where
 
 import qualified Data.IntSet as IS
-import Data.IntSet (IntSet)
-import qualified Data.IntMap.Strict as IM
-import Data.IntMap.Strict (IntMap)
-import Data.List (sortOn)
-import Data.Ord (Down(..))
-import Numeric (showFFloat)
+import Data.SDR.Core
 
 --------------------------------------------------------------------------------
 -- Encoders

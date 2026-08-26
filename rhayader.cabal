@@ -72,6 +72,7 @@ library
       , Engine.NEAT.Izhikevich
       , Engine.NEAT.Visualization.Izhikevich
       , Data.SDR
+      , Data.SDR.Core
       , Data.SDR.Algebras
       , Data.SDR.Encoders
       , Data.SDR.Infix

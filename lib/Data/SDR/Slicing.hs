@@ -7,6 +7,7 @@ import Data.IntMap.Strict (IntMap)
 import Data.List (sortOn)
 import Data.Ord (Down(..))
 import Numeric (showFFloat)
+import Data.SDR.Core
 
 --------------------------------------------------------------------------------
 -- Slicing / splitting (inverse of concatenation)
