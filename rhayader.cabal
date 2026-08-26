@@ -1,4 +1,4 @@
-cabal-version: 3.16
+cabal-version: 3.12
 name:          rhayader
 version:       0.0.0.0
 synopsis:      A collection of composable Machine Learning engines such as Spiking NEAT, HTM, etc.
@@ -72,6 +72,10 @@ library
       , Engine.NEAT.Izhikevich
       , Engine.NEAT.Visualization.Izhikevich
       , Data.SDR
+      , Data.SDR.Algebras
+      , Data.SDR.Encoders
+      , Data.SDR.Infix
+      , Data.SDR.Slicing
       , Data.Stream.Zio
       , Data.Stream.Zio.Common
       , Data.Stream.Zio.Dealer
@@ -196,3 +200,9 @@ test-suite ss-spec
     build-depends:
         hspec
       , QuickCheck
+
+executable playground-sdr
+    import:      commons, bincoms
+    ghc-options: -rtsopts -with-rtsopts=-N
+    main-is:     SDRit.hs
+    hs-source-dirs: playground
