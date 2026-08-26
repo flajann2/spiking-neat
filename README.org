@@ -28,7 +28,7 @@
 *** Author: Fred Mitchell
 *** License: MIT
 ** Documentation
-   Rhayader cmprises multiple Machine Learning engines, allowing you to
+   Rhayader comprises multiple Machine Learning engines, allowing you to
    compose them using Rhayader Combinators. TBD
 *** Spiking NEAT
 **** Introduction
