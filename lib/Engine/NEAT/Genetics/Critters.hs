@@ -25,9 +25,9 @@ import Engine.NEAT.Genetics.Genes
 --  We also have connections, which are the connections
 --  among the nodes.
 data Critter = Critter { nodes          :: [Node]
-                       , inputs         :: [Int] -- indices of the input nodes
-                       , outputs        :: [Int] -- indices of the output nodes
-                       , hidden         :: [Int] -- indices of the hidden nodes
+                       , inputs         :: [Int] -- ^ indices of the input nodes
+                       , outputs        :: [Int] -- ^ indices of the output nodes
+                       , hidden         :: [Int] -- ^ indices of the hidden nodes
                        , connections    :: [Connection]
                        , number_inputs  :: Int
                        , number_outputs :: Int

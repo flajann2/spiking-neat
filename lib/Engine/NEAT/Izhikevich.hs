@@ -77,3 +77,76 @@ stepIzh dt (IzhikevichParams a b c d) iCur (NeuronState v u) =
   in if v2 >= 30
      then NeuronState c (u' + d)   -- d applied once, per spike event, no dt scaling needed
      else NeuronState v2 u'
+
+-- Table 1: Canonical cortical/thalamic types
+
+mkRegularSpiking :: IzhikevichParams
+mkRegularSpiking = IzhikevichParams { za = 0.02, zb = 0.2, zc = -65, zd = 8 }
+
+mkIntrinsicallyBursting :: IzhikevichParams
+mkIntrinsicallyBursting = IzhikevichParams { za = 0.02, zb = 0.2, zc = -55, zd = 4 }
+
+mkChattering :: IzhikevichParams
+mkChattering = IzhikevichParams { za = 0.02, zb = 0.2, zc = -50, zd = 2 }
+
+mkFastSpiking :: IzhikevichParams
+mkFastSpiking = IzhikevichParams { za = 0.1, zb = 0.2, zc = -65, zd = 2 }
+
+mkLowThresholdSpiking :: IzhikevichParams
+mkLowThresholdSpiking = IzhikevichParams { za = 0.02, zb = 0.25, zc = -65, zd = 2 }
+
+mkThalamocortical :: IzhikevichParams
+mkThalamocortical = IzhikevichParams { za = 0.02, zb = 0.25, zc = -65, zd = 0.05 }
+
+mkResonator :: IzhikevichParams
+mkResonator = IzhikevichParams { za = 0.1, zb = 0.26, zc = -65, zd = 2 }
+
+mkThalamicReticular :: IzhikevichParams
+mkThalamicReticular = IzhikevichParams { za = 0.1, zb = 0.25, zc = -65, zd = 2.05 }
+
+-- Table 2: Other named dynamical classes
+
+mkClass1Excitable :: IzhikevichParams
+mkClass1Excitable = IzhikevichParams { za = 0.02, zb = -0.1, zc = -55, zd = 6 }
+
+mkClass2Excitable :: IzhikevichParams
+mkClass2Excitable = IzhikevichParams { za = 0.2, zb = 0.26, zc = -65, zd = 0 }
+
+mkSpikeLatency :: IzhikevichParams
+mkSpikeLatency = IzhikevichParams { za = 0.02, zb = 0.2, zc = -65, zd = 6 }
+
+mkSubthresholdOscillations :: IzhikevichParams
+mkSubthresholdOscillations = IzhikevichParams { za = 0.05, zb = 0.26, zc = -60, zd = 0 }
+
+mkResonatorAlt :: IzhikevichParams
+mkResonatorAlt = IzhikevichParams { za = 0.1, zb = 0.26, zc = -60, zd = -1 }
+
+mkIntegrator :: IzhikevichParams
+mkIntegrator = IzhikevichParams { za = 0.02, zb = -0.1, zc = -55, zd = 6 }
+
+mkReboundSpike :: IzhikevichParams
+mkReboundSpike = IzhikevichParams { za = 0.03, zb = 0.25, zc = -60, zd = 4 }
+
+mkReboundBurst :: IzhikevichParams
+mkReboundBurst = IzhikevichParams { za = 0.03, zb = 0.25, zc = -52, zd = 0 }
+
+mkThresholdVariability :: IzhikevichParams
+mkThresholdVariability = IzhikevichParams { za = 0.03, zb = 0.25, zc = -60, zd = 4 }
+
+mkBistability :: IzhikevichParams
+mkBistability = IzhikevichParams { za = 1.0, zb = 1.5, zc = -60, zd = 0 }
+
+mkDepolarizingAfterpotential :: IzhikevichParams
+mkDepolarizingAfterpotential = IzhikevichParams { za = 1.0, zb = 0.2, zc = -60, zd = -21 }
+
+mkAccommodation :: IzhikevichParams
+mkAccommodation = IzhikevichParams { za = 0.02, zb = 1.0, zc = -55, zd = 4 }
+
+mkInhibitionInducedSpiking :: IzhikevichParams
+mkInhibitionInducedSpiking = IzhikevichParams { za = -0.02, zb = -1.0, zc = -60, zd = 8 }
+
+mkInhibitionInducedBursting :: IzhikevichParams
+mkInhibitionInducedBursting = IzhikevichParams { za = -0.026, zb = -1.0, zc = -45, zd = 0 }
+
+mkMixedMode :: IzhikevichParams
+mkMixedMode = IzhikevichParams { za = 0.02, zb = 0.2, zc = -55, zd = 4 }

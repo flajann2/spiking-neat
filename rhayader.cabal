@@ -76,6 +76,7 @@ library
       , Data.SDR.Algebras
       , Data.SDR.Encoders
       , Data.SDR.Infix
+      , Data.SDR.Pooling
       , Data.SDR.Slicing
       , Data.Stream.Zio
       , Data.Stream.Zio.Common
